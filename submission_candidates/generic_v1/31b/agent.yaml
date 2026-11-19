@@ -1,0 +1,9 @@
+agent_class: SequentialAgent
+name: evidence_repair
+description: Reproduce, localize from runtime evidence, write behavior checks, repair with verification, submit.
+sub_agents:
+  - config_path: sub_agents/reproduce.yaml
+  - config_path: sub_agents/localize.yaml
+  - config_path: sub_agents/checks.yaml
+  - config_path: sub_agents/repair_loop.yaml
+  - config_path: sub_agents/submit.yaml

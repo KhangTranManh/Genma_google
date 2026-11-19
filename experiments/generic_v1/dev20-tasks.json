@@ -1,0 +1,39 @@
+{
+  "ids": [
+    "w3lib_264",
+    "markdown_1621",
+    "werkzeug_3147",
+    "tenacity_640",
+    "humanize_334",
+    "packaging_1155",
+    "click_3299",
+    "platformdirs_540",
+    "black_5476",
+    "flask_6133",
+    "isort_2558",
+    "litestar_4659",
+    "loguru_1504",
+    "more_itertools_1285",
+    "pluggy_752",
+    "typer_1788",
+    "urllib3_5031",
+    "uvicorn_3199",
+    "click_3739",
+    "isort_2581"
+  ],
+  "new": [
+    "black_5476",
+    "flask_6133",
+    "isort_2558",
+    "litestar_4659",
+    "loguru_1504",
+    "more_itertools_1285",
+    "pluggy_752",
+    "typer_1788",
+    "urllib3_5031",
+    "uvicorn_3199",
+    "click_3739",
+    "isort_2581"
+  ],
+  "rule": "lite\u2229issue, single src file, \u226420 changed lines, not in dev8; first per new repo (alphabetical), then second tasks per repo (alphabetical) until 12; preflight-failing tasks are dropped and recorded; no model outcomes used"
+}
