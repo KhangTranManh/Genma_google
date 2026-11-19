@@ -24,3 +24,9 @@ This method replaces the hand-defined B4 setup. The model sees only the **verbat
 ## v4 change (generic): one re-localization
 
 If the t0 Patch attempt returns prose only, with no tool call even after the re-ask, the pipeline treats it as a decline. Localize then runs once more, with the previous targets and the model's own explanation, and is asked to choose different targets. If the new targets differ, all samples restart on them (`samples-r1/`), together with recomputed related tests. This happens at most once per task. Tasks where the model edits at t0 behave exactly as in v3.
+
+## v5 changes (generic; flags `--evidence --extra-checks`)
+
+- **Evidence-first localization.** The model writes a repro first, from the issue and the grep hits, before any excerpt exists; it gets up to 3 tries with the validity check. A valid repro is then run on the original under cProfile, with a 20 s window, and its traceback is captured. The top repository functions by own and cumulative time, plus the repository frames on the failure stack, go into Localize (and into re-localization). With no valid repro, the old flow applies: localize from text, then write the repro from the excerpts.
+  - Offline check on markdown_1621: the top own-time function is `markdown/treeprocessors.py:__applyPattern`, the gold location (5.07 of 5.89 s).
+- **Model-written extra checks.** The model writes a module of `fixed_*` checks (sibling inputs and code paths of the same defect) and `preserve_*` checks (nearby behavior that must stay the same, including error cases). Each check runs on the original. The harness keeps `preserve_*` that pass and `fixed_*` that fail for a non-environment reason. A candidate passes public only if every kept check passes. The check module is also shown to Patch.

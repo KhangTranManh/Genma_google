@@ -148,6 +148,93 @@ def repro_verdict(rr):
     return True,''
 
 
+FLAGS={'evidence':False,'extra':False}
+
+PROFILE_RUNNER=r"""
+import cProfile,pstats,signal,runpy,json,sys,traceback
+pr=cProfile.Profile();err=None
+def stop(*a):raise TimeoutError('profile window ended')
+signal.signal(signal.SIGALRM,stop);signal.alarm(20)
+sys.argv=['repro.py'];pr.enable()
+try:runpy.run_path('_harness/repro.py',run_name='__main__')
+except BaseException as e:err=''.join(traceback.format_exception(e))[-3000:]
+pr.disable();signal.alarm(0)
+rows=[]
+for (fn,ln,name),(cc,nc,tt,ct,callers) in pstats.Stats(pr).stats.items():
+    if fn.startswith('/workspace/') and '/_harness/' not in fn and '/tests/' not in fn and '/site-packages/' not in fn:
+        rows.append({'file':fn[len('/workspace/'):],'line':ln,'func':name,'ncalls':nc,'tottime':round(tt,4),'cumtime':round(ct,4)})
+out={'by_tottime':sorted(rows,key=lambda r:-r['tottime'])[:12],'by_cumtime':sorted(rows,key=lambda r:-r['cumtime'])[:12],'error_tail':err}
+print('PROFILE_JSON='+json.dumps(out))
+"""
+
+CHECK_RUNNER=r"""
+import importlib.util,json,signal,sys,traceback
+spec=importlib.util.spec_from_file_location('extra_checks','_harness/extra_checks.py');m=importlib.util.module_from_spec(spec)
+res={}
+try:spec.loader.exec_module(m)
+except BaseException as e:print('CHECKS_JSON='+json.dumps({'__load__':{'ok':False,'err':repr(e)[:300]}}));sys.exit(0)
+def stop(*a):raise TimeoutError('check timed out (15 s)')
+signal.signal(signal.SIGALRM,stop)
+for name in sorted(n for n in dir(m) if n.startswith(('preserve_','fixed_')) and callable(getattr(m,n))):
+    signal.alarm(15)
+    try:getattr(m,name)();res[name]={'ok':True}
+    except BaseException as e:res[name]={'ok':False,'err':(type(e).__name__+': '+str(e))[:300]}
+    finally:signal.alarm(0)
+print('CHECKS_JSON='+json.dumps(res))
+"""
+
+
+def collect_evidence(box,repro):
+    """Runtime evidence from a valid repro on the ORIGINAL code: profile hot spots + repository frames in tracebacks."""
+    box.m.exec(box.cid,'mkdir -p _harness');box.write('_harness/repro.py',repro);box.write('_harness/profile_runner.py',PROFILE_RUNNER)
+    code,out=box.run('python _harness/profile_runner.py',60)
+    m=re.search(r'^PROFILE_JSON=(.*)$',out,re.M)
+    prof=json.loads(m.group(1)) if m else {'by_tottime':[],'by_cumtime':[],'error_tail':out[-1500:]}
+    frames=re.findall(r'File "/workspace/((?!_harness)[^"]+)", line (\d+), in (\S+)',prof.get('error_tail') or '')
+    prof['repo_frames']=[{'file':f,'line':int(l),'func':fn} for f,l,fn in frames if '/tests/' not in f][-8:]
+    return prof
+
+
+def evidence_text(ev):
+    if not ev:return None
+    L=['Runtime evidence from running a validated reproduction script on the CURRENT code (repository functions only):']
+    if ev.get('repo_frames'):L.append('Repository frames in the failure traceback (innermost last):\n'+'\n'.join(f"  {x['file']}:{x['line']} in {x['func']}" for x in ev['repo_frames']))
+    if ev.get('by_tottime'):L.append('Functions with the most own time (file:line function ncalls tottime cumtime):\n'+'\n'.join(f"  {x['file']}:{x['line']} {x['func']} {x['ncalls']} {x['tottime']} {x['cumtime']}" for x in ev['by_tottime'][:10]))
+    if ev.get('by_cumtime'):L.append('Functions with the most cumulative time:\n'+'\n'.join(f"  {x['file']}:{x['line']} {x['func']} {x['ncalls']} {x['tottime']} {x['cumtime']}" for x in ev['by_cumtime'][:8]))
+    return '\n'.join(L)+'\nUse this evidence together with the issue to choose the code that must change.' if len(L)>1 else None
+
+
+EXTRA_SYS='You write behavior checks for a reported defect. Answer with Python code only, in one ```python block.'
+
+
+def extra_prompt(issue,excerpts,repro):
+    return (f'Issue:\n{issue}\n\nRelevant source (current, unfixed):\n{excerpts}\n\nAn existing reproduction script (already validated):\n```python\n{repro or "(none)"}\n```\n\n'
+            'Write a Python module of independent check functions, run from the repository root with the package installed:\n'
+            '- 3 to 6 functions named fixed_<name>(): other inputs, code paths or sibling functions affected by the SAME defect, beyond the single example in the issue. '
+            'Each must raise AssertionError while the defect is present and pass once it is properly fixed (fix the root cause in general, not only the reported example).\n'
+            '- 3 to 6 functions named preserve_<name>(): normal, documented behavior near the changed code that must stay exactly the same after the fix, including error cases that must still raise. '
+            'Each must pass on the current code.\n'
+            'Use only the package under test and the standard library. Each function must finish within 10 seconds. No top-level code other than imports and definitions.')
+
+
+def run_checks(box,script):
+    box.m.exec(box.cid,'mkdir -p _harness');box.write('_harness/extra_checks.py',script);box.write('_harness/check_runner.py',CHECK_RUNNER)
+    code,out=box.run('python _harness/check_runner.py',200);m=re.search(r'^CHECKS_JSON=(.*)$',out,re.M)
+    return json.loads(m.group(1)) if m else {'__load__':{'ok':False,'err':out[-300:]}}
+
+
+def make_checks(model,folder,issue,ex,repro,box):
+    """Model-written checks, filtered on the ORIGINAL: keep preserve_* that pass and fixed_* that fail (not for env errors)."""
+    script=None;kept=[];base=None
+    for k in range(2):
+        msg=extra_prompt(issue,ex,repro)+('' if k==0 or base is None else f'\n\nYour previous module could not be used: {json.dumps(base)[:600]}. Write a corrected module.')
+        r=chat(model,[{'role':'system','content':EXTRA_SYS},{'role':'user','content':msg}],folder/f'extra{k}',2048,0)
+        script=parse_code(r['content']);box.reset();base=run_checks(box,script);dump(folder/f'extra{k}/baseline.json',base)
+        kept=[n for n,v in base.items() if n!='__load__' and ((n.startswith('preserve_') and v['ok']) or (n.startswith('fixed_') and not v['ok'] and not any(e in v.get('err','') for e in ENV_ERRORS+('TimeoutError',))))]
+        if kept:break
+    return (script if kept else None),kept,base
+
+
 def related_tests(repo,files,limit=4):
     mods=set()
     for f in files:
@@ -186,6 +273,7 @@ def loc_prompt(issue,tree,hits,names):
 
 
 def repro_prompt(issue,excerpts):
+    excerpts=excerpts or '(not yet localized; use the public API named in the issue)'
     return (f'Issue:\n{issue}\n\nRelevant source (current, unfixed):\n{excerpts}\n\n'
             'Write a standalone Python script that reproduces the defect through the package\'s public API, run from the repository root with the package installed. '
             'It must exit with status 0 when the defect is FIXED and fail (raise AssertionError or exit non-zero) while the defect is present. '
@@ -285,22 +373,31 @@ def declined(folder):
 def solve(model,tid,base,state,save):
     row_task={'task':tid,'samples':[]};tasks={json.loads(l)['instance_id']:json.loads(l) for l in (DATA/'tasks.jsonl').read_text().splitlines()};t=tasks[tid]
     issue=t['problem_statement'][:MAX_ISSUE];repo=Repo(tid);f=base/tid
-    hits,names=repo.grep(issue)
-    blocks,skipped=localize(model,f/'localize',issue,repo,hits,names)
-    row_task['skipped_targets']=skipped
-    row_task['localized']=[{'file':b['file'],'symbol':b['symbol'],'span':b['span']} for b in blocks];row_task['gold_files']=t['src_files']
-    row_task['loc_hit_file']=any(b['file'] in t['src_files'] for b in blocks)
-    if not blocks:row_task['status']='localize_failed';repo.tmp.cleanup();return row_task
-    box=Box(tid,t['repo'])
+    hits,names=repo.grep(issue);box=Box(tid,t['repo'])
     try:
+        repro=None;rr=None;why='';k=-1;evidence=None
+        def make_repro(ex,start):
+            nonlocal repro,rr,why,k
+            for k in range(start,start+3):
+                msg=repro_prompt(issue,ex)+('' if k==start else f'\n\nYour previous script is not a valid reproduction: {why}. Output:\n{rr["output_tail"][-600:]}\nWrite a corrected script that fails on the current code because of the defect itself.')
+                r=chat(model,[{'role':'system','content':REPRO_SYS},{'role':'user','content':msg}],f/f'repro{k}',1024,0)
+                script=parse_code(r['content']);box.reset();rr=run_repro(box,script);ok,why=repro_verdict(rr);rr['valid']=ok;rr['why']=why;dump(f/f'repro{k}/run.json',rr)
+                if ok:repro=script;return
+        if FLAGS['evidence']:
+            make_repro('Definitions matching identifiers in the issue:\n'+'\n'.join(hits[:25]) if hits else None,0)
+            if repro:box.reset();evidence=collect_evidence(box,repro);dump(f/'evidence.json',evidence)
+            row_task['repro_before_localize']=repro is not None
+        blocks,skipped=localize(model,f/'localize',issue,repo,hits,names,evidence_text(evidence))
+        row_task['skipped_targets']=skipped;row_task['evidence_used']=bool(evidence_text(evidence))
+        row_task['localized']=[{'file':b['file'],'symbol':b['symbol'],'span':b['span']} for b in blocks];row_task['gold_files']=t['src_files']
+        row_task['loc_hit_file']=any(b['file'] in t['src_files'] for b in blocks)
+        if not blocks:row_task['status']='localize_failed';return row_task
         ex='\n'.join(f'# {b["file"]} :: {b["symbol"]}\n{b["text"]}' for b in blocks)
-        repro=None;rr=None;why=''
-        for k in range(3):
-            msg=repro_prompt(issue,ex)+('' if k==0 else f'\n\nYour previous script is not a valid reproduction: {why}. Output:\n{rr["output_tail"][-600:]}\nWrite a corrected script that fails on the current code because of the defect itself.')
-            r=chat(model,[{'role':'system','content':REPRO_SYS},{'role':'user','content':msg}],f/f'repro{k}',1024,0)
-            script=parse_code(r['content']);box.reset();rr=run_repro(box,script);ok,why=repro_verdict(rr);rr['valid']=ok;rr['why']=why;dump(f/f'repro{k}/run.json',rr)
-            if ok:repro=script;break
+        if repro is None:make_repro(ex,k+1)
         row_task['repro_valid']=repro is not None;row_task['repro_tries']=k+1
+        checks=None;kept=[]
+        if FLAGS['extra']:
+            checks,kept,cb=make_checks(model,f,issue,ex,repro,box);row_task['extra_checks_kept']=kept;row_task['extra_checks_total']=len([n for n in (cb or {}) if n!='__load__'])
         tests=related_tests(repo,[b['file'] for b in blocks]);box.reset();base_t=run_tests(box,tests)
         row_task['tests']=tests;row_task['baseline_test_failures']=len(base_t['failed'])
         sources={b['file']:repo.read(b['file']) for b in blocks};selected=None;sdir='samples';relocated=False
@@ -308,7 +405,7 @@ def solve(model,tid,base,state,save):
         while queue:
             s=queue.pop(0)
             sf=f/sdir/s['id'];state['current']=f'{tid}/{sdir}/{s["id"]}';save()
-            msgs=[{'role':'system','content':PATCH_SYS},{'role':'user','content':patch_prompt(issue,blocks,repro,rr)}]
+            msgs=[{'role':'system','content':PATCH_SYS},{'role':'user','content':patch_prompt(issue,blocks,repro,rr)+('' if not checks else '\n\nHost behavior checks your fix must satisfy (fixed_* currently fail, preserve_* currently pass; kept: '+', '.join(kept)+'):\n```python\n'+checks+'\n```')}]
             new,gs,ng=guarded_patch(model,sf,msgs,sources,blocks,s['temperature'],s.get('seed'));row={'sample':s['id'],'guard':gs,'generations':ng}
             if new is not None:
                 box.reset()
@@ -316,8 +413,10 @@ def solve(model,tid,base,state,save):
                 patch=box.diff();(sf/'candidate.patch').write_text(patch)
                 pr=run_repro(box,repro) if repro else None
                 ct=run_tests(box,tests);new_fail=sorted(ct['failed']-base_t['failed'])
-                row.update(repro_pass=(pr['exit_code']==0) if pr else None,new_test_failures=len(new_fail),public_pass=bool((pr is None or pr['exit_code']==0) and not new_fail and (ct['exit_code'] in (0,1,5,None))))
-                dump(sf/'public.json',{'repro':pr,'tests':{'failed_new':new_fail,'output_tail':ct['output_tail']}})
+                xr=None;xfail=[]
+                if checks:xr=run_checks(box,checks);xfail=[n for n in kept if not xr.get(n,{}).get('ok')]
+                row.update(repro_pass=(pr['exit_code']==0) if pr else None,new_test_failures=len(new_fail),extra_failed=len(xfail),public_pass=bool((pr is None or pr['exit_code']==0) and not new_fail and not xfail and (ct['exit_code'] in (0,1,5,None))))
+                dump(sf/'public.json',{'repro':pr,'tests':{'failed_new':new_fail,'output_tail':ct['output_tail']},'extra':{'failed':xfail,'results':xr}})
                 g=subprocess.run([sys.executable,str(HERE/'grade.py'),'--task',tid,'--patch',str(sf/'candidate.patch'),'--out',str(sf/'hidden')],capture_output=True,text=True,timeout=1800)
                 try:row['hidden_resolved']=json.loads(g.stdout.strip().splitlines()[-1])['resolved']
                 except (ValueError,IndexError,KeyError):row['hidden_resolved']=None
@@ -328,7 +427,7 @@ def solve(model,tid,base,state,save):
             prose=declined(sf) if (not relocated and s['id']=='t0' and new is None) else None
             if prose:
                 relocated=True;names_prev=', '.join(f"{b['file']}::{b['symbol']}" for b in blocks)
-                fb=(f'A previous attempt chose these targets: {names_prev}. The repair step, given exactly that code, declined to edit it and said:\n"{prose}"\n'
+                fb=((evidence_text(evidence)+'\n\n') if evidence else '')+(f'A previous attempt chose these targets: {names_prev}. The repair step, given exactly that code, declined to edit it and said:\n"{prose}"\n'
                     'Choose different targets that contain the code which actually has to change.')
                 nb,sk=localize(model,f/'localize-r1',issue,repo,hits,names,fb)
                 row_task['relocalization']={'previous':names_prev,'new':[{'file':b['file'],'symbol':b['symbol'],'span':b['span']} for b in nb],'skipped':sk,
@@ -343,7 +442,8 @@ def solve(model,tid,base,state,save):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--model',required=True,choices=['12b','31b']);p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--run',default='generic-v1');p.add_argument('--resume',action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--model',required=True,choices=['12b','31b']);p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--run',default='generic-v1');p.add_argument('--resume',action='store_true');p.add_argument('--evidence',action='store_true');p.add_argument('--extra-checks',action='store_true');a=p.parse_args()
+    FLAGS['evidence']=a.evidence;FLAGS['extra']=a.extra_checks
     base=ROOT/'runs'/a.run/a.model
     if (base/'state.json').exists() and not a.resume:raise FileExistsError(str(base))
     if a.resume:
