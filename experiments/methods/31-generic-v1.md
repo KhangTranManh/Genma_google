@@ -30,3 +30,14 @@ If the t0 Patch attempt returns prose only, with no tool call even after the re-
 - **Evidence-first localization.** The model writes a repro first, from the issue and the grep hits, before any excerpt exists; it gets up to 3 tries with the validity check. A valid repro is then run on the original under cProfile, with a 20 s window, and its traceback is captured. The top repository functions by own and cumulative time, plus the repository frames on the failure stack, go into Localize (and into re-localization). With no valid repro, the old flow applies: localize from text, then write the repro from the excerpts.
   - Offline check on markdown_1621: the top own-time function is `markdown/treeprocessors.py:__applyPattern`, the gold location (5.07 of 5.89 s).
 - **Model-written extra checks.** The model writes a module of `fixed_*` checks (sibling inputs and code paths of the same defect) and `preserve_*` checks (nearby behavior that must stay the same, including error cases). Each check runs on the original. The harness keeps `preserve_*` that pass and `fixed_*` that fail for a non-environment reason. A candidate passes public only if every kept check passes. The check module is also shown to Patch.
+
+## v6 change (generic; flag `--feedback`, used with `--evidence --extra-checks`)
+
+A sample whose round-0 candidate fails the public check gets exactly one follow-up Patch call on its own cumulative source. That call is shown:
+- its previous diff,
+- the reproduction result,
+- the failing kept checks with their error messages,
+- newly failing existing tests with the test-output tail,
+- the current excerpts, which include its change.
+
+Hidden grades are recorded for both rounds (`round0` vs final) and are never shown to the model. Selection uses only the final public result.

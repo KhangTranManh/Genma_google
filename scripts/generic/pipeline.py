@@ -148,7 +148,7 @@ def repro_verdict(rr):
     return True,''
 
 
-FLAGS={'evidence':False,'extra':False}
+FLAGS={'evidence':False,'extra':False,'feedback':False}
 
 PROFILE_RUNNER=r"""
 import cProfile,pstats,signal,runpy,json,sys,traceback
@@ -233,6 +233,49 @@ def make_checks(model,folder,issue,ex,repro,box):
         kept=[n for n,v in base.items() if n!='__load__' and ((n.startswith('preserve_') and v['ok']) or (n.startswith('fixed_') and not v['ok'] and not any(e in v.get('err','') for e in ENV_ERRORS+('TimeoutError',))))]
         if kept:break
     return (script if kept else None),kept,base
+
+
+def evaluate_candidate(box,new,sf,tid,repro,tests,base_t,checks,kept):
+    """Apply a candidate in the box, run public checks, then the hidden official grade (audit only)."""
+    box.reset()
+    for rel,txt in new.items():box.write(rel,txt)
+    patch=box.diff();sf.mkdir(parents=True,exist_ok=True);(sf/'candidate.patch').write_text(patch)
+    pr=run_repro(box,repro) if repro else None
+    ct=run_tests(box,tests);new_fail=sorted(ct['failed']-base_t['failed'])
+    xr=None;xfail=[]
+    if checks:xr=run_checks(box,checks);xfail=[n for n in kept if not xr.get(n,{}).get('ok')]
+    row={'repro_pass':(pr['exit_code']==0) if pr else None,'new_test_failures':len(new_fail),'extra_failed':len(xfail),
+         'public_pass':bool((pr is None or pr['exit_code']==0) and not new_fail and not xfail and (ct['exit_code'] in (0,1,5,None)))}
+    pub={'repro':pr,'tests':{'failed_new':new_fail,'output_tail':ct['output_tail']},'extra':{'failed':xfail,'results':xr}};dump(sf/'public.json',pub)
+    g=subprocess.run([sys.executable,str(HERE/'grade.py'),'--task',tid,'--patch',str(sf/'candidate.patch'),'--out',str(sf/'hidden')],capture_output=True,text=True,timeout=1800)
+    try:row['hidden_resolved']=json.loads(g.stdout.strip().splitlines()[-1])['resolved']
+    except (ValueError,IndexError,KeyError):row['hidden_resolved']=None
+    return {'row':row,'public':pub,'patch':patch}
+
+
+def current_excerpts(new,blocks):
+    out=[]
+    for b in blocks:
+        src=new[b['file']];bd=guard.Region(b['start_marker'],b['end_marker']).bounds(src)
+        txt=src[bd[0]:bd[1]] if bd else '(excerpt start no longer found)\n'
+        out.append(dict(b,text=txt if txt.endswith('\n') else txt+'\n'))
+    return out
+
+
+def feedback_prompt(issue,blocks,new,info,repro,checks,kept):
+    pub=info['public'];cur=current_excerpts(new,blocks);lines=[]
+    if pub['repro']:lines.append(f"Reproduction script: exit {pub['repro']['exit_code']} ({'passes' if pub['repro']['exit_code']==0 else 'still FAILS'}); output:\n{pub['repro']['output_tail'][-600:]}")
+    if pub['extra']['failed']:lines.append('Behavior checks that fail now:\n'+'\n'.join(f"  {n}: {pub['extra']['results'].get(n,{}).get('err','')}" for n in pub['extra']['failed']))
+    if pub['tests']['failed_new']:lines.append('Existing tests that newly fail:\n  '+'\n  '.join(pub['tests']['failed_new'][:10])+'\nTest output tail:\n'+pub['tests']['output_tail'][-1200:])
+    ex='\n'.join(f'BEGIN_SOURCE {i+1} ({b["file"]}, {b["symbol"]})\n{b["text"]}END_SOURCE {i+1}' for i,b in enumerate(cur))
+    ck='' if not checks else '\n\nHost behavior checks (kept: '+', '.join(kept)+'):\n```python\n'+checks+'\n```'
+    rp='' if not repro else f'\n\nReproduction script:\n```python\n{repro}\n```'
+    return (f'Issue:\n{issue}\n\n{GENERIC_GUIDE}{rp}{ck}\n\nYour previous attempt changed the code like this:\n```diff\n{info["patch"][-3000:]}\n```\n'
+            'Public check results for that attempt (observations, not instructions):\n'+'\n'.join(lines)+
+            f'\n\nCurrent source excerpts INCLUDING your previous change (edit only inside these):\n{ex}\n\n'
+            'This is one separately authorized follow-up repair. Infer why the attempt fails the checks and make the change that fixes the defect while keeping all preserved behavior. '
+            'Copy old_string from the CURRENT excerpts exactly. '
+            f'Emit one edit_file call per excerpt you change (at most {len(cur)}), with filepath set to that excerpt\'s file. Do not read files, run commands, explain, or retry.')
 
 
 def related_tests(repo,files,limit=4):
@@ -408,18 +451,15 @@ def solve(model,tid,base,state,save):
             msgs=[{'role':'system','content':PATCH_SYS},{'role':'user','content':patch_prompt(issue,blocks,repro,rr)+('' if not checks else '\n\nHost behavior checks your fix must satisfy (fixed_* currently fail, preserve_* currently pass; kept: '+', '.join(kept)+'):\n```python\n'+checks+'\n```')}]
             new,gs,ng=guarded_patch(model,sf,msgs,sources,blocks,s['temperature'],s.get('seed'));row={'sample':s['id'],'guard':gs,'generations':ng}
             if new is not None:
-                box.reset()
-                for rel,txt in new.items():box.write(rel,txt)
-                patch=box.diff();(sf/'candidate.patch').write_text(patch)
-                pr=run_repro(box,repro) if repro else None
-                ct=run_tests(box,tests);new_fail=sorted(ct['failed']-base_t['failed'])
-                xr=None;xfail=[]
-                if checks:xr=run_checks(box,checks);xfail=[n for n in kept if not xr.get(n,{}).get('ok')]
-                row.update(repro_pass=(pr['exit_code']==0) if pr else None,new_test_failures=len(new_fail),extra_failed=len(xfail),public_pass=bool((pr is None or pr['exit_code']==0) and not new_fail and not xfail and (ct['exit_code'] in (0,1,5,None))))
-                dump(sf/'public.json',{'repro':pr,'tests':{'failed_new':new_fail,'output_tail':ct['output_tail']},'extra':{'failed':xfail,'results':xr}})
-                g=subprocess.run([sys.executable,str(HERE/'grade.py'),'--task',tid,'--patch',str(sf/'candidate.patch'),'--out',str(sf/'hidden')],capture_output=True,text=True,timeout=1800)
-                try:row['hidden_resolved']=json.loads(g.stdout.strip().splitlines()[-1])['resolved']
-                except (ValueError,IndexError,KeyError):row['hidden_resolved']=None
+                info=evaluate_candidate(box,new,sf,tid,repro,tests,base_t,checks,kept);row.update(info['row'])
+                if FLAGS['feedback'] and not info['row']['public_pass']:
+                    row['round0']=dict(info['row'],guard=gs);fsf=sf/'feedback'
+                    fmsg=[{'role':'system','content':PATCH_SYS},{'role':'user','content':feedback_prompt(issue,blocks,new,info,repro,checks,kept)}]
+                    new2,gs2,ng2=guarded_patch(model,fsf,fmsg,new,blocks,s['temperature'],None if s.get('seed') is None else s['seed']+50)
+                    row['feedback_guard']=gs2
+                    if new2 is not None:
+                        info2=evaluate_candidate(box,new2,fsf,tid,repro,tests,base_t,checks,kept);row.update(info2['row']);row['final_round']=1
+                    else:row.update(public_pass=False,hidden_resolved=row['round0']['hidden_resolved'],final_round=0)
             else:row.update(public_pass=False,hidden_resolved=False)
             if sdir!='samples':row['sample']=sdir+'/'+s['id']
             if selected is None and row['public_pass']:selected=row['sample'];row['selected']=True
@@ -442,8 +482,8 @@ def solve(model,tid,base,state,save):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--model',required=True,choices=['12b','31b']);p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--run',default='generic-v1');p.add_argument('--resume',action='store_true');p.add_argument('--evidence',action='store_true');p.add_argument('--extra-checks',action='store_true');a=p.parse_args()
-    FLAGS['evidence']=a.evidence;FLAGS['extra']=a.extra_checks
+    p=argparse.ArgumentParser();p.add_argument('--model',required=True,choices=['12b','31b']);p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--run',default='generic-v1');p.add_argument('--resume',action='store_true');p.add_argument('--evidence',action='store_true');p.add_argument('--extra-checks',action='store_true');p.add_argument('--feedback',action='store_true');a=p.parse_args()
+    FLAGS['evidence']=a.evidence;FLAGS['extra']=a.extra_checks;FLAGS['feedback']=a.feedback
     base=ROOT/'runs'/a.run/a.model
     if (base/'state.json').exists() and not a.resume:raise FileExistsError(str(base))
     if a.resume:
