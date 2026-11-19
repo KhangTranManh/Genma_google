@@ -20,3 +20,7 @@ This method replaces the hand-defined B4 setup. The model sees only the **verbat
 
 - **Repro validity.** A failure caused by the script itself no longer counts as a valid repro. This covers ImportError, ModuleNotFoundError, SyntaxError, NameError, FileNotFoundError and timeouts. Up to 3 tries, each told the reason for the rejection.
 - **No tool call.** A reply with no tool call now gets its own notice ("respond only with edit_file calls") and one re-ask. Before, it was misreported as a no-op.
+
+## v4 change (generic): one re-localization
+
+If the t0 Patch attempt returns prose only, with no tool call even after the re-ask, the pipeline treats it as a decline. Localize then runs once more, with the previous targets and the model's own explanation, and is asked to choose different targets. If the new targets differ, all samples restart on them (`samples-r1/`), together with recomputed related tests. This happens at most once per task. Tasks where the model edits at t0 behave exactly as in v3.

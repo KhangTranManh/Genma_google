@@ -252,13 +252,11 @@ def markers(repo,rel,span):
 MAX_BLOCK=9000
 
 
-def solve(model,tid,base,state,save):
-    row_task={'task':tid,'samples':[]};tasks={json.loads(l)['instance_id']:json.loads(l) for l in (DATA/'tasks.jsonl').read_text().splitlines()};t=tasks[tid]
-    issue=t['problem_statement'][:MAX_ISSUE];repo=Repo(tid);f=base/tid
-    hits,names=repo.grep(issue)
-    loc=chat(model,[{'role':'system','content':LOC_SYS},{'role':'user','content':loc_prompt(issue,repo.tree(),hits,names)}],f/'localize',768,0)
-    targets=(parse_json(loc['content']) or {}).get('targets',[])[:3];blocks=[]
-    skipped=[]
+def localize(model,folder,issue,repo,hits,names,feedback=None):
+    """Ask for targets and turn them into excerpt blocks (generic, any repo)."""
+    prompt=loc_prompt(issue,repo.tree(),hits,names)+('' if not feedback else '\n\n'+feedback)
+    loc=chat(model,[{'role':'system','content':LOC_SYS},{'role':'user','content':prompt}],folder,768,0)
+    targets=(parse_json(loc['content']) or {}).get('targets',[])[:3];blocks=[];skipped=[]
     for tg in targets:
         rel=str(tg.get('file','')).strip();sym=str(tg.get('symbol','')).strip()
         if not sym:skipped.append({'target':tg,'why':'no symbol'});continue
@@ -274,6 +272,21 @@ def solve(model,tid,base,state,save):
         if any(b['file']==f2 and not (span[1]<b['span'][0] or span[0]>b['span'][1]) for b in blocks):skipped.append({'target':tg,'why':'overlaps previous target'});continue
         if sum(len(b['text']) for b in blocks)+len(txt)>MAX_EXCERPTS:skipped.append({'target':tg,'why':'total excerpt budget'});continue
         blocks.append({'file':f2,'symbol':sym,'span':span,'text':txt,'start_marker':s,'end_marker':e,'model_file':rel})
+    return blocks,skipped
+
+
+def declined(folder):
+    """True when every generation of a patch attempt returned prose without any tool call; returns the last prose."""
+    g=json.loads((folder/'guard.json').read_text())
+    if not g['log'] or any(x['n_calls'] for x in g['log']):return None
+    last=sorted(folder.glob('gen*/result.json'))[-1];return json.loads(last.read_text())['content'][:800]
+
+
+def solve(model,tid,base,state,save):
+    row_task={'task':tid,'samples':[]};tasks={json.loads(l)['instance_id']:json.loads(l) for l in (DATA/'tasks.jsonl').read_text().splitlines()};t=tasks[tid]
+    issue=t['problem_statement'][:MAX_ISSUE];repo=Repo(tid);f=base/tid
+    hits,names=repo.grep(issue)
+    blocks,skipped=localize(model,f/'localize',issue,repo,hits,names)
     row_task['skipped_targets']=skipped
     row_task['localized']=[{'file':b['file'],'symbol':b['symbol'],'span':b['span']} for b in blocks];row_task['gold_files']=t['src_files']
     row_task['loc_hit_file']=any(b['file'] in t['src_files'] for b in blocks)
@@ -290,9 +303,11 @@ def solve(model,tid,base,state,save):
         row_task['repro_valid']=repro is not None;row_task['repro_tries']=k+1
         tests=related_tests(repo,[b['file'] for b in blocks]);box.reset();base_t=run_tests(box,tests)
         row_task['tests']=tests;row_task['baseline_test_failures']=len(base_t['failed'])
-        sources={b['file']:repo.read(b['file']) for b in blocks};selected=None
-        for s in SAMPLES:
-            sf=f/'samples'/s['id'];state['current']=f'{tid}/{s["id"]}';save()
+        sources={b['file']:repo.read(b['file']) for b in blocks};selected=None;sdir='samples';relocated=False
+        queue=list(SAMPLES)
+        while queue:
+            s=queue.pop(0)
+            sf=f/sdir/s['id'];state['current']=f'{tid}/{sdir}/{s["id"]}';save()
             msgs=[{'role':'system','content':PATCH_SYS},{'role':'user','content':patch_prompt(issue,blocks,repro,rr)}]
             new,gs,ng=guarded_patch(model,sf,msgs,sources,blocks,s['temperature'],s.get('seed'));row={'sample':s['id'],'guard':gs,'generations':ng}
             if new is not None:
@@ -307,8 +322,20 @@ def solve(model,tid,base,state,save):
                 try:row['hidden_resolved']=json.loads(g.stdout.strip().splitlines()[-1])['resolved']
                 except (ValueError,IndexError,KeyError):row['hidden_resolved']=None
             else:row.update(public_pass=False,hidden_resolved=False)
-            if selected is None and row['public_pass']:selected=s['id'];row['selected']=True
+            if sdir!='samples':row['sample']=sdir+'/'+s['id']
+            if selected is None and row['public_pass']:selected=row['sample'];row['selected']=True
             row_task['samples'].append(row);dump(f/'task.json',row_task)
+            prose=declined(sf) if (not relocated and s['id']=='t0' and new is None) else None
+            if prose:
+                relocated=True;names_prev=', '.join(f"{b['file']}::{b['symbol']}" for b in blocks)
+                fb=(f'A previous attempt chose these targets: {names_prev}. The repair step, given exactly that code, declined to edit it and said:\n"{prose}"\n'
+                    'Choose different targets that contain the code which actually has to change.')
+                nb,sk=localize(model,f/'localize-r1',issue,repo,hits,names,fb)
+                row_task['relocalization']={'previous':names_prev,'new':[{'file':b['file'],'symbol':b['symbol'],'span':b['span']} for b in nb],'skipped':sk,
+                                            'hit_file':any(b['file'] in t['src_files'] for b in nb)}
+                if nb and [(b['file'],b['span']) for b in nb]!=[(b['file'],b['span']) for b in blocks]:
+                    blocks=nb;sources={b['file']:repo.read(b['file']) for b in blocks};sdir='samples-r1';queue=list(SAMPLES)
+                    tests=related_tests(repo,[b['file'] for b in blocks]);box.reset();base_t=run_tests(box,tests);row_task['tests_r1']=tests
         row_task['selected']=selected;row_task['selected_resolved']=next((r['hidden_resolved'] for r in row_task['samples'] if r.get('selected')),None)
         row_task['any_resolved']=any(r.get('hidden_resolved') for r in row_task['samples']);row_task['status']='done'
     finally:box.close();repo.tmp.cleanup()
