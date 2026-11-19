@@ -1,0 +1,11 @@
+# Stepwise diagnosis v1
+
+Paired 12B/31B on the same previously observed real issue w3lib_264. Independent clean Docker workspaces. This is a host-orchestrated diagnostic, not the earlier autonomous arm, not a submission candidate and not an official competition score.
+
+Stages: understand (no tools,2 calls), locate (run_command/get_status,5), read (read_file,6), edit (read_file/edit_file/write_file,8), test (run_command/read_file,5), submit (get_status/submit_patch,3). Each stage180s timeout; controller continues after call/time budget errors to reveal later capabilities. A fresh ADK session starts at each boundary. Issue plus model-produced handoffs (last3000 chars per earlier stage) are passed on, not reference solutions or host-authored repair hints. Full untruncated events and tool responses are archived. No restart from a reference-correct checkpoint: errors may propagate, so failure of a later stage does not prove an isolated incapability.
+
+Tool allowlists enforced by per-stage LlmAgent tools. Read-only search/test prohibitions are instructions, not a shell security boundary: run_command is the actual official unrestricted sandbox tool. Capture git diff and porcelain status around each stage to review violations. Diff checks cover tracked files; status exposes untracked files. Model claims of passing tests require tool response review. Independent reference verification is not part of this diagnostic; never report autonomous success or resolved from explicit_submit alone.
+
+Same temperature0, output1536, thinking off, vLLM context16384, existing TP2 runtime. ADK and official context tools, local Python orchestration. Capture input, allowed tools, call budget, full events, tool arguments/responses, model handoff, diff before/after and errors. Raw unparsed token capture is not implemented in this ADK arm; use prior raw probes for parser-specific claims.
+
+Run service gemma-stepwise-v1. Shared GPU lock. Model order31B then12B to reuse currently loaded31B. Bounded service self-terminates, auto-updates HTML every15seconds while running. No continual GPU polling or periodic repeat. Artifacts runs/stepwise-v1/{model}/{stage}; report reports/stepwise-v1/comparison.html. Existing arms remain untouched.

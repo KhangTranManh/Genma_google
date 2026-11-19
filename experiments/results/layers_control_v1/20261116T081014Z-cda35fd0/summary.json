@@ -1,0 +1,49 @@
+{
+  "run_id": "20261116T081014Z-cda35fd0",
+  "experiment_id": "layers_control_v1",
+  "method": "model_sweep",
+  "comparison_valid": true,
+  "model": "12b",
+  "task": "demo-urlkit-query",
+  "status": "incomplete",
+  "elapsed_seconds": 103.391,
+  "agent": {
+    "reason": "stalled",
+    "turns": 17,
+    "tool_calls": 17,
+    "usage": {
+      "prompt_tokens": 46037,
+      "completion_tokens": 1805
+    },
+    "submission_origin": null,
+    "progress": {
+      "phase": "verify",
+      "workspace_version": "2fb1c38a09aabae84f0bbc0a9d14fc100e12bf5b0985a4cda6e580463ec590ee",
+      "changed_files": [
+        "tests/reproduce_issue.py",
+        "urlkit/__init__.py"
+      ],
+      "blocked_repeats": 4,
+      "blocked_repeats_total": 4,
+      "failed_edits": 0,
+      "stagnant_actions": 9,
+      "verification_bound_to_current_code": false,
+      "next_action": "Run the configured verification command on this code version.",
+      "observations": 18,
+      "implementation_context": {
+        "urlkit/__init__.py": {
+          "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+          "truncated": false
+        }
+      }
+    },
+    "harness_verifications": 0
+  },
+  "error": null,
+  "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+  "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+  "workflow_variant": null,
+  "variant_workflow_sha256": null,
+  "raw_sha256": "6556313e73e3e7fe5c17a0f74b59dbd180d61dc654835393b925356f2c8c7e7e",
+  "source_run": "runs/20261116T081014Z-cda35fd0"
+}

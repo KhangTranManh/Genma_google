@@ -1,0 +1,11 @@
+[Unit]
+Description=Advance official-library independent pilot
+
+[Timer]
+OnActiveSec=15s
+OnUnitInactiveSec=30s
+AccuracySec=5s
+Unit=gemma-lab-official-pilot.service
+
+[Install]
+WantedBy=timers.target

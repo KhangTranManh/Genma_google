@@ -1,0 +1,17 @@
+name = "role-split-v1"
+models = ["31b", "12b"]
+k_hypotheses = 3
+patches_per_hypothesis = 1
+no_progress_limit = 1
+localize_output_tokens = 1536
+patch_output_tokens = 1536
+feedback_output_tokens = 384
+temperature = 0
+thinking = false
+max_model_len = 16384
+ranking = "baseline_reproducer_fail_then_ochiai_then_input_order"
+retain = "reproducer_pass_and_zero_functional_failures_and_semantic_guard_pass"
+rollback = "discard_candidate_container_and_restore_original_for_next_hypothesis"
+selection_uses_model_verdict = false
+selection_uses_independent_grade = false
+pairwise_comparator = false

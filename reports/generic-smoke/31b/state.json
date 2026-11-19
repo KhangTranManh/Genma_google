@@ -1,0 +1,78 @@
+{
+  "status": "complete",
+  "model": "31b",
+  "tasks": [
+    "w3lib_264"
+  ],
+  "results": [
+    {
+      "task": "w3lib_264",
+      "samples": [
+        {
+          "sample": "t0",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "public_pass": true,
+          "hidden_resolved": true,
+          "selected": true
+        },
+        {
+          "sample": "s17",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "public_pass": true,
+          "hidden_resolved": true
+        },
+        {
+          "sample": "s29",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "public_pass": true,
+          "hidden_resolved": true
+        },
+        {
+          "sample": "s43",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "public_pass": true,
+          "hidden_resolved": true
+        }
+      ],
+      "localized": [
+        {
+          "file": "w3lib/html.py",
+          "symbol": "_baseurl_re",
+          "span": [
+            25,
+            27
+          ]
+        }
+      ],
+      "gold_files": [
+        "w3lib/html.py"
+      ],
+      "loc_hit_file": true,
+      "repro_valid": true,
+      "repro_tries": 1,
+      "tests": [
+        "tests/test_html.py",
+        "tests/benchmarks/test_benchmark_html.py",
+        "tests/benchmarks/test_benchmark_encoding.py",
+        "tests/benchmarks/test_benchmark_http.py"
+      ],
+      "baseline_test_failures": 9,
+      "selected": "t0",
+      "selected_resolved": true,
+      "any_resolved": true,
+      "status": "done"
+    }
+  ]
+}

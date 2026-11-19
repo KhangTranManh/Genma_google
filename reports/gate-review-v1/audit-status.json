@@ -1,0 +1,13 @@
+{
+  "status": "not_run",
+  "planned": 9,
+  "scorable": 0,
+  "missing_or_unrun": 9,
+  "skipped_scorable": 0,
+  "allowed_scorable": 0,
+  "verified_passes": 0,
+  "missed_successes": 0,
+  "missed_success_yield": null,
+  "false_negative_rate_among_successes": null,
+  "allowed_patch_yield": null
+}

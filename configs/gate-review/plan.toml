@@ -1,0 +1,10 @@
+name = "gate-review-v1"
+status = "audit_ready_other_parts_defined"
+models = ["12b", "31b"]
+issue = "w3lib_264"
+execution_order = ["01_offline_audit", "02_rank_only", "03_exact_behavior_groups", "04_proposed_probe", "05_optional_revision"]
+modify_previous_runs = false
+start_gpu_jobs = true
+hard_pruning_enabled = false
+revision_default = 0
+revision_maximum = 1

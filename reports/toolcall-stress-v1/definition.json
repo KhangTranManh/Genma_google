@@ -1,0 +1,13 @@
+{
+  "status": "prepared",
+  "expected_requests": 24,
+  "schema_count": 5,
+  "same_toolset_all_arms": true,
+  "tools_sha256": "cbfdc2e750d37f0a6479bcdc2a18a723469a05daff55568e4e88bb05a91aaec3",
+  "comparison_rules": [
+    "long_direct vs short_direct: identical task and schema, synthetic background padding only",
+    "short_skill vs mapped short_direct: same read/test intent, different interface bundle; not a pure nesting-only causal estimate",
+    "Do not compare aggregate short_skill accuracy against four different direct tasks."
+  ],
+  "old_cohort": "runs/toolcall-probe-v1 kept unchanged"
+}

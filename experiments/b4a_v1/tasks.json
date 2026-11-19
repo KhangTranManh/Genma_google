@@ -1,0 +1,132 @@
+{
+  "w3lib_286": {
+    "repo": "scrapy/w3lib",
+    "file": "w3lib/html.py",
+    "issue": "remove_tags() is quadratic on an unterminated tag\n\nremove_tags(\"<\" + \"a\" * n), i.e. a single \"<\" followed by a long run of non-space characters and no closing \">\", takes time that grows quadratically with n. Repair this performance problem while preserving the existing behavior of remove_tags() on normal HTML.\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.",
+    "regions": [
+      [
+        "_tags_re =",
+        "_meta_tag_re ="
+      ]
+    ],
+    "region_functions": [
+      [
+        "remove_tags"
+      ]
+    ],
+    "cal_sizes": [
+      5000,
+      10000,
+      20000,
+      40000,
+      80000
+    ],
+    "repro": {
+      "setup": "from w3lib.html import remove_tags",
+      "expr": "remove_tags(\"<\" + \"a\" * N)",
+      "check": "True"
+    },
+    "diff_calls": [
+      "remove_tags(t)",
+      "remove_tags(t, which_ones=(\"a\",\"b\"))",
+      "remove_tags(t, keep=(\"p\",\"div\"))",
+      "replace_tags(t)"
+    ],
+    "repro_parts": [
+      {
+        "name": "remove_tags",
+        "setup": "from w3lib.html import remove_tags",
+        "expr": "remove_tags(\"<\" + \"a\" * N)",
+        "check": "True"
+      }
+    ]
+  },
+  "w3lib_288": {
+    "repo": "scrapy/w3lib",
+    "file": "w3lib/html.py",
+    "issue": "get_meta_refresh() is super-linear on a crafted <meta> tag\n\nget_meta_refresh(\"<meta \" + \"http-equiv refresh \" * n + \">\"), a single <meta> tag that repeats the words \"http-equiv refresh\" n times, takes time that grows super-linearly with n. Repair this performance problem while preserving the existing behavior of get_meta_refresh() on normal HTML.\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.",
+    "regions": [
+      [
+        "_meta_refresh_re =",
+        "_cdata_re ="
+      ]
+    ],
+    "region_functions": [
+      [
+        "get_meta_refresh"
+      ]
+    ],
+    "cal_sizes": [
+      250,
+      500,
+      1000,
+      2000,
+      4000
+    ],
+    "repro": {
+      "setup": "from w3lib.html import get_meta_refresh",
+      "expr": "get_meta_refresh(\"<meta \" + \"http-equiv refresh \" * N + \">\")",
+      "check": "r==(None,None)"
+    },
+    "diff_calls": [
+      "get_meta_refresh(t)",
+      "get_meta_refresh(t, \"http://b.example/\", \"utf-8\", ())"
+    ],
+    "repro_parts": [
+      {
+        "name": "get_meta_refresh",
+        "setup": "from w3lib.html import get_meta_refresh",
+        "expr": "get_meta_refresh(\"<meta \" + \"http-equiv refresh \" * N + \">\")",
+        "check": "r==(None,None)"
+      }
+    ]
+  },
+  "w3lib_289": {
+    "repo": "scrapy/w3lib",
+    "file": "w3lib/html.py",
+    "issue": "unquote_markup() is quadratic on unclosed CDATA sections\n\nunquote_markup(\"<![CDATA[x\" * n), many CDATA openings with no closing \"]]>\", takes time that grows quadratically with n. Repair this performance problem while preserving the existing behavior of unquote_markup() on normal input, including properly closed CDATA sections.\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.",
+    "regions": [
+      [
+        "_cdata_re =",
+        "_tags_re ="
+      ],
+      [
+        "def unquote_markup",
+        "\n\ndef get_base_url"
+      ]
+    ],
+    "region_functions": [
+      [
+        "unquote_markup"
+      ],
+      [
+        "unquote_markup"
+      ]
+    ],
+    "cal_sizes": [
+      2000,
+      4000,
+      8000,
+      16000,
+      32000
+    ],
+    "repro": {
+      "setup": "from w3lib.html import unquote_markup",
+      "expr": "unquote_markup(\"<![CDATA[x\" * N)",
+      "check": "True"
+    },
+    "diff_calls": [
+      "unquote_markup(t)",
+      "unquote_markup(t, keep=[\"amp\"])",
+      "unquote_markup(t, remove_illegal=False)"
+    ],
+    "repro_parts": [
+      {
+        "name": "unquote_markup",
+        "setup": "from w3lib.html import unquote_markup",
+        "expr": "unquote_markup(\"<![CDATA[x\" * N)",
+        "check": "True"
+      }
+    ]
+  }
+}

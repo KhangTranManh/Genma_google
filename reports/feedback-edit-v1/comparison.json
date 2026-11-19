@@ -1,0 +1,80 @@
+[
+  {
+    "model": "12b",
+    "attempt": "attempt_0",
+    "capture_label": "captured",
+    "raw_equals_api": true,
+    "call_valid": true,
+    "literal_match": true,
+    "changed": true,
+    "public_diagnostic": false,
+    "public_tests": true,
+    "public_pass": false,
+    "final_independent_pass": "not_final_attempt"
+  },
+  {
+    "model": "12b",
+    "attempt": "attempt_1",
+    "capture_label": "captured",
+    "raw_equals_api": true,
+    "call_valid": true,
+    "literal_match": true,
+    "changed": true,
+    "public_diagnostic": false,
+    "public_tests": true,
+    "public_pass": false,
+    "final_independent_pass": "not_final_attempt"
+  },
+  {
+    "model": "12b",
+    "attempt": "attempt_2",
+    "capture_label": "captured",
+    "raw_equals_api": true,
+    "call_valid": true,
+    "literal_match": true,
+    "changed": true,
+    "public_diagnostic": false,
+    "public_tests": false,
+    "public_pass": false,
+    "final_independent_pass": false
+  },
+  {
+    "model": "31b",
+    "attempt": "attempt_0",
+    "capture_label": "captured",
+    "raw_equals_api": true,
+    "call_valid": true,
+    "literal_match": true,
+    "changed": true,
+    "public_diagnostic": false,
+    "public_tests": true,
+    "public_pass": false,
+    "final_independent_pass": "not_final_attempt"
+  },
+  {
+    "model": "31b",
+    "attempt": "attempt_1",
+    "capture_label": "captured",
+    "raw_equals_api": true,
+    "call_valid": true,
+    "literal_match": true,
+    "changed": true,
+    "public_diagnostic": false,
+    "public_tests": true,
+    "public_pass": false,
+    "final_independent_pass": "not_final_attempt"
+  },
+  {
+    "model": "31b",
+    "attempt": "attempt_2",
+    "capture_label": "truncated",
+    "raw_equals_api": null,
+    "call_valid": false,
+    "literal_match": null,
+    "changed": false,
+    "public_diagnostic": false,
+    "public_tests": true,
+    "public_pass": false,
+    "final_independent_pass": false
+  }
+]

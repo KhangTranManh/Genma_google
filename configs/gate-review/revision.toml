@@ -1,0 +1,7 @@
+name = "revision-budget-v1"
+default_revisions = 0
+maximum_revisions = 1
+overwrite_initial_predictions = false
+reveal_transfer_outcomes_before_commit = false
+unseen_prediction_failure_blocks_patch = false
+match_generated_token_allowance_for_comparison = true

@@ -1,0 +1,62 @@
+{
+  "plan": "configs/reading-study.toml",
+  "status": "defined_not_executed",
+  "expected_runs": 18,
+  "candidates": [
+    {
+      "arm": "baseline",
+      "model": "12b",
+      "directory": "submission_candidates/reading_v1/baseline/12b",
+      "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+      "status": "defined_not_executed",
+      "has_adk_skill": false,
+      "compiler_validated": true
+    },
+    {
+      "arm": "baseline",
+      "model": "31b",
+      "directory": "submission_candidates/reading_v1/baseline/31b",
+      "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+      "status": "defined_not_executed",
+      "has_adk_skill": false,
+      "compiler_validated": true
+    },
+    {
+      "arm": "prompt",
+      "model": "12b",
+      "directory": "submission_candidates/reading_v1/prompt/12b",
+      "prompt_sha256": "b105ead6d4604817647fcee48602b33b5aecc71d0aadd32de6c840a99f02c5be",
+      "status": "defined_not_executed",
+      "has_adk_skill": false,
+      "compiler_validated": true
+    },
+    {
+      "arm": "prompt",
+      "model": "31b",
+      "directory": "submission_candidates/reading_v1/prompt/31b",
+      "prompt_sha256": "b105ead6d4604817647fcee48602b33b5aecc71d0aadd32de6c840a99f02c5be",
+      "status": "defined_not_executed",
+      "has_adk_skill": false,
+      "compiler_validated": true
+    },
+    {
+      "arm": "skill",
+      "model": "12b",
+      "directory": "submission_candidates/reading_v1/skill/12b",
+      "prompt_sha256": "193e71f0e0c6a097fbe9e8a74953d3ac50af2f07cb9d1fd8b2c6bfa44576fef4",
+      "status": "defined_not_executed",
+      "has_adk_skill": true,
+      "compiler_validated": true
+    },
+    {
+      "arm": "skill",
+      "model": "31b",
+      "directory": "submission_candidates/reading_v1/skill/31b",
+      "prompt_sha256": "193e71f0e0c6a097fbe9e8a74953d3ac50af2f07cb9d1fd8b2c6bfa44576fef4",
+      "status": "defined_not_executed",
+      "has_adk_skill": true,
+      "compiler_validated": true
+    }
+  ],
+  "scope": "Development tasks already observed; not held-out evaluation."
+}

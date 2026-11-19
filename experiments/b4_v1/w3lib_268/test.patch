@@ -1,0 +1,32 @@
+diff --git a/tests/test_html.py b/tests/test_html.py
+index b52530db84971161d4f04fe96a2b17e47712b94e..492190fba5135d05ac78790e6e52ec009ad2536a 100644
+--- a/tests/test_html.py
++++ b/tests/test_html.py
+@@ -121,6 +121,13 @@ class TestReplaceTags:
+             == "Click here"
+         )
+ 
++    def test_replace_tags_no_catastrophic_backtracking(self):
++        evil = "<a" * 50000
++        start = time.perf_counter()
++        assert replace_tags(evil) == evil  # incomplete tags (no ">") are untouched
++        assert replace_tags(evil + "<b>x</b>") == evil + "x"
++        assert time.perf_counter() - start < 2
++
+ 
+ class TestRemoveComments:
+     def test_returns_unicode(self):
+@@ -214,6 +221,13 @@ class TestRemoveTags:
+             == ""
+         )
+ 
++    def test_remove_tags_no_catastrophic_backtracking(self):
++        evil = "<a" * 30000
++        start = time.perf_counter()
++        assert remove_tags(evil) == evil
++        assert remove_tags(evil + "<b>x</b>") == evil + "x"
++        assert time.perf_counter() - start < 2
++
+ 
+ class TestRemoveTagsWithContent:
+     def test_returns_unicode(self):

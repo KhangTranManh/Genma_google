@@ -1,0 +1,56 @@
+{
+  "note": "Offline replay: guard decisions on stored calls; no model re-ask possible offline. before-source.txt used when present, else original source.",
+  "counts": {
+    "candidates-edit-v1:ok": 6,
+    "diagnosis-edit-v1:invalid": 1,
+    "diagnosis-edit-v1:noop": 1,
+    "diagnosis-edit-v1:not_found": 1,
+    "diagnosis-edit-v1:ok": 3,
+    "feedback-budget-v1:not_found": 1,
+    "feedback-budget-v1:ok": 4,
+    "feedback-edit-v1:invalid": 1,
+    "feedback-edit-v1:ok": 5,
+    "gate-audit-v1:ok": 9,
+    "hint-ladder-v1:ok": 8,
+    "hint-ladder-v2:noop": 2,
+    "hint-ladder-v2:ok": 10,
+    "infer-edit-v1:ok": 12,
+    "role-probes-v1:ok": 1,
+    "role-split-v1:ok": 5,
+    "role-split-v1:out_of_region": 1
+  },
+  "non_ok": [
+    {
+      "file": "runs/feedback-edit-v1/31b/feedback/attempt_2/parsed-calls.json",
+      "status": "invalid"
+    },
+    {
+      "file": "runs/feedback-budget-v1/31b/feedback/attempt_1/parsed-calls.json",
+      "status": "not_found"
+    },
+    {
+      "file": "runs/diagnosis-edit-v1/12b/feedback/attempt_1/parsed-calls.json",
+      "status": "not_found"
+    },
+    {
+      "file": "runs/diagnosis-edit-v1/31b/feedback/attempt_1/parsed-calls.json",
+      "status": "invalid"
+    },
+    {
+      "file": "runs/diagnosis-edit-v1/31b/feedback/attempt_2/parsed-calls.json",
+      "status": "noop"
+    },
+    {
+      "file": "runs/role-split-v1/12b/role_split/hypothesis_0/parsed-calls.json",
+      "status": "out_of_region"
+    },
+    {
+      "file": "runs/hint-ladder-v2/12b/ABC_r1/parsed-calls.json",
+      "status": "noop"
+    },
+    {
+      "file": "runs/hint-ladder-v2/12b/ABC_r2/parsed-calls.json",
+      "status": "noop"
+    }
+  ]
+}

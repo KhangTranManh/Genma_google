@@ -1,0 +1,11 @@
+extends = "model_31b_retry.toml"
+[experiment]
+id = "progress_baseline_v1"
+method = "model_sweep"
+[workflow]
+agent_policy = "baseline"
+progress_mode = "off"
+repeat_limit = 2
+stagnation_limit = 16
+[automation]
+model_order = ["31b", "12b", "e4b"]

@@ -1,0 +1,7 @@
+extends = "progress_baseline.toml"
+[experiment]
+id = "progress_finish_v1"
+method = "model_sweep"
+[workflow]
+agent_policy = "progress"
+progress_mode = "finish_verified"

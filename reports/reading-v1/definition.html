@@ -1,0 +1,30 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Định nghĩa focused reading</title><style>body{font:16px/1.6 system-ui;max-width:1100px;margin:32px auto;padding:0 20px;color:#17304d}table{border-collapse:collapse;width:100%}th,td{padding:12px;text-align:left;border-bottom:1px solid #ddd}pre{white-space:pre-wrap;background:#f2f5fa;padding:20px}.note{padding:15px;background:#edf3fa}</style><h1>Định nghĩa: đọc repo có mục tiêu</h1><p class="note">Đã định nghĩa và kiểm tra compiler; đợt thực thi đã được khởi tạo. Xem trạng thái mới nhất ở bảng theo dõi.</p><p>18 lượt development dự kiến: 2 model × 3 nhánh × 3 issue đã xem. Không phải holdout hoặc điểm Kaggle.</p><table><tr><th>Model</th><th>Nhánh</th><th>Compiler pass</th><th>Model evaluation</th></tr><tr><td>12b</td><td>R0 · Đối chứng</td><td>True</td><td>Xem bảng thực thi</td></tr><tr><td>31b</td><td>R0 · Đối chứng</td><td>True</td><td>Xem bảng thực thi</td></tr><tr><td>12b</td><td>R1 · Prompt đọc có mục tiêu</td><td>True</td><td>Xem bảng thực thi</td></tr><tr><td>31b</td><td>R1 · Prompt đọc có mục tiêu</td><td>True</td><td>Xem bảng thực thi</td></tr><tr><td>12b</td><td>R2 · Prompt + ADK skill</td><td>True</td><td>Xem bảng thực thi</td></tr><tr><td>31b</td><td>R2 · Prompt + ADK skill</td><td>True</td><td>Xem bảng thực thi</td></tr></table><p><a href="comparison.html">Mở bảng theo dõi thực thi R0/R1/R2</a></p><h2>Điều kiện cải thiện</h2><p>Model tự submit và pass test độc lập. Sau đó mới so số lần đọc lặp, lỗi arguments, thời gian tới edit đầu, lượt/tool calls, tokens và thời gian tổng. Ít read hơn nhưng patch sai không phải cải thiện.</p><p>Giữ 48 lượt / 96 tools / 15 phút; không thay runtime hay auto-submit. Checkpoint sau bốn inspection là hướng dẫn mềm, không chặn tool. Skill không có script hoặc host callback.</p><h2>Quy trình trong prompt</h2><pre>
+Focused repository reading protocol:
+- Before each inspection, decide the concrete question it should answer: where the
+  behavior lives, what the caller expects, or how an existing test exercises it.
+- Locate symbols first with a bounded search. Prefer rg when installed; otherwise
+  use git grep -n. Find likely paths with git ls-files and a narrow path pattern.
+  Avoid recursive dumps of the repository or entire large test files.
+- Read a bounded window around the relevant definition, usually 60-120 lines and
+  never more than the tool&#x27;s advertised limit. Read callers or adjacent helpers only
+  when they resolve a specific uncertainty. A bug may legitimately span many files.
+- Pass tool arguments as separate JSON fields. For example:
+  read_file: {&quot;filepath&quot;:&quot;src/example/module.py&quot;,&quot;start_line&quot;:80,&quot;end_line&quot;:150}
+  filepath contains only the path. Do not append commas, backticks, option names,
+  start_line, or end_line to the filepath string. Line bounds are integers.
+- If a tool rejects arguments, correct the structure once. If the path is absent,
+  locate the real path with a targeted search. Do not repeat an unchanged failed call.
+- Treat four inspection calls as a checkpoint, not a hard cap. Briefly summarize
+  the suspected cause, relevant path/symbol and next check. Then reproduce, edit or
+  run a focused test. Continue inspecting only if you can state what remains unknown
+  and how the next read resolves it. Do not fabricate a fix just to meet a read quota.
+- Do not reread an unchanged region unless a new error, caller or changed hypothesis
+  makes that reread necessary. If a result is truncated, request the missing range
+  rather than repeating the same full-file request.
+- Preserve a short working summary in the conversation: requirement, evidence,
+  suspected cause, edited files, latest test result and next action. Do not create
+  repository files merely to hold agent notes.
+- Verify the requested behavior and relevant existing tests. If tests fail, inspect
+  that failure and change the implementation; repeated successful checks are not
+  progress. Review the patch, then call submit_patch within the remaining budget.
+</pre><p><a href="../../experiments/methods/10-focused-reading.md">Thiết kế đầy đủ</a> · <a href="../../configs/reading-study.toml">Plan TOML</a> · <a href="definition.json">Candidate JSON</a> · <a href="../study-report.html">Báo cáo tổng</a></p></html>

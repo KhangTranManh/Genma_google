@@ -1,0 +1,11 @@
+extends = "../project.toml"
+[experiment]
+id = "model_sweep_v1"
+method = "model_sweep"
+[workflow]
+system_prompt = "submission/prompts/system.md"
+[automation]
+strategy = "model_sweep"
+model_order = ["e4b", "12b", "31b"]
+max_prompt_trials_per_model = 0
+seed_run = ""

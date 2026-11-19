@@ -1,0 +1,13 @@
+diff --git a/w3lib/html.py b/w3lib/html.py
+index a5a45a426fbc9170c3ccb9f09f1b423d80cb7b57..fc18807e0f7c1f646bd48501174ae730a9a96beb 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -38,7 +38,7 @@ _cdata_re = re.compile(
+     r"((?P<cdata_s><!\[CDATA\[)(?P<cdata_d>.*?)(?P<cdata_e>\]\]>))", re.DOTALL
+ )
+ _tags_re = re.compile("</?([^ >/]+).*?>", re.DOTALL | re.IGNORECASE)
+-_meta_tag_re = re.compile(r"<meta\b[^>]*>", re.IGNORECASE)
++_meta_tag_re = re.compile(r"<meta\b[^<>]*>", re.IGNORECASE)
+ 
+ 
+ HTML5_WHITESPACE = " \t\n\r\x0c"

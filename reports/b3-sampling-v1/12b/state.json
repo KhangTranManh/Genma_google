@@ -1,0 +1,174 @@
+{
+  "status": "complete",
+  "batch": "b3",
+  "model": "12b",
+  "completed": [
+    {
+      "prompt": "ABC",
+      "seed": 1,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^<>\\r\\n]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": true,
+      "tests": true,
+      "public_diff": false,
+      "public_pass": false,
+      "accepted_audit": false
+    },
+    {
+      "prompt": "ABC",
+      "seed": 2,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^> <]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": true,
+      "tests": false,
+      "public_diff": false,
+      "public_pass": false,
+      "accepted_audit": false
+    },
+    {
+      "prompt": "ABC",
+      "seed": 3,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^> <]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": true,
+      "tests": false,
+      "public_diff": false,
+      "public_pass": false,
+      "accepted_audit": false
+    },
+    {
+      "prompt": "ABC",
+      "seed": 4,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\[<]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": true,
+      "tests": true,
+      "public_diff": true,
+      "public_pass": true,
+      "accepted_audit": true,
+      "selected": true
+    },
+    {
+      "prompt": "ABC",
+      "seed": 5,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\[\\n\\r]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": false,
+      "tests": true,
+      "public_diff": false,
+      "public_pass": false,
+      "accepted_audit": false
+    },
+    {
+      "prompt": "ABC",
+      "seed": 6,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^> <]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": true,
+      "tests": false,
+      "public_diff": false,
+      "public_pass": false,
+      "accepted_audit": false
+    },
+    {
+      "prompt": "AG",
+      "seed": 1,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\s]*\\w*\\s*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": true,
+      "tests": true,
+      "public_diff": false,
+      "public_pass": false,
+      "accepted_audit": false
+    },
+    {
+      "prompt": "AG",
+      "seed": 2,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\s]*\\w*\\s*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": true,
+      "tests": true,
+      "public_diff": false,
+      "public_pass": false,
+      "accepted_audit": false
+    },
+    {
+      "prompt": "AG",
+      "seed": 3,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\s]*\\w*\\s*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": true,
+      "tests": true,
+      "public_diff": false,
+      "public_pass": false,
+      "accepted_audit": false
+    },
+    {
+      "prompt": "AG",
+      "seed": 4,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\s]*\\w*\\s*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": true,
+      "tests": true,
+      "public_diff": false,
+      "public_pass": false,
+      "accepted_audit": false
+    },
+    {
+      "prompt": "AG",
+      "seed": 5,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\s]*\\w*\\s*[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": false,
+      "tests": true,
+      "public_diff": true,
+      "public_pass": false,
+      "accepted_audit": false
+    },
+    {
+      "prompt": "AG",
+      "seed": 6,
+      "guard": "ok",
+      "generations": 1,
+      "guard_reasked": false,
+      "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\s]*\\w*\\s*[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "perf": false,
+      "tests": true,
+      "public_diff": true,
+      "public_pass": false,
+      "accepted_audit": false
+    }
+  ],
+  "selection": {
+    "ABC": {
+      "selected_seed": 4,
+      "selected_accepted": true
+    },
+    "AG": {
+      "selected_seed": null,
+      "selected_accepted": null
+    }
+  }
+}

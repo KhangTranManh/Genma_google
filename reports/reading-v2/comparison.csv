@@ -1,0 +1,19 @@
+Model,Nhánh,Issue,Kết quả,Tự submit + pass,Giây,Lượt,Read,Đọc trùng,Lỗi arguments,Skill load
+31b,R0 · Đối chứng,w3lib_264,fail,False,904.9267840890097,30,30,29,0,False
+31b,R0 · Đối chứng,packaging_1125,fail,False,904.9812659140007,39,30,29,0,False
+31b,R0 · Đối chứng,platformdirs_540,fail,False,634.9199599199928,48,33,9,0,False
+31b,R1 · Prompt,w3lib_264,pass,False,910.2268833459966,35,25,23,0,False
+31b,R1 · Prompt,packaging_1125,fail,False,608.7282730949955,48,29,12,0,False
+31b,R1 · Prompt,platformdirs_540,fail,False,781.1060046399944,48,21,3,0,False
+31b,R2 · Prompt + skill,w3lib_264,pass,True,554.8731010889896,48,22,11,0,True
+31b,R2 · Prompt + skill,packaging_1125,fail,False,690.5473184950097,48,31,17,0,True
+31b,R2 · Prompt + skill,platformdirs_540,fail,False,798.3808800359984,48,17,2,0,True
+12b,R0 · Đối chứng,w3lib_264,fail,False,163.5670898249955,22,8,0,0,False
+12b,R0 · Đối chứng,packaging_1125,pass,False,313.6955391740048,48,33,8,0,False
+12b,R0 · Đối chứng,platformdirs_540,fail,False,208.2035681289999,24,8,1,0,False
+12b,R1 · Prompt,w3lib_264,fail,False,354.66846200299915,48,2,0,0,False
+12b,R1 · Prompt,packaging_1125,fail,False,546.6553822150017,48,23,5,0,False
+12b,R1 · Prompt,platformdirs_540,fail,False,589.304921048999,48,25,6,0,False
+12b,R2 · Prompt + skill,w3lib_264,fail,False,164.94684284599498,48,0,0,0,True
+12b,R2 · Prompt + skill,packaging_1125,fail,False,453.27678600800573,48,30,4,0,True
+12b,R2 · Prompt + skill,platformdirs_540,fail,False,431.70811933701043,48,22,10,0,True

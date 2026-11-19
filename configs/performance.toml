@@ -1,0 +1,7 @@
+extends = "project.toml"
+[performance]
+id = "model_metrics_v1"
+model_order = ["31b", "12b", "e4b"]
+repeats = 3
+output_tokens = 128
+sample_interval_seconds = 0.5

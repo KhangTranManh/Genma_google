@@ -1,0 +1,100 @@
+[
+  {
+    "run_id": "20261116T083442Z-27293526",
+    "experiment_id": "layers_code_v1",
+    "method": "model_sweep",
+    "comparison_valid": true,
+    "model": "12b",
+    "task": "demo-urlkit-query",
+    "status": "local_pass",
+    "elapsed_seconds": 110.191,
+    "agent": {
+      "reason": "submitted",
+      "turns": 16,
+      "tool_calls": 16,
+      "usage": {
+        "prompt_tokens": 40581,
+        "completion_tokens": 2208
+      },
+      "submission_origin": "model",
+      "progress": {
+        "phase": "review_submit",
+        "workspace_version": "f846fa0882e1214179c22ed8f71a50dc40591f38c3a1a09977caa2c784512700",
+        "changed_files": [
+          "tests/test_urlkit.py",
+          "urlkit/__init__.py"
+        ],
+        "blocked_repeats": 1,
+        "blocked_repeats_total": 1,
+        "failed_edits": 0,
+        "stagnant_actions": 3,
+        "verification_bound_to_current_code": true,
+        "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+        "observations": 19,
+        "implementation_context": {
+          "urlkit/__init__.py": {
+            "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+            "truncated": false
+          }
+        }
+      },
+      "harness_verifications": 0
+    },
+    "error": null,
+    "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+    "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+    "workflow_variant": null,
+    "variant_workflow_sha256": null,
+    "raw_sha256": "5e18ab18e7a5d3446d17c1af1d20c6d772a9dc1d4b8eb643957ce83f406f8c77",
+    "source_run": "runs/20261116T083442Z-27293526"
+  },
+  {
+    "run_id": "20261116T083839Z-b5e0a98a",
+    "experiment_id": "layers_code_v1",
+    "method": "model_sweep",
+    "comparison_valid": true,
+    "model": "31b",
+    "task": "demo-urlkit-query",
+    "status": "local_pass",
+    "elapsed_seconds": 137.637,
+    "agent": {
+      "reason": "submitted",
+      "turns": 12,
+      "tool_calls": 12,
+      "usage": {
+        "prompt_tokens": 26379,
+        "completion_tokens": 1136
+      },
+      "submission_origin": "model",
+      "progress": {
+        "phase": "review_submit",
+        "workspace_version": "ab80e064764570e69847393b5af5b0988e4dcbfea3899956b5e9c2523ca5aec1",
+        "changed_files": [
+          "tests/test_urlkit.py",
+          "urlkit/__init__.py"
+        ],
+        "blocked_repeats": 0,
+        "blocked_repeats_total": 0,
+        "failed_edits": 0,
+        "stagnant_actions": 2,
+        "verification_bound_to_current_code": true,
+        "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+        "observations": 15,
+        "implementation_context": {
+          "urlkit/__init__.py": {
+            "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+            "truncated": false
+          }
+        }
+      },
+      "harness_verifications": 0
+    },
+    "error": null,
+    "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+    "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+    "workflow_variant": null,
+    "variant_workflow_sha256": null,
+    "raw_sha256": "f45b6a4442b2d2baa1166f4b50094ff5c3061c4fded272d9af0e891288974760",
+    "source_run": "runs/20261116T083839Z-b5e0a98a"
+  }
+]

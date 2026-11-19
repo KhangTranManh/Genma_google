@@ -1,0 +1,20 @@
+[
+  {
+    "model": "12b",
+    "raw_equals_api": true,
+    "engine_matches_api": true,
+    "raw_execution_correct": true,
+    "api_execution_correct": true,
+    "strict_arguments_label": "raw_output_defect",
+    "prompt_tokens": 398
+  },
+  {
+    "model": "31b",
+    "raw_equals_api": true,
+    "engine_matches_api": true,
+    "raw_execution_correct": true,
+    "api_execution_correct": true,
+    "strict_arguments_label": "raw_output_defect",
+    "prompt_tokens": 398
+  }
+]

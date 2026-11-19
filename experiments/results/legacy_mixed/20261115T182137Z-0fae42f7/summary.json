@@ -1,0 +1,19 @@
+{
+  "run_id": "20261115T182137Z-0fae42f7",
+  "experiment_id": "legacy_mixed",
+  "method": "legacy_mixed",
+  "comparison_valid": false,
+  "model": "31b",
+  "task": "demo-urlkit-query",
+  "status": "failed",
+  "elapsed_seconds": 241.499,
+  "agent": null,
+  "error": "timed out",
+  "prompt_sha256": "bd245f816863ebe7f3b3a6c3bf937903ef70a51355882804f26c50664f708079",
+  "workflow_sha256": null,
+  "workflow_variant": null,
+  "variant_workflow_sha256": null,
+  "raw_sha256": "ed62e12f19488f5cca846a8f859d1d31b57b77b83f4ba9d5670f5b3a429a5465",
+  "source_run": "runs/20261115T182137Z-0fae42f7",
+  "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+}

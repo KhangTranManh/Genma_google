@@ -1,0 +1,331 @@
+{
+  "status": "offline_replay_only",
+  "candidate_generation_repeated": false,
+  "ranking_evidence_phase": "diagnostic outcomes known at original gate decision, not independent final grader",
+  "budgets": [
+    1,
+    2,
+    3
+  ],
+  "records": [
+    {
+      "trajectory": "revise-hyp-v1/31b",
+      "policy": "original_order",
+      "patch_budget": 1,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard"
+      ],
+      "actual_attempts": 1,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "revise-hyp-v1/31b",
+      "policy": "original_order",
+      "patch_budget": 2,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard",
+        "greedy_attribute_overlap"
+      ],
+      "actual_attempts": 2,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "revise-hyp-v1/31b",
+      "policy": "original_order",
+      "patch_budget": 3,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard",
+        "greedy_attribute_overlap",
+        "linear_scan_failure"
+      ],
+      "actual_attempts": 3,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "revise-hyp-v1/31b",
+      "policy": "old_gate",
+      "patch_budget": 1,
+      "attempted_ids": [],
+      "actual_attempts": 0,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "revise-hyp-v1/31b",
+      "policy": "old_gate",
+      "patch_budget": 2,
+      "attempted_ids": [],
+      "actual_attempts": 0,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "revise-hyp-v1/31b",
+      "policy": "old_gate",
+      "patch_budget": 3,
+      "attempted_ids": [],
+      "actual_attempts": 0,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "revise-hyp-v1/31b",
+      "policy": "rank_only",
+      "patch_budget": 1,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard"
+      ],
+      "actual_attempts": 1,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "revise-hyp-v1/31b",
+      "policy": "rank_only",
+      "patch_budget": 2,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard",
+        "greedy_attribute_overlap"
+      ],
+      "actual_attempts": 2,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "revise-hyp-v1/31b",
+      "policy": "rank_only",
+      "patch_budget": 3,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard",
+        "greedy_attribute_overlap",
+        "linear_scan_failure"
+      ],
+      "actual_attempts": 3,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/12b",
+      "policy": "original_order",
+      "patch_budget": 1,
+      "attempted_ids": [
+        "h1"
+      ],
+      "actual_attempts": 1,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/12b",
+      "policy": "original_order",
+      "patch_budget": 2,
+      "attempted_ids": [
+        "h1",
+        "h2"
+      ],
+      "actual_attempts": 2,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/12b",
+      "policy": "original_order",
+      "patch_budget": 3,
+      "attempted_ids": [
+        "h1",
+        "h2",
+        "h3"
+      ],
+      "actual_attempts": 3,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/12b",
+      "policy": "old_gate",
+      "patch_budget": 1,
+      "attempted_ids": [],
+      "actual_attempts": 0,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/12b",
+      "policy": "old_gate",
+      "patch_budget": 2,
+      "attempted_ids": [],
+      "actual_attempts": 0,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/12b",
+      "policy": "old_gate",
+      "patch_budget": 3,
+      "attempted_ids": [],
+      "actual_attempts": 0,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/12b",
+      "policy": "rank_only",
+      "patch_budget": 1,
+      "attempted_ids": [
+        "h1"
+      ],
+      "actual_attempts": 1,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/12b",
+      "policy": "rank_only",
+      "patch_budget": 2,
+      "attempted_ids": [
+        "h1",
+        "h2"
+      ],
+      "actual_attempts": 2,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/12b",
+      "policy": "rank_only",
+      "patch_budget": 3,
+      "attempted_ids": [
+        "h1",
+        "h2",
+        "h3"
+      ],
+      "actual_attempts": 3,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/31b",
+      "policy": "original_order",
+      "patch_budget": 1,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard"
+      ],
+      "actual_attempts": 1,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/31b",
+      "policy": "original_order",
+      "patch_budget": 2,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard",
+        "linear_scan_failure"
+      ],
+      "actual_attempts": 2,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/31b",
+      "policy": "original_order",
+      "patch_budget": 3,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard",
+        "linear_scan_failure",
+        "greedy_attribute_overlap"
+      ],
+      "actual_attempts": 3,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/31b",
+      "policy": "old_gate",
+      "patch_budget": 1,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard"
+      ],
+      "actual_attempts": 1,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/31b",
+      "policy": "old_gate",
+      "patch_budget": 2,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard"
+      ],
+      "actual_attempts": 1,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/31b",
+      "policy": "old_gate",
+      "patch_budget": 3,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard"
+      ],
+      "actual_attempts": 1,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/31b",
+      "policy": "rank_only",
+      "patch_budget": 1,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard"
+      ],
+      "actual_attempts": 1,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/31b",
+      "policy": "rank_only",
+      "patch_budget": 2,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard",
+        "greedy_attribute_overlap"
+      ],
+      "actual_attempts": 2,
+      "any_verified_pass": false
+    },
+    {
+      "trajectory": "role-probes-v1/31b",
+      "policy": "rank_only",
+      "patch_budget": 3,
+      "attempted_ids": [
+        "catastrophic_backtracking_greedy_wildcard",
+        "greedy_attribute_overlap",
+        "linear_scan_failure"
+      ],
+      "actual_attempts": 3,
+      "any_verified_pass": false
+    }
+  ],
+  "behavior_groups": [
+    {
+      "trajectory": "revise-hyp-v1/31b",
+      "hypothesis_ids": 3,
+      "unique_prediction_vectors": 1,
+      "groups": [
+        [
+          "catastrophic_backtracking_greedy_wildcard",
+          "greedy_attribute_overlap",
+          "linear_scan_failure"
+        ]
+      ],
+      "new_hypothesis_request_run": false
+    },
+    {
+      "trajectory": "role-probes-v1/12b",
+      "hypothesis_ids": 3,
+      "unique_prediction_vectors": 1,
+      "groups": [
+        [
+          "h1",
+          "h2",
+          "h3"
+        ]
+      ],
+      "new_hypothesis_request_run": false
+    },
+    {
+      "trajectory": "role-probes-v1/31b",
+      "hypothesis_ids": 3,
+      "unique_prediction_vectors": 2,
+      "groups": [
+        [
+          "catastrophic_backtracking_greedy_wildcard",
+          "greedy_attribute_overlap"
+        ],
+        [
+          "linear_scan_failure"
+        ]
+      ],
+      "new_hypothesis_request_run": false
+    }
+  ]
+}

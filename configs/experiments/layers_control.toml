@@ -1,0 +1,15 @@
+extends = "progress_guard.toml"
+[experiment]
+id = "layers_control_v1"
+method = "model_sweep"
+[defaults]
+model = "12b"
+[workflow]
+progress_revision = 1
+[automation]
+model_order = ["12b", "31b"]
+strategy = "model_sweep"
+max_prompt_trials_per_model = 0
+seed_run = ""
+[ablation]
+layer = "control"

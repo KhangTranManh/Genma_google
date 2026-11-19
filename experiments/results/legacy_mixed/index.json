@@ -1,0 +1,213 @@
+[
+  {
+    "run_id": "20261115T174438Z-73755451",
+    "experiment_id": "legacy_mixed",
+    "method": "legacy_mixed",
+    "comparison_valid": false,
+    "model": "e4b",
+    "task": "demo-urlkit-query",
+    "status": "failed",
+    "elapsed_seconds": 0.48,
+    "agent": null,
+    "error": "fatal: not in a git directory\n",
+    "prompt_sha256": null,
+    "workflow_sha256": null,
+    "workflow_variant": null,
+    "variant_workflow_sha256": null,
+    "raw_sha256": "c8847039ba4ae3b7b777126d1830677ac81c6f57afadd765542af2077e87647f",
+    "source_run": "runs/20261115T174438Z-73755451",
+    "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+  },
+  {
+    "run_id": "20261115T174450Z-aa699693",
+    "experiment_id": "legacy_mixed",
+    "method": "legacy_mixed",
+    "comparison_valid": false,
+    "model": "e4b",
+    "task": "demo-urlkit-query",
+    "status": "failed",
+    "elapsed_seconds": 0.467,
+    "agent": null,
+    "error": "Command '['docker', 'cp', '-', 'gemma-lab-d04d642fde06:/tmp']' returned non-zero exit status 1.",
+    "prompt_sha256": null,
+    "workflow_sha256": null,
+    "workflow_variant": null,
+    "variant_workflow_sha256": null,
+    "raw_sha256": "028fc8b2a53719920ec77662a7d6c716156dfc1a5972a441d95989d7e9c1a477",
+    "source_run": "runs/20261115T174450Z-aa699693",
+    "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+  },
+  {
+    "run_id": "20261115T174505Z-ddd966d9",
+    "experiment_id": "legacy_mixed",
+    "method": "legacy_mixed",
+    "comparison_valid": false,
+    "model": "e4b",
+    "task": "demo-urlkit-query",
+    "status": "failed",
+    "elapsed_seconds": 21.482,
+    "agent": null,
+    "error": "Generation reached max_tokens; increase workflow.max_output_tokens",
+    "prompt_sha256": null,
+    "workflow_sha256": null,
+    "workflow_variant": null,
+    "variant_workflow_sha256": null,
+    "raw_sha256": "4bde9bc6c96c0d2e7b8ed70d58a3d3351c265ae57ed9a4084af8e3c8e4709680",
+    "source_run": "runs/20261115T174505Z-ddd966d9",
+    "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+  },
+  {
+    "run_id": "20261115T174601Z-eb44be25",
+    "experiment_id": "legacy_mixed",
+    "method": "legacy_mixed",
+    "comparison_valid": false,
+    "model": "e4b",
+    "task": "demo-urlkit-query",
+    "status": "local_fail",
+    "elapsed_seconds": 31.973,
+    "agent": {
+      "reason": "submitted",
+      "turns": 5,
+      "tool_calls": 5,
+      "usage": {
+        "prompt_tokens": 5196,
+        "completion_tokens": 1860
+      }
+    },
+    "error": null,
+    "prompt_sha256": null,
+    "workflow_sha256": null,
+    "workflow_variant": null,
+    "variant_workflow_sha256": null,
+    "raw_sha256": "eb18750aa7e88fe2c40ef6d6622975241c352e5a4649917b216d35ec782b0a64",
+    "source_run": "runs/20261115T174601Z-eb44be25",
+    "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+  },
+  {
+    "run_id": "20261115T174806Z-6a5ac729",
+    "experiment_id": "legacy_mixed",
+    "method": "legacy_mixed",
+    "comparison_valid": false,
+    "model": "e4b",
+    "task": "demo-urlkit-query",
+    "status": "incomplete",
+    "elapsed_seconds": 235.263,
+    "agent": {
+      "reason": "turn_limit",
+      "turns": 24,
+      "tool_calls": 19,
+      "usage": {
+        "prompt_tokens": 51468,
+        "completion_tokens": 13936
+      }
+    },
+    "error": null,
+    "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+    "workflow_sha256": null,
+    "workflow_variant": null,
+    "variant_workflow_sha256": null,
+    "raw_sha256": "718abe50e40224f509e5894a226871d637a02a7db42f0daf5106edbc9d6402bf",
+    "source_run": "runs/20261115T174806Z-6a5ac729",
+    "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+  },
+  {
+    "run_id": "20261115T175334Z-b1ad0c24",
+    "experiment_id": "legacy_mixed",
+    "method": "legacy_mixed",
+    "comparison_valid": false,
+    "model": "e4b",
+    "task": "demo-urlkit-query",
+    "status": "incomplete",
+    "elapsed_seconds": 201.863,
+    "agent": {
+      "reason": "turn_limit",
+      "turns": 24,
+      "tool_calls": 22,
+      "usage": {
+        "prompt_tokens": 57317,
+        "completion_tokens": 11440
+      }
+    },
+    "error": null,
+    "prompt_sha256": "1cd319f048fd880809b111e1b3c4d8595801dc7c0092f6e9f9f2a07cd2245b78",
+    "workflow_sha256": null,
+    "workflow_variant": null,
+    "variant_workflow_sha256": null,
+    "raw_sha256": "3308dc941ad25e11dec1422df258bb8840de091012c2ef804ccbf8e7f76802dd",
+    "source_run": "runs/20261115T175334Z-b1ad0c24",
+    "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+  },
+  {
+    "run_id": "20261115T180351Z-02f03798",
+    "experiment_id": "legacy_mixed",
+    "method": "legacy_mixed",
+    "comparison_valid": false,
+    "model": "12b",
+    "task": "demo-urlkit-query",
+    "status": "incomplete",
+    "elapsed_seconds": 183.296,
+    "agent": {
+      "reason": "turn_limit",
+      "turns": 24,
+      "tool_calls": 22,
+      "usage": {
+        "prompt_tokens": 66870,
+        "completion_tokens": 4004
+      }
+    },
+    "error": null,
+    "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+    "workflow_sha256": null,
+    "workflow_variant": null,
+    "variant_workflow_sha256": null,
+    "raw_sha256": "b0788cfb15702a1081bb174a46b594a7dd4ce6c4f01ee0143249af0c1edd8770",
+    "source_run": "runs/20261115T180351Z-02f03798",
+    "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+  },
+  {
+    "run_id": "20261115T180853Z-836cb27c",
+    "experiment_id": "legacy_mixed",
+    "method": "legacy_mixed",
+    "comparison_valid": false,
+    "model": "12b",
+    "task": "demo-urlkit-query",
+    "status": "local_pass",
+    "elapsed_seconds": 124.222,
+    "agent": {
+      "reason": "submitted",
+      "turns": 12,
+      "tool_calls": 11,
+      "usage": {
+        "prompt_tokens": 28233,
+        "completion_tokens": 3104
+      }
+    },
+    "error": null,
+    "prompt_sha256": "bd245f816863ebe7f3b3a6c3bf937903ef70a51355882804f26c50664f708079",
+    "workflow_sha256": null,
+    "workflow_variant": null,
+    "variant_workflow_sha256": null,
+    "raw_sha256": "29a10112decabe4eafba12133495d8427d8aa02ea9b8d172dc4f3928d6eda44e",
+    "source_run": "runs/20261115T180853Z-836cb27c",
+    "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+  },
+  {
+    "run_id": "20261115T182137Z-0fae42f7",
+    "experiment_id": "legacy_mixed",
+    "method": "legacy_mixed",
+    "comparison_valid": false,
+    "model": "31b",
+    "task": "demo-urlkit-query",
+    "status": "failed",
+    "elapsed_seconds": 241.499,
+    "agent": null,
+    "error": "timed out",
+    "prompt_sha256": "bd245f816863ebe7f3b3a6c3bf937903ef70a51355882804f26c50664f708079",
+    "workflow_sha256": null,
+    "workflow_variant": null,
+    "variant_workflow_sha256": null,
+    "raw_sha256": "ed62e12f19488f5cca846a8f859d1d31b57b77b83f4ba9d5670f5b3a429a5465",
+    "source_run": "runs/20261115T182137Z-0fae42f7",
+    "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+  }
+]

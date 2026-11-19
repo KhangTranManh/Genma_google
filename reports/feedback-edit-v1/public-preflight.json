@@ -1,0 +1,35 @@
+{
+  "usable": true,
+  "results": {
+    "baseline": {
+      "reproducer": "get_base_url(\"<base \" * 6000)",
+      "measure": "function time only, excluding Python startup",
+      "samples_seconds": [
+        0.6979038470017258,
+        0.7510081339860335,
+        1.277506877988344
+      ],
+      "median_seconds": 0.7510081339860335,
+      "timeout_seconds": 2,
+      "median_limit_seconds": 0.2,
+      "timed_out": false,
+      "error": null,
+      "passed": false
+    },
+    "diagnostic_fixed": {
+      "reproducer": "get_base_url(\"<base \" * 6000)",
+      "measure": "function time only, excluding Python startup",
+      "samples_seconds": [
+        0.0003037489950656891,
+        0.00029985199216753244,
+        0.0002861230168491602
+      ],
+      "median_seconds": 0.00029985199216753244,
+      "timeout_seconds": 2,
+      "median_limit_seconds": 0.2,
+      "timed_out": false,
+      "error": null,
+      "passed": true
+    }
+  }
+}

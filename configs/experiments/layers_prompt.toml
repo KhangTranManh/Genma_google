@@ -1,0 +1,7 @@
+extends = "layers_control.toml"
+[experiment]
+id = "layers_prompt_v1"
+[workflow]
+system_prompt = "experiments/prompts/completion_contract_v1.md"
+[ablation]
+layer = "prompt"

@@ -1,0 +1,8 @@
+{
+  "model": "gemma-4-12b-it-qat-w4a16-ct",
+  "prompt_source": "experiments/prompts/tool_recovery_v1.md",
+  "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+  "local_progress_agent_exported": false,
+  "runtime": "organizer ADK compiler and swegemma",
+  "status": "requires compiler validation and task evaluation"
+}

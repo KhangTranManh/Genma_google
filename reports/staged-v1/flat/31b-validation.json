@@ -1,0 +1,23 @@
+{
+  "compiled": true,
+  "model": "31b",
+  "arm": "flat",
+  "tree": {
+    "name": "repo_coder",
+    "class": "LlmAgent",
+    "model": "openai/gemma-4-31b-it-qat-w4a16-ct",
+    "tools": [
+      "run_command",
+      "read_file",
+      "edit_file",
+      "write_file",
+      "get_status",
+      "submit_patch"
+    ],
+    "max_iterations": null,
+    "children": []
+  },
+  "official_score": false,
+  "archive": "dist/staged-v1/flat/31b/submission.zip",
+  "sha256": "3bf8398bde2cf9253155248ebd33db51ae08ae68adfd89eac73e9505b0aab1df"
+}

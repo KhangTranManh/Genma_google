@@ -1,0 +1,25 @@
+{
+  "model": "gemma-4-31b-it-qat-w4a16-ct",
+  "directory_validated": true,
+  "agent_compiled": true,
+  "agent_class": "LlmAgent",
+  "tools": [
+    "run_command",
+    "read_file",
+    "edit_file",
+    "write_file",
+    "get_status",
+    "submit_patch"
+  ],
+  "versions": {
+    "adk-submission": "0.2.13",
+    "adk-eval-core": "0.1.0",
+    "swegemma": "0.2.11",
+    "google-adk": "1.36.1",
+    "litellm": "1.109.1"
+  },
+  "archive": "dist/reading-v1/skill/31b/submission.zip",
+  "sha256": "fa148c8517db5c77aa6b1d628e6d28685db56b7b3036d8ac4b0d2a5f269a35ff",
+  "official_tasks_scored": false,
+  "local_python_harness_exported": false
+}

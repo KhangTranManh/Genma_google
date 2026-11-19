@@ -1,0 +1,6 @@
+agent_class: LoopAgent
+name: bounded_repair_cycle
+max_iterations: 2
+sub_agents:
+  - config_path: sub_agents/editor.yaml
+  - config_path: sub_agents/verifier.yaml

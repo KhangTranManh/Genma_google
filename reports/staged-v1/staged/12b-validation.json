@@ -1,0 +1,69 @@
+{
+  "compiled": true,
+  "model": "12b",
+  "arm": "staged",
+  "tree": {
+    "name": "staged_repair",
+    "class": "SequentialAgent",
+    "model": "",
+    "tools": [],
+    "max_iterations": null,
+    "children": [
+      {
+        "name": "planner",
+        "class": "LlmAgent",
+        "model": "openai/gemma-4-12b-it-qat-w4a16-ct",
+        "tools": [],
+        "max_iterations": null,
+        "children": []
+      },
+      {
+        "name": "bounded_repair_cycle",
+        "class": "LoopAgent",
+        "model": "",
+        "tools": [],
+        "max_iterations": 2,
+        "children": [
+          {
+            "name": "editor",
+            "class": "LlmAgent",
+            "model": "openai/gemma-4-12b-it-qat-w4a16-ct",
+            "tools": [
+              "edit_file",
+              "write_file",
+              "get_status",
+              "SkillToolset"
+            ],
+            "max_iterations": null,
+            "children": []
+          },
+          {
+            "name": "verifier",
+            "class": "LlmAgent",
+            "model": "openai/gemma-4-12b-it-qat-w4a16-ct",
+            "tools": [
+              "get_status",
+              "SkillToolset"
+            ],
+            "max_iterations": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "submitter",
+        "class": "LlmAgent",
+        "model": "openai/gemma-4-12b-it-qat-w4a16-ct",
+        "tools": [
+          "get_status",
+          "submit_patch"
+        ],
+        "max_iterations": null,
+        "children": []
+      }
+    ]
+  },
+  "official_score": false,
+  "archive": "dist/staged-v1/staged/12b/submission.zip",
+  "sha256": "deeada834ab94a7e980d569e073e17157e840589ed5781a1caf752c6d2eb79c8"
+}

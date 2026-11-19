@@ -1,0 +1,219 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Staged workflow</title><style>body{font:16px/1.6 system-ui;max-width:1250px;margin:30px auto;padding:0 20px;color:#17304d}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px}td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}pre{white-space:pre-wrap}</style><h1>Workflow YAML theo giai đoạn</h1><p>State: complete · —</p><p>Development pilot: workflow/tool-budget bundle vs fresh flat R1. Not Kaggle score.</p><p>Planner không tool → hai vòng editor/verifier → submitter riêng. Skill giới hạn 8 inspection, 2 lần lặp cùng request, 4 lượt pytest; không ép LLM chuyển bước sau số lượt riêng. Tổng 48 lượt / 96 tools / 15 phút / context16k.</p>
+<details><summary>Live observation</summary><pre>{
+  &quot;time&quot;: &quot;2026-11-16T18:31:57.745031+00:00&quot;,
+  &quot;status&quot;: &quot;complete&quot;,
+  &quot;phase&quot;: &quot;complete&quot;,
+  &quot;current&quot;: {
+    &quot;model&quot;: &quot;12b&quot;,
+    &quot;task&quot;: &quot;platformdirs_540&quot;,
+    &quot;arm&quot;: &quot;flat&quot;
+  },
+  &quot;waiting_for&quot;: null,
+  &quot;alerts&quot;: []
+}</pre></details>
+<div class="scroll"><table><tr><th>Model</th><th>Task</th><th>Arm</th><th>Result</th><th>Autonomous pass</th><th>Seconds</th><th>LLM calls</th><th>Native reads</th><th>Script inspections</th></tr>
+<tr><td>31b</td><td>w3lib_264</td><td>staged</td><td>fail</td><td>False</td><td>619.2166811460047</td><td>48</td><td>0</td><td>23</td></tr>
+<tr><td>31b</td><td>w3lib_264</td><td>flat</td><td>pass</td><td>False</td><td>910.2507261930004</td><td>34</td><td>27</td><td>0</td></tr>
+<tr><td>31b</td><td>packaging_1125</td><td>staged</td><td>fail</td><td>False</td><td>307.59653758100467</td><td>48</td><td>0</td><td>42</td></tr>
+<tr><td>31b</td><td>packaging_1125</td><td>flat</td><td>fail</td><td>False</td><td>613.0390900170023</td><td>48</td><td>33</td><td>0</td></tr>
+<tr><td>31b</td><td>platformdirs_540</td><td>staged</td><td>fail</td><td>False</td><td>424.13679049799975</td><td>23</td><td>0</td><td>4</td></tr>
+<tr><td>31b</td><td>platformdirs_540</td><td>flat</td><td>fail</td><td>False</td><td>363.274008487002</td><td>19</td><td>6</td><td>0</td></tr>
+<tr><td>12b</td><td>w3lib_264</td><td>staged</td><td>fail</td><td>False</td><td>904.8485772809945</td><td>14</td><td>0</td><td>0</td></tr>
+<tr><td>12b</td><td>w3lib_264</td><td>flat</td><td>fail</td><td>False</td><td>245.66301463500713</td><td>48</td><td>1</td><td>0</td></tr>
+<tr><td>12b</td><td>packaging_1125</td><td>staged</td><td>fail</td><td>False</td><td>370.35320430999855</td><td>48</td><td>0</td><td>0</td></tr>
+<tr><td>12b</td><td>packaging_1125</td><td>flat</td><td>fail</td><td>False</td><td>156.56701368000358</td><td>19</td><td>11</td><td>0</td></tr>
+<tr><td>12b</td><td>platformdirs_540</td><td>staged</td><td>fail</td><td>False</td><td>414.80582536399015</td><td>48</td><td>0</td><td>0</td></tr>
+<tr><td>12b</td><td>platformdirs_540</td><td>flat</td><td>fail</td><td>False</td><td>115.2326652030024</td><td>48</td><td>0</td><td>0</td></tr>
+</table></div>
+<details><summary>31b/staged/w3lib_264</summary><p>Agent exceeded turns budget (48 turns)</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;planner&quot;: 1,
+    &quot;editor&quot;: 47
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;planner&quot;,
+    &quot;editor&quot;
+  ],
+  &quot;script_requests&quot;: {
+    &quot;read&quot;: 15,
+    &quot;test&quot;: 4,
+    &quot;search&quot;: 8,
+    &quot;python3&quot;: 1
+  },
+  &quot;bounded_inspection_requests&quot;: 23,
+  &quot;denied_operations&quot;: {
+    &quot;duplicate_inspection&quot;: 4,
+    &quot;inspection_budget_exhausted&quot;: 3
+  },
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/31b/staged/w3lib_264/summary.json">Evaluator result</a></details>
+<details><summary>31b/flat/w3lib_264</summary><p>—</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;repo_coder&quot;: 34
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;repo_coder&quot;
+  ],
+  &quot;script_requests&quot;: {},
+  &quot;bounded_inspection_requests&quot;: 0,
+  &quot;denied_operations&quot;: {},
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/31b/flat/w3lib_264/summary.json">Evaluator result</a></details>
+<details><summary>31b/staged/packaging_1125</summary><p>Agent exceeded turns budget (48 turns)</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;planner&quot;: 1,
+    &quot;editor&quot;: 47
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;planner&quot;,
+    &quot;editor&quot;
+  ],
+  &quot;script_requests&quot;: {
+    &quot;search&quot;: 40,
+    &quot;read&quot;: 2
+  },
+  &quot;bounded_inspection_requests&quot;: 42,
+  &quot;denied_operations&quot;: {},
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/31b/staged/packaging_1125/summary.json">Evaluator result</a></details>
+<details><summary>31b/flat/packaging_1125</summary><p>Agent exceeded turns budget (48 turns)</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;repo_coder&quot;: 48
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;repo_coder&quot;
+  ],
+  &quot;script_requests&quot;: {},
+  &quot;bounded_inspection_requests&quot;: 0,
+  &quot;denied_operations&quot;: {},
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/31b/flat/packaging_1125/summary.json">Evaluator result</a></details>
+<details><summary>31b/staged/platformdirs_540</summary><p>—</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;planner&quot;: 1,
+    &quot;editor&quot;: 18,
+    &quot;verifier&quot;: 2,
+    &quot;submitter&quot;: 1
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;planner&quot;,
+    &quot;editor&quot;,
+    &quot;verifier&quot;,
+    &quot;editor&quot;,
+    &quot;verifier&quot;,
+    &quot;submitter&quot;
+  ],
+  &quot;script_requests&quot;: {
+    &quot;search&quot;: 2,
+    &quot;read&quot;: 2,
+    &quot;pytest&quot;: 1,
+    &quot;test&quot;: 5
+  },
+  &quot;bounded_inspection_requests&quot;: 4,
+  &quot;denied_operations&quot;: {},
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/31b/staged/platformdirs_540/summary.json">Evaluator result</a></details>
+<details><summary>31b/flat/platformdirs_540</summary><p>—</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;repo_coder&quot;: 19
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;repo_coder&quot;
+  ],
+  &quot;script_requests&quot;: {},
+  &quot;bounded_inspection_requests&quot;: 0,
+  &quot;denied_operations&quot;: {},
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/31b/flat/platformdirs_540/summary.json">Evaluator result</a></details>
+<details><summary>12b/staged/w3lib_264</summary><p>Agent exceeded session timeout (15 min)</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;planner&quot;: 1,
+    &quot;editor&quot;: 13
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;planner&quot;,
+    &quot;editor&quot;
+  ],
+  &quot;script_requests&quot;: {},
+  &quot;bounded_inspection_requests&quot;: 0,
+  &quot;denied_operations&quot;: {},
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/12b/staged/w3lib_264/summary.json">Evaluator result</a></details>
+<details><summary>12b/flat/w3lib_264</summary><p>Agent exceeded turns budget (48 turns)</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;repo_coder&quot;: 48
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;repo_coder&quot;
+  ],
+  &quot;script_requests&quot;: {},
+  &quot;bounded_inspection_requests&quot;: 0,
+  &quot;denied_operations&quot;: {},
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/12b/flat/w3lib_264/summary.json">Evaluator result</a></details>
+<details><summary>12b/staged/packaging_1125</summary><p>Agent exceeded turns budget (48 turns)</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;planner&quot;: 1,
+    &quot;editor&quot;: 47
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;planner&quot;,
+    &quot;editor&quot;
+  ],
+  &quot;script_requests&quot;: {},
+  &quot;bounded_inspection_requests&quot;: 0,
+  &quot;denied_operations&quot;: {},
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/12b/staged/packaging_1125/summary.json">Evaluator result</a></details>
+<details><summary>12b/flat/packaging_1125</summary><p>Agent completed execution without calling submit_patch.</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;repo_coder&quot;: 21
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;repo_coder&quot;
+  ],
+  &quot;script_requests&quot;: {},
+  &quot;bounded_inspection_requests&quot;: 0,
+  &quot;denied_operations&quot;: {},
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/12b/flat/packaging_1125/summary.json">Evaluator result</a></details>
+<details><summary>12b/staged/platformdirs_540</summary><p>Agent exceeded turns budget (48 turns)</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;planner&quot;: 1,
+    &quot;editor&quot;: 47
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;planner&quot;,
+    &quot;editor&quot;
+  ],
+  &quot;script_requests&quot;: {},
+  &quot;bounded_inspection_requests&quot;: 0,
+  &quot;denied_operations&quot;: {},
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/12b/staged/platformdirs_540/summary.json">Evaluator result</a></details>
+<details><summary>12b/flat/platformdirs_540</summary><p>Agent exceeded turns budget (48 turns)</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;phase_llm_steps&quot;: {
+    &quot;repo_coder&quot;: 48
+  },
+  &quot;phase_sequence&quot;: [
+    &quot;repo_coder&quot;
+  ],
+  &quot;script_requests&quot;: {},
+  &quot;bounded_inspection_requests&quot;: 0,
+  &quot;denied_operations&quot;: {},
+  &quot;note&quot;: &quot;Requests include denials; phases are observed authors, not assumed transitions.&quot;
+}</pre><a href="../../runs/staged-v1/12b/flat/platformdirs_540/summary.json">Evaluator result</a></details>
+<p><a href="postmortem.html">Phân tích nguyên nhân thất bại và hướng tiếp theo</a></p>
+<p><a href="../../experiments/methods/11-staged-workflow.md">Thiết kế</a> · <a href="comparison.json">JSON</a> · <a href="../study-report.html">Báo cáo tổng</a></p></html>

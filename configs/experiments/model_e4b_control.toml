@@ -1,0 +1,8 @@
+extends = "model_31b_retry.toml"
+[experiment]
+id = "model_e4b_control_v1"
+method = "model_sweep"
+[defaults]
+model = "e4b"
+[automation]
+model_order = ["e4b"]

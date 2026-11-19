@@ -1,0 +1,23 @@
+{
+  "compiled": true,
+  "model": "12b",
+  "arm": "flat",
+  "tree": {
+    "name": "repo_coder",
+    "class": "LlmAgent",
+    "model": "openai/gemma-4-12b-it-qat-w4a16-ct",
+    "tools": [
+      "run_command",
+      "read_file",
+      "edit_file",
+      "write_file",
+      "get_status",
+      "submit_patch"
+    ],
+    "max_iterations": null,
+    "children": []
+  },
+  "official_score": false,
+  "archive": "dist/staged-v1/flat/12b/submission.zip",
+  "sha256": "09b3301ded9bc067a1f1243ee7d9f7a10919059d7c4b1c03b18cf8ebb7e3b0a0"
+}

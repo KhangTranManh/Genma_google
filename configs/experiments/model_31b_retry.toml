@@ -1,0 +1,16 @@
+extends = "model_sweep.toml"
+[experiment]
+id = "model_31b_retry_v1"
+method = "model_sweep"
+[defaults]
+model = "31b"
+[workflow]
+system_prompt = "experiments/prompts/tool_recovery_v1.md"
+time_limit_seconds = 900
+max_turns = 48
+max_tool_calls = 96
+[automation]
+strategy = "model_sweep"
+model_order = ["31b", "12b"]
+max_prompt_trials_per_model = 0
+seed_run = ""

@@ -1,0 +1,97 @@
+{
+  "note": "Lặp request đếm theo tên + arguments nguyên văn trong log, khác bộ phát hiện lặp của harness.",
+  "runs": [
+    {
+      "run_id": "20261116T064438Z-a5dae13e",
+      "model": "31b",
+      "experiment": "progress_baseline_v1",
+      "finding": "Chưa hoàn tất; nguyên nhân dừng: turn_limit. Patch thu hồi chưa chứng minh sửa đúng.",
+      "warnings": [
+        "recovered-evaluation.json: output bị cắt; không suy ra tổng test khi thiếu dòng tổng kết"
+      ],
+      "submit_attempts": 0,
+      "repeated_identical_requests": 39,
+      "failed_tool_results": 15
+    },
+    {
+      "run_id": "20261116T065237Z-2f2f1f79",
+      "model": "12b",
+      "experiment": "progress_baseline_v1",
+      "finding": "Patch thu hồi pass test độc lập nhưng agent chưa submit thành công; cần cải thiện bước kết thúc workflow.",
+      "warnings": [],
+      "submit_attempts": 0,
+      "repeated_identical_requests": 35,
+      "failed_tool_results": 3
+    },
+    {
+      "run_id": "20261116T065837Z-c3cb7105",
+      "model": "e4b",
+      "experiment": "progress_baseline_v1",
+      "finding": "Chưa hoàn tất; nguyên nhân dừng: turn_limit. Patch thu hồi chưa chứng minh sửa đúng.",
+      "warnings": [],
+      "submit_attempts": 2,
+      "repeated_identical_requests": 24,
+      "failed_tool_results": 16
+    },
+    {
+      "run_id": "20261116T070957Z-325fe24c",
+      "model": "31b",
+      "experiment": "progress_guard_v1",
+      "finding": "Patch đã nộp vượt test độc lập; nguồn nộp: model.",
+      "warnings": [],
+      "submit_attempts": 2,
+      "repeated_identical_requests": 5,
+      "failed_tool_results": 4
+    },
+    {
+      "run_id": "20261116T071557Z-8c31c62e",
+      "model": "12b",
+      "experiment": "progress_guard_v1",
+      "finding": "Patch thu hồi pass test độc lập nhưng agent chưa submit thành công; cần cải thiện bước kết thúc workflow.",
+      "warnings": [],
+      "submit_attempts": 0,
+      "repeated_identical_requests": 9,
+      "failed_tool_results": 7
+    },
+    {
+      "run_id": "20261116T071942Z-c13011dd",
+      "model": "e4b",
+      "experiment": "progress_guard_v1",
+      "finding": "Chưa hoàn tất; nguyên nhân dừng: turn_limit. Patch thu hồi chưa chứng minh sửa đúng.",
+      "warnings": [],
+      "submit_attempts": 2,
+      "repeated_identical_requests": 20,
+      "failed_tool_results": 17
+    },
+    {
+      "run_id": "20261116T073405Z-5be811c3",
+      "model": "31b",
+      "experiment": "progress_finish_v1",
+      "finding": "Patch đã nộp vượt test độc lập; nguồn nộp: harness.",
+      "warnings": [],
+      "submit_attempts": 0,
+      "repeated_identical_requests": 3,
+      "failed_tool_results": 4
+    },
+    {
+      "run_id": "20261116T073927Z-cd0ec631",
+      "model": "12b",
+      "experiment": "progress_finish_v1",
+      "finding": "Patch đã nộp vượt test độc lập; nguồn nộp: harness.",
+      "warnings": [],
+      "submit_attempts": 0,
+      "repeated_identical_requests": 2,
+      "failed_tool_results": 3
+    },
+    {
+      "run_id": "20261116T074230Z-722f1299",
+      "model": "e4b",
+      "experiment": "progress_finish_v1",
+      "finding": "Chưa hoàn tất; nguyên nhân dừng: turn_limit. Patch thu hồi chưa chứng minh sửa đúng.",
+      "warnings": [],
+      "submit_attempts": 0,
+      "repeated_identical_requests": 21,
+      "failed_tool_results": 18
+    }
+  ]
+}

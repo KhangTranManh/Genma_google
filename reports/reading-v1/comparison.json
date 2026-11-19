@@ -1,0 +1,426 @@
+{
+  "generated_at": "2026-11-16T13:46:31.614731+00:00",
+  "state": {
+    "status": "needs_review",
+    "phase": "agent",
+    "experiment": "focused-reading-v1",
+    "official_competition_score": false,
+    "completed": [],
+    "in_progress": false,
+    "image_ids": {
+      "w3lib_264": "sha256:8592d8130c55add0bd59372a466c8b29c7a760f3c446e94dd7b8b11383d749e7",
+      "packaging_1125": "sha256:96d9ef44608a80e49c6c0bfbb8f3484ca1a876b74b717b4ec835ab9e31cd2e51",
+      "platformdirs_540": "sha256:a8c04eb58be8358c428aee5d76532237ccd58661dfa4eba84d8bb6df2523c1f6"
+    },
+    "frozen_sha256": "f5deed847eb4d8d2aba05bb38d6b3bb2bb44a517cb5bd05726aeb93d6e0ddf3c",
+    "current": {
+      "model": "12b",
+      "task": "w3lib_264",
+      "arm": "prompt"
+    },
+    "updated_at": "2026-11-16T13:09:20.743819+00:00",
+    "job_started_at": "2026-11-16T13:02:16.256559+00:00",
+    "error": "Runtime error needs inspection: Sandbox execution error: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 8192 tokens. However, your prompt contains at least 8193 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=8193)"
+  },
+  "live": {
+    "observed_at": "2026-11-16T13:09:44.741547+00:00",
+    "state": "needs_review",
+    "phase": "agent",
+    "current": {
+      "model": "12b",
+      "task": "w3lib_264",
+      "arm": "prompt"
+    },
+    "alerts": [
+      "Runtime error needs inspection: Sandbox execution error: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 8192 tokens. However, your prompt contains at least 8193 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=8193)"
+    ],
+    "note": "Log-derived observations are partial; full ATIF analysis after completion. Alerts are passive, no agent feedback."
+  },
+  "rows": [
+    {
+      "model": "12b",
+      "arm": "baseline",
+      "task": "w3lib_264",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "12b",
+      "arm": "baseline",
+      "task": "packaging_1125",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "12b",
+      "arm": "baseline",
+      "task": "platformdirs_540",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "12b",
+      "arm": "prompt",
+      "task": "w3lib_264",
+      "status": "runtime_error",
+      "autonomous_pass": false,
+      "seconds": 420.35088587399514,
+      "llm_calls": 39,
+      "tools": 38,
+      "error": "Sandbox execution error: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 8192 tokens. However, your prompt contains at least 8193 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=8193)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 24,
+          "read_file": 8,
+          "write_file": 2,
+          "edit_file": 5
+        },
+        "read_requests": 8,
+        "successful_read_results": 8,
+        "bounded_read_requests": 6,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 14,
+          "FileEditError": 5
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 143246,
+        "completion_tokens_observed": 5508,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "b105ead6d4604817647fcee48602b33b5aecc71d0aadd32de6c840a99f02c5be",
+      "base_commit": "d5877fe4798609da79d7bfd0e683d4cd00a4dd27",
+      "evidence": "runs/reading-v1/12b/prompt/w3lib_264/summary.json"
+    },
+    {
+      "model": "12b",
+      "arm": "prompt",
+      "task": "packaging_1125",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "12b",
+      "arm": "prompt",
+      "task": "platformdirs_540",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "12b",
+      "arm": "skill",
+      "task": "w3lib_264",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "12b",
+      "arm": "skill",
+      "task": "packaging_1125",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "12b",
+      "arm": "skill",
+      "task": "platformdirs_540",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "31b",
+      "arm": "baseline",
+      "task": "w3lib_264",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "31b",
+      "arm": "baseline",
+      "task": "packaging_1125",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "31b",
+      "arm": "baseline",
+      "task": "platformdirs_540",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "31b",
+      "arm": "prompt",
+      "task": "w3lib_264",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "31b",
+      "arm": "prompt",
+      "task": "packaging_1125",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "31b",
+      "arm": "prompt",
+      "task": "platformdirs_540",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "31b",
+      "arm": "skill",
+      "task": "w3lib_264",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "31b",
+      "arm": "skill",
+      "task": "packaging_1125",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    },
+    {
+      "model": "31b",
+      "arm": "skill",
+      "task": "platformdirs_540",
+      "status": "pending",
+      "autonomous_pass": null,
+      "seconds": null,
+      "llm_calls": null,
+      "tools": null,
+      "error": null,
+      "metrics": {},
+      "prompt_sha256": null,
+      "base_commit": null,
+      "evidence": null
+    }
+  ],
+  "warnings": [],
+  "assessments": [
+    {
+      "model": "12b",
+      "task": "w3lib_264",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chờ đủ cặp."
+    },
+    {
+      "model": "12b",
+      "task": "w3lib_264",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Chờ đủ cặp."
+    },
+    {
+      "model": "12b",
+      "task": "packaging_1125",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chờ đủ cặp."
+    },
+    {
+      "model": "12b",
+      "task": "packaging_1125",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Chờ đủ cặp."
+    },
+    {
+      "model": "12b",
+      "task": "platformdirs_540",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chờ đủ cặp."
+    },
+    {
+      "model": "12b",
+      "task": "platformdirs_540",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Chờ đủ cặp."
+    },
+    {
+      "model": "31b",
+      "task": "w3lib_264",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chờ đủ cặp."
+    },
+    {
+      "model": "31b",
+      "task": "w3lib_264",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Chờ đủ cặp."
+    },
+    {
+      "model": "31b",
+      "task": "packaging_1125",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chờ đủ cặp."
+    },
+    {
+      "model": "31b",
+      "task": "packaging_1125",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Chờ đủ cặp."
+    },
+    {
+      "model": "31b",
+      "task": "platformdirs_540",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chờ đủ cặp."
+    },
+    {
+      "model": "31b",
+      "task": "platformdirs_540",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Chờ đủ cặp."
+    }
+  ],
+  "scope": "18 development trials on previously observed FreshSWE tasks; not holdout or Kaggle score."
+}

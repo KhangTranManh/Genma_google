@@ -1,0 +1,11 @@
+{
+  "offline_audit": "complete",
+  "hypotheses": 9,
+  "old_skipped": 8,
+  "allowed_controls": 1,
+  "verified_passes": 0,
+  "false_negative_rate_among_successes": null,
+  "other_model_experiments_started": false,
+  "offline_replay_conditions": 27,
+  "hard_pruning_enabled": false
+}

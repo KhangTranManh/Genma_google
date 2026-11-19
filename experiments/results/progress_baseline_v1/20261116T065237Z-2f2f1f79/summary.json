@@ -1,0 +1,26 @@
+{
+  "run_id": "20261116T065237Z-2f2f1f79",
+  "experiment_id": "progress_baseline_v1",
+  "method": "model_sweep",
+  "comparison_valid": true,
+  "model": "12b",
+  "task": "demo-urlkit-query",
+  "status": "incomplete",
+  "elapsed_seconds": 230.926,
+  "agent": {
+    "reason": "turn_limit",
+    "turns": 48,
+    "tool_calls": 48,
+    "usage": {
+      "prompt_tokens": 133807,
+      "completion_tokens": 3580
+    }
+  },
+  "error": null,
+  "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+  "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+  "workflow_variant": null,
+  "variant_workflow_sha256": null,
+  "raw_sha256": "4da047df13d5afe0624e3bc7651939a6cdef519f0da42833e156558b4c6d9c8f",
+  "source_run": "runs/20261116T065237Z-2f2f1f79"
+}

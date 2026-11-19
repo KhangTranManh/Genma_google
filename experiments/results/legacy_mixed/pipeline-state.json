@@ -1,0 +1,59 @@
+{
+  "phase": "needs_review",
+  "model_index": 2,
+  "prompt_trials": 0,
+  "active_prompt": "/root/orca/projects/gpu_3.2/runs/prompt-versions/20261115T180817Z-85522e462a7f/system.md",
+  "results": [
+    {
+      "model": "e4b",
+      "run": "/root/orca/projects/gpu_3.2/runs/20261115T175334Z-b1ad0c24",
+      "status": "incomplete",
+      "elapsed_seconds": 201.863,
+      "agent": {
+        "reason": "turn_limit",
+        "turns": 24,
+        "tool_calls": 22,
+        "usage": {
+          "prompt_tokens": 57317,
+          "completion_tokens": 11440
+        }
+      }
+    },
+    {
+      "model": "12b",
+      "run": "/root/orca/projects/gpu_3.2/runs/20261115T180351Z-02f03798",
+      "status": "incomplete",
+      "elapsed_seconds": 183.296,
+      "agent": {
+        "reason": "turn_limit",
+        "turns": 24,
+        "tool_calls": 22,
+        "usage": {
+          "prompt_tokens": 66870,
+          "completion_tokens": 4004
+        }
+      }
+    },
+    {
+      "model": "12b",
+      "run": "/root/orca/projects/gpu_3.2/runs/20261115T180853Z-836cb27c",
+      "status": "local_pass",
+      "elapsed_seconds": 124.222,
+      "agent": {
+        "reason": "submitted",
+        "turns": 12,
+        "tool_calls": 11,
+        "usage": {
+          "prompt_tokens": 28233,
+          "completion_tokens": 3104
+        }
+      }
+    }
+  ],
+  "in_progress": false,
+  "updated_at": "2026-11-15T18:25:39.305461+00:00",
+  "last_run": "/root/orca/projects/gpu_3.2/runs/20261115T180853Z-836cb27c",
+  "last_working_model": "31b",
+  "error": "timed out",
+  "restored_model": "31b"
+}

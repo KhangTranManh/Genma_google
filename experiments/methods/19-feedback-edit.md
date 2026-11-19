@@ -1,0 +1,13 @@
+# Feedback edit v1
+
+Two trajectories,31B/12B, short context only. Fresh first generation exactly matches infer-edit-v1 infer_fix short messages/schema/settings. At most2 further repair generations, each one edit_file call,temperature0/output512/thinkingoff/context16384. No hidden reference solution. Existing one-shot is historical baseline, not equal-budget randomized control.
+
+Public diagnostic: get_base_url("<base "*6000),3 samples,function time median≤0.2s,2s subprocess timeout. Also67 existing functional tests. Public check preflight must distinguish base from host diagnostic fixed code; final independent grader from method18 remains frozen, measures2K/4K/8K/30K and normal URL cases, never enters model prompt.
+
+Raw/API calls executed independently in clean container snapshots initialized with current cumulative source. Model sees only API path result, current exact block and previous public feedback. Invalid/no call keeps current source and consumes attempt. Unsupported/truncated raw decoding retained distinctly; do not mislabel as no model output. End early based ONLY on public check passing; otherwise stop at third generation. Always independently grade final API candidate, irrespective of public pass. Final independent failure does not grant another attempt. No fixed expression or expected patch in feedback. Native raw capture/replay same generation on every attempt.
+
+Fresh prompt per attempt reconstructs issue, current source and complete prior parsed calls/public results; this is host-assisted repair with state handoff, not autonomous navigation or a native multi-turn tool conversation. Repository source stays cumulative between attempts via host snapshots; no resets to original except fresh reproduction of same cumulative source for execution. Only w3lib/html.py allowed. Capture tool response, diffs, input and source before/after. All host source edits are inside disposable containers.
+
+Separate budget up to3×512 generated tokens/model vs one-shot512; no blind-retry arm, so success cannot be causally attributed solely to feedback. One public issue, no statistical/general capability claim. Two trajectories, at most6 captures/12 candidate executions, plus2 final independent grades. Public and independent graders overlap in problem family, differ in inputs and checks; avoid calling the latter a held-out competition score.
+
+Frozen sources/input hashes before activation; shared GPU lock. Finite service gemma-feedback-edit-v1; source artifacts runs/feedback-edit-v1, HTML reports/feedback-edit-v1/comparison.html. Auto-update after every attempt and final grade, self-stop, no recurring trigger or continuous GPU monitoring.

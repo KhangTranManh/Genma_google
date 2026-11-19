@@ -1,0 +1,22 @@
+{
+  "role_split": [
+    {
+      "id": "hypothesis_0",
+      "instruction": "Assigned hypothesis is supplied at runtime.",
+      "target_prompt_tokens": 0,
+      "pair_reference": "role_split_v1"
+    },
+    {
+      "id": "hypothesis_1",
+      "instruction": "Assigned hypothesis is supplied at runtime.",
+      "target_prompt_tokens": 0,
+      "pair_reference": "role_split_v1"
+    },
+    {
+      "id": "hypothesis_2",
+      "instruction": "Assigned hypothesis is supplied at runtime.",
+      "target_prompt_tokens": 0,
+      "pair_reference": "role_split_v1"
+    }
+  ]
+}

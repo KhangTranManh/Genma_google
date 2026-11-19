@@ -1,0 +1,59 @@
+{
+  "batch_status": "complete",
+  "frozen_source_changes": [],
+  "models": {
+    "31b": {
+      "calls": 2,
+      "output_tokens": 1294,
+      "truncated_calls": 0,
+      "patches": 0,
+      "selected": null,
+      "selection_reason": null,
+      "revision_completed": true,
+      "initial_known_probe_matches": [
+        4,
+        1,
+        4
+      ],
+      "initial_known_probe_contradictions": [
+        [],
+        [
+          "single_open",
+          "closed_tags",
+          "plain_text"
+        ],
+        []
+      ],
+      "revised_known_probe_matches": [
+        4,
+        4,
+        4
+      ],
+      "revised_new_probe_matches": [
+        1,
+        1,
+        1
+      ],
+      "revised_contradictions": [
+        [
+          "repeated_open_then_href"
+        ],
+        [
+          "repeated_open_then_href"
+        ],
+        [
+          "repeated_open_then_href"
+        ]
+      ]
+    },
+    "12b": {
+      "calls": 1,
+      "output_tokens": 2048,
+      "truncated_calls": 1,
+      "patches": 0,
+      "selected": null,
+      "selection_reason": "localize_output_unavailable",
+      "revision_completed": false
+    }
+  }
+}

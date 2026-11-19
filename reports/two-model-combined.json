@@ -1,0 +1,132 @@
+{
+  "spec": {
+    "experiments": [
+      "combined_control_v1",
+      "combined_prompt_v1"
+    ],
+    "models": [
+      "12b",
+      "31b"
+    ]
+  },
+  "rows": [
+    {
+      "model": "12b",
+      "experiment": "combined_control_v1",
+      "label": "Code mới + prompt cũ",
+      "run_id": "20261116T095110Z-1b568551",
+      "base_commit": "cc732c6a3bab4f5498a9e7c46e6dfc56d8925a72",
+      "synthetic_dataset_identity": true,
+      "status": "local_pass",
+      "stop_reason": "submitted",
+      "submission_origin": "model",
+      "autonomous_pass": true,
+      "seconds": 109.01,
+      "turns": 16,
+      "tool_calls": 16,
+      "input_tokens": 40581,
+      "output_tokens": 2208,
+      "evaluation": {
+        "passed": 6,
+        "total": 6,
+        "exit_code": 0,
+        "error": null
+      },
+      "recovered_evaluation": null,
+      "control_sha256": "29472d1b67af2ed38e2e301a71a0360a1320d6f6e96188996ffc1e9855bf7a7b",
+      "evidence": "runs/20261116T095110Z-1b568551/manifest.json"
+    },
+    {
+      "model": "31b",
+      "experiment": "combined_control_v1",
+      "label": "Code mới + prompt cũ",
+      "run_id": "20261116T095508Z-17560357",
+      "base_commit": "67522dd5d00baadc592daa0b71dbcb0c49502298",
+      "synthetic_dataset_identity": true,
+      "status": "local_pass",
+      "stop_reason": "submitted",
+      "submission_origin": "model",
+      "autonomous_pass": true,
+      "seconds": 136.543,
+      "turns": 12,
+      "tool_calls": 12,
+      "input_tokens": 26379,
+      "output_tokens": 1136,
+      "evaluation": {
+        "passed": 6,
+        "total": 6,
+        "exit_code": 0,
+        "error": null
+      },
+      "recovered_evaluation": null,
+      "control_sha256": "a6b783e5b0af923f61b097267604cd5058769429506438f33a705f59e6b6ff9f",
+      "evidence": "runs/20261116T095508Z-17560357/manifest.json"
+    },
+    {
+      "model": "12b",
+      "experiment": "combined_prompt_v1",
+      "label": "Code mới + prompt mới",
+      "run_id": "20261116T100127Z-9d8867f5",
+      "base_commit": "c2d76b56acae07bf48e6785aa81f0331f76f28b6",
+      "synthetic_dataset_identity": true,
+      "status": "local_pass",
+      "stop_reason": "submitted",
+      "submission_origin": "model",
+      "autonomous_pass": true,
+      "seconds": 102.178,
+      "turns": 14,
+      "tool_calls": 14,
+      "input_tokens": 35991,
+      "output_tokens": 2150,
+      "evaluation": {
+        "passed": 6,
+        "total": 6,
+        "exit_code": 0,
+        "error": null
+      },
+      "recovered_evaluation": null,
+      "control_sha256": "29472d1b67af2ed38e2e301a71a0360a1320d6f6e96188996ffc1e9855bf7a7b",
+      "evidence": "runs/20261116T100127Z-9d8867f5/manifest.json"
+    },
+    {
+      "model": "31b",
+      "experiment": "combined_prompt_v1",
+      "label": "Code mới + prompt mới",
+      "run_id": "20261116T100516Z-7145d893",
+      "base_commit": "ffe2130cf7b3d55927a300349f4e4c5411e66a3d",
+      "synthetic_dataset_identity": true,
+      "status": "local_pass",
+      "stop_reason": "submitted",
+      "submission_origin": "model",
+      "autonomous_pass": true,
+      "seconds": 214.338,
+      "turns": 17,
+      "tool_calls": 17,
+      "input_tokens": 41923,
+      "output_tokens": 1795,
+      "evaluation": {
+        "passed": 6,
+        "total": 6,
+        "exit_code": 0,
+        "error": null
+      },
+      "recovered_evaluation": null,
+      "control_sha256": "a6b783e5b0af923f61b097267604cd5058769429506438f33a705f59e6b6ff9f",
+      "evidence": "runs/20261116T100516Z-7145d893/manifest.json"
+    }
+  ],
+  "warnings": [],
+  "assessments": [
+    {
+      "model": "12b",
+      "experiment": "combined_prompt_v1",
+      "finding": "Cả hai tự submit và pass; thời gian candidate trừ baseline = -6.8s. Một mẫu chưa chứng minh cải thiện ổn định."
+    },
+    {
+      "model": "31b",
+      "experiment": "combined_prompt_v1",
+      "finding": "Cả hai tự submit và pass; thời gian candidate trừ baseline = +77.8s. Một mẫu chưa chứng minh cải thiện ổn định."
+    }
+  ],
+  "identity_note": "URLKit tạo commit mới mỗi lượt (timestamp khác). So khớp nội dung bằng dataset hash đã đóng băng; giữ SHA gốc trong từng record. Repo thực vẫn so SHA chính xác."
+}

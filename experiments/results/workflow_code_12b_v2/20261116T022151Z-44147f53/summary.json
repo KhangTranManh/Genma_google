@@ -1,0 +1,35 @@
+{
+  "run_id": "20261116T022151Z-44147f53",
+  "experiment_id": "workflow_code_12b_v2",
+  "method": "workflow_code",
+  "comparison_valid": true,
+  "model": "12b",
+  "task": "demo-urlkit-query",
+  "status": "local_pass",
+  "elapsed_seconds": 76.767,
+  "agent": {
+    "reason": "submitted",
+    "turns": 12,
+    "tool_calls": 12,
+    "usage": {
+      "prompt_tokens": 28137,
+      "completion_tokens": 1591
+    },
+    "candidate_claim": {
+      "reason": "submitted",
+      "turns": 12,
+      "tool_calls": 11,
+      "usage": {
+        "prompt_tokens": 28137,
+        "completion_tokens": 1591
+      }
+    }
+  },
+  "error": null,
+  "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+  "workflow_sha256": "936a9c5ce82be35f61fdb47871125ce8eb47684365308ebdf90552476fa14f00",
+  "workflow_variant": "baseline",
+  "variant_workflow_sha256": "2b0cd7de9bcd051d6505b9bbbfd2014ae493c121b328c2f83ea45ea0f4eafb32",
+  "raw_sha256": "dc56b5b82026867a715cf56adf97a3b04911b5e8ad66e50dad62c1f91af3062b",
+  "source_run": "runs/20261116T022151Z-44147f53"
+}

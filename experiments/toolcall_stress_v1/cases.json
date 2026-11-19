@@ -1,0 +1,158 @@
+{
+  "short_direct": [
+    {
+      "id": "read_range",
+      "tool": "read_file",
+      "expected_arguments": {
+        "filepath": "src/example.py",
+        "start_line": 17,
+        "end_line": 31
+      },
+      "instruction": "Call read_file exactly once for src/example.py, from line 17 through line 31. Do not execute or invent a tool result.",
+      "pair_reference": "read_range"
+    },
+    {
+      "id": "write_quotes_newlines",
+      "tool": "write_file",
+      "expected_arguments": {
+        "filepath": "scratch/example.py",
+        "content": "message = \"hello\"\nprint(message)\n"
+      },
+      "instruction": "Call write_file exactly once. filepath must be scratch/example.py. content must contain these two Python lines, each followed by a newline: message = \"hello\" and print(message). Do not claim the file was written.",
+      "pair_reference": "write_quotes_newlines"
+    },
+    {
+      "id": "edit_exact_line",
+      "tool": "edit_file",
+      "expected_arguments": {
+        "filepath": "src/example.py",
+        "old_string": "    return value - 1",
+        "new_string": "    return value + 1"
+      },
+      "instruction": "Call edit_file exactly once for src/example.py. Replace the string consisting of four spaces followed by return value - 1 with four spaces followed by return value + 1. Do not execute or invent a tool result.",
+      "pair_reference": "edit_exact_line"
+    },
+    {
+      "id": "run_test_command",
+      "tool": "run_command",
+      "expected_arguments": {
+        "command": "python -m pytest tests/test_example.py -q"
+      },
+      "instruction": "Call run_command exactly once with command exactly python -m pytest tests/test_example.py -q. Do not execute the command or invent its output.",
+      "pair_reference": "run_test_command"
+    }
+  ],
+  "long_direct": [
+    {
+      "id": "read_range",
+      "tool": "read_file",
+      "expected_arguments": {
+        "filepath": "src/example.py",
+        "start_line": 17,
+        "end_line": 31
+      },
+      "instruction": "Call read_file exactly once for src/example.py, from line 17 through line 31. Do not execute or invent a tool result.",
+      "pair_reference": "read_range"
+    },
+    {
+      "id": "write_quotes_newlines",
+      "tool": "write_file",
+      "expected_arguments": {
+        "filepath": "scratch/example.py",
+        "content": "message = \"hello\"\nprint(message)\n"
+      },
+      "instruction": "Call write_file exactly once. filepath must be scratch/example.py. content must contain these two Python lines, each followed by a newline: message = \"hello\" and print(message). Do not claim the file was written.",
+      "pair_reference": "write_quotes_newlines"
+    },
+    {
+      "id": "edit_exact_line",
+      "tool": "edit_file",
+      "expected_arguments": {
+        "filepath": "src/example.py",
+        "old_string": "    return value - 1",
+        "new_string": "    return value + 1"
+      },
+      "instruction": "Call edit_file exactly once for src/example.py. Replace the string consisting of four spaces followed by return value - 1 with four spaces followed by return value + 1. Do not execute or invent a tool result.",
+      "pair_reference": "edit_exact_line"
+    },
+    {
+      "id": "run_test_command",
+      "tool": "run_command",
+      "expected_arguments": {
+        "command": "python -m pytest tests/test_example.py -q"
+      },
+      "instruction": "Call run_command exactly once with command exactly python -m pytest tests/test_example.py -q. Do not execute the command or invent its output.",
+      "pair_reference": "run_test_command"
+    }
+  ],
+  "short_skill": [
+    {
+      "id": "read_list",
+      "tool": "run_skill_script",
+      "expected_arguments": {
+        "skill_name": "bounded-workspace",
+        "file_path": "scripts/workspace_ops.py",
+        "args": [
+          "read",
+          "--path",
+          "src/example.py",
+          "--start",
+          "17",
+          "--end",
+          "31"
+        ]
+      },
+      "pair_reference": "read_range",
+      "instruction": "The skill bounded-workspace is already available for this formatting probe. Emit exactly one run_skill_script call with these argument values: {\"skill_name\": \"bounded-workspace\", \"file_path\": \"scripts/workspace_ops.py\", \"args\": [\"read\", \"--path\", \"src/example.py\", \"--start\", \"17\", \"--end\", \"31\"]}. Do not execute the script or invent a result."
+    },
+    {
+      "id": "read_object",
+      "tool": "run_skill_script",
+      "expected_arguments": {
+        "skill_name": "bounded-workspace",
+        "file_path": "scripts/workspace_ops.py",
+        "args": {
+          "path": "src/example.py",
+          "start": 17,
+          "end": 31
+        },
+        "positional_args": [
+          "read"
+        ]
+      },
+      "pair_reference": "read_range",
+      "instruction": "The skill bounded-workspace is already available for this formatting probe. Emit exactly one run_skill_script call with these argument values: {\"skill_name\": \"bounded-workspace\", \"file_path\": \"scripts/workspace_ops.py\", \"args\": {\"path\": \"src/example.py\", \"start\": 17, \"end\": 31}, \"positional_args\": [\"read\"]}. Do not execute the script or invent a result."
+    },
+    {
+      "id": "test_list",
+      "tool": "run_skill_script",
+      "expected_arguments": {
+        "skill_name": "bounded-workspace",
+        "file_path": "scripts/workspace_ops.py",
+        "args": [
+          "test",
+          "--path",
+          "tests/test_example.py"
+        ]
+      },
+      "pair_reference": "run_test_command",
+      "instruction": "The skill bounded-workspace is already available for this formatting probe. Emit exactly one run_skill_script call with these argument values: {\"skill_name\": \"bounded-workspace\", \"file_path\": \"scripts/workspace_ops.py\", \"args\": [\"test\", \"--path\", \"tests/test_example.py\"]}. Do not execute the script or invent a result."
+    },
+    {
+      "id": "test_object",
+      "tool": "run_skill_script",
+      "expected_arguments": {
+        "skill_name": "bounded-workspace",
+        "file_path": "scripts/workspace_ops.py",
+        "args": {
+          "path": "tests/test_example.py"
+        },
+        "positional_args": [
+          "test"
+        ]
+      },
+      "pair_reference": "run_test_command",
+      "instruction": "The skill bounded-workspace is already available for this formatting probe. Emit exactly one run_skill_script call with these argument values: {\"skill_name\": \"bounded-workspace\", \"file_path\": \"scripts/workspace_ops.py\", \"args\": {\"path\": \"tests/test_example.py\"}, \"positional_args\": [\"test\"]}. Do not execute the script or invent a result."
+    }
+  ]
+}

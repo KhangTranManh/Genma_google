@@ -1,0 +1,16 @@
+name = "proposed-distinguishing-probe-v1"
+max_proposals_per_trajectory = 2
+max_segments = 8
+max_literal_characters = 256
+max_repeat_per_segment = 6000
+max_total_utf8_bytes = 131072
+max_base_url_characters = 2048
+per_process_timeout_seconds = 3
+overall_worker_deadline_seconds = 20
+worker_memory_limit_mib = 512
+repeats = 3
+fast_max_seconds = 0.05
+slow_min_seconds = 0.2
+allow_model_python_or_shell = false
+requires_unseen_input_hash = true
+hard_pruning_enabled = false

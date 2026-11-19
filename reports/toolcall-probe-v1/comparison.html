@@ -1,0 +1,93 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Raw vs parsed tool calls</title><style>body{font:16px/1.6 system-ui;max-width:1200px;margin:30px auto;padding:0 20px;color:#17304d}table{border-collapse:collapse;width:100%}td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}.scroll{overflow:auto}pre{white-space:pre-wrap;background:#f4f6fa;padding:15px}details{margin:10px 0}</style><h1>Raw token → parser → arguments</h1><p>Cập nhật UTC: 2026-11-18T01:45:41.997640+00:00 · Đã capture 8/8 · Không thực thi tool.</p><p>Raw và arguments lấy từ cùng response; replay bằng Gemma4Parser của vLLM cục bộ. Nhãn parser mismatch chỉ là nghi vấn cần kiểm chứng. Decoder độc lập chỉ hỗ trợ native syntax phẳng trong bốn case này.</p>
+<div class="scroll"><table><tr><th>Model</th><th>Case</th><th>Label</th><th>Raw đúng</th><th>API đúng</th><th>Replay = API</th></tr>
+<tr><td>12b</td><td>read_range</td><td>correct</td><td>True</td><td>True</td><td>True</td></tr>
+<tr><td>12b</td><td>write_quotes_newlines</td><td>correct</td><td>True</td><td>True</td><td>True</td></tr>
+<tr><td>12b</td><td>edit_exact_line</td><td>raw_output_defect</td><td>False</td><td>False</td><td>True</td></tr>
+<tr><td>12b</td><td>run_test_command</td><td>correct</td><td>True</td><td>True</td><td>True</td></tr>
+<tr><td>31b</td><td>read_range</td><td>correct</td><td>True</td><td>True</td><td>True</td></tr>
+<tr><td>31b</td><td>write_quotes_newlines</td><td>correct</td><td>True</td><td>True</td><td>True</td></tr>
+<tr><td>31b</td><td>edit_exact_line</td><td>correct</td><td>True</td><td>True</td><td>True</td></tr>
+<tr><td>31b</td><td>run_test_command</td><td>correct</td><td>True</td><td>True</td><td>True</td></tr>
+</table></div><p>Tám request ngắn chưa đủ loại trừ lỗi ở context dài, streaming, tool schema phức tạp hoặc adapter ADK. Không dùng tỷ lệ này làm điểm sửa repo.</p>
+<h2>Diễn giải kết quả</h2>
+<p>8/8 capture có native arguments, API arguments và engine replay khớp nhau. Chưa tái hiện mất/ghép field do parser trong bộ ca nhỏ này.</p>
+<p>12B/edit_exact_line: output gốc là read_file(src/example.py), trong khi yêu cầu edit_file. Đây là lệch lựa chọn tool so với yêu cầu, không phải native syntax hỏng hay field bị parser làm mất. Có thể liên quan thói quen đọc trước sửa; phép thử chưa xác định cơ chế nội tại.</p>
+<p>Chưa kiểm tra ADK/LiteLLM response adapter, streaming, chuỗi hội thoại dài hoặc run_skill_script với arguments lồng nhau. Không kết luận parser hoàn toàn không lỗi hoặc quy mọi thất bại repo cho model.</p>
+<p>Bước tiếp theo nên tái hiện một trường hợp từng lỗi bằng context/schema phức tạp hơn, vẫn thu raw và parsed cùng generation; không sửa parser hoặc weights chỉ dựa vào 8 mẫu này.</p>
+<details><summary>12b / read_range / correct</summary><p>Native raw:</p><pre>&lt;|tool_call&gt;call:read_file{end_line:31,filepath:&lt;|&quot;|&gt;src/example.py&lt;|&quot;|&gt;,start_line:17}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><p>API parsed:</p><pre>[
+  {
+    &quot;name&quot;: &quot;read_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;end_line&quot;: 31,
+      &quot;filepath&quot;: &quot;src/example.py&quot;,
+      &quot;start_line&quot;: 17
+    }
+  }
+]</pre><p><a href="../../runs/toolcall-probe-v1/12b/read_range/response.json">Response gốc</a> · <a href="../../runs/toolcall-probe-v1/12b/read_range/engine-replay.json">Engine replay</a></p></details>
+<details><summary>12b / write_quotes_newlines / correct</summary><p>Native raw:</p><pre>&lt;|tool_call&gt;call:write_file{content:&lt;|&quot;|&gt;message = &quot;hello&quot;
+print(message)
+&lt;|&quot;|&gt;,filepath:&lt;|&quot;|&gt;scratch/example.py&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><p>API parsed:</p><pre>[
+  {
+    &quot;name&quot;: &quot;write_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;content&quot;: &quot;message = \&quot;hello\&quot;\nprint(message)\n&quot;,
+      &quot;filepath&quot;: &quot;scratch/example.py&quot;
+    }
+  }
+]</pre><p><a href="../../runs/toolcall-probe-v1/12b/write_quotes_newlines/response.json">Response gốc</a> · <a href="../../runs/toolcall-probe-v1/12b/write_quotes_newlines/engine-replay.json">Engine replay</a></p></details>
+<details><summary>12b / edit_exact_line / raw_output_defect</summary><p>Native raw:</p><pre>&lt;|tool_call&gt;call:read_file{filepath:&lt;|&quot;|&gt;src/example.py&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><p>API parsed:</p><pre>[
+  {
+    &quot;name&quot;: &quot;read_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;filepath&quot;: &quot;src/example.py&quot;
+    }
+  }
+]</pre><p><a href="../../runs/toolcall-probe-v1/12b/edit_exact_line/response.json">Response gốc</a> · <a href="../../runs/toolcall-probe-v1/12b/edit_exact_line/engine-replay.json">Engine replay</a></p></details>
+<details><summary>12b / run_test_command / correct</summary><p>Native raw:</p><pre>&lt;|tool_call&gt;call:run_command{command:&lt;|&quot;|&gt;python -m pytest tests/test_example.py -q&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><p>API parsed:</p><pre>[
+  {
+    &quot;name&quot;: &quot;run_command&quot;,
+    &quot;arguments&quot;: {
+      &quot;command&quot;: &quot;python -m pytest tests/test_example.py -q&quot;
+    }
+  }
+]</pre><p><a href="../../runs/toolcall-probe-v1/12b/run_test_command/response.json">Response gốc</a> · <a href="../../runs/toolcall-probe-v1/12b/run_test_command/engine-replay.json">Engine replay</a></p></details>
+<details><summary>31b / read_range / correct</summary><p>Native raw:</p><pre>&lt;|tool_call&gt;call:read_file{end_line:31,filepath:&lt;|&quot;|&gt;src/example.py&lt;|&quot;|&gt;,start_line:17}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><p>API parsed:</p><pre>[
+  {
+    &quot;name&quot;: &quot;read_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;end_line&quot;: 31,
+      &quot;filepath&quot;: &quot;src/example.py&quot;,
+      &quot;start_line&quot;: 17
+    }
+  }
+]</pre><p><a href="../../runs/toolcall-probe-v1/31b/read_range/response.json">Response gốc</a> · <a href="../../runs/toolcall-probe-v1/31b/read_range/engine-replay.json">Engine replay</a></p></details>
+<details><summary>31b / write_quotes_newlines / correct</summary><p>Native raw:</p><pre>&lt;|tool_call&gt;call:write_file{content:&lt;|&quot;|&gt;message = &quot;hello&quot;
+print(message)
+&lt;|&quot;|&gt;,filepath:&lt;|&quot;|&gt;scratch/example.py&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><p>API parsed:</p><pre>[
+  {
+    &quot;name&quot;: &quot;write_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;content&quot;: &quot;message = \&quot;hello\&quot;\nprint(message)\n&quot;,
+      &quot;filepath&quot;: &quot;scratch/example.py&quot;
+    }
+  }
+]</pre><p><a href="../../runs/toolcall-probe-v1/31b/write_quotes_newlines/response.json">Response gốc</a> · <a href="../../runs/toolcall-probe-v1/31b/write_quotes_newlines/engine-replay.json">Engine replay</a></p></details>
+<details><summary>31b / edit_exact_line / correct</summary><p>Native raw:</p><pre>&lt;|tool_call&gt;call:edit_file{filepath:&lt;|&quot;|&gt;src/example.py&lt;|&quot;|&gt;,new_string:&lt;|&quot;|&gt;    return value + 1&lt;|&quot;|&gt;,old_string:&lt;|&quot;|&gt;    return value - 1&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><p>API parsed:</p><pre>[
+  {
+    &quot;name&quot;: &quot;edit_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;filepath&quot;: &quot;src/example.py&quot;,
+      &quot;new_string&quot;: &quot;    return value + 1&quot;,
+      &quot;old_string&quot;: &quot;    return value - 1&quot;
+    }
+  }
+]</pre><p><a href="../../runs/toolcall-probe-v1/31b/edit_exact_line/response.json">Response gốc</a> · <a href="../../runs/toolcall-probe-v1/31b/edit_exact_line/engine-replay.json">Engine replay</a></p></details>
+<details><summary>31b / run_test_command / correct</summary><p>Native raw:</p><pre>&lt;|tool_call&gt;call:run_command{command:&lt;|&quot;|&gt;python -m pytest tests/test_example.py -q&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><p>API parsed:</p><pre>[
+  {
+    &quot;name&quot;: &quot;run_command&quot;,
+    &quot;arguments&quot;: {
+      &quot;command&quot;: &quot;python -m pytest tests/test_example.py -q&quot;
+    }
+  }
+]</pre><p><a href="../../runs/toolcall-probe-v1/31b/run_test_command/response.json">Response gốc</a> · <a href="../../runs/toolcall-probe-v1/31b/run_test_command/engine-replay.json">Engine replay</a></p></details>
+<p><a href="../../experiments/methods/13-toolcall-parser-probe.md">Định nghĩa</a> · <a href="comparison.json">JSON</a> · <a href="../study-report.html">Báo cáo tổng</a></p></html>

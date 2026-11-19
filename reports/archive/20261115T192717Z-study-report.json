@@ -1,0 +1,412 @@
+{
+  "name": "gemma-local-study-v1",
+  "generated_at": "2026-11-15T19:27:17.749693+00:00",
+  "controller": {
+    "status": "needs_review",
+    "stage_index": 1,
+    "current_stage": "prompt_only_12b_v1",
+    "updated_at": "2026-11-15T19:27:17.749187+00:00",
+    "completed_stages": [
+      "model_sweep_v1"
+    ],
+    "error": "vLLM 12b failed to start; inspect runs/vllm-12b.log"
+  },
+  "stages": [
+    {
+      "id": "model_sweep_v1",
+      "profile": "model_sweep",
+      "mode": "experiment",
+      "config": "configs/experiments/model_sweep.toml",
+      "state": {
+        "phase": "complete",
+        "model_index": 3,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "model_sweep_v1",
+          "method": "model_sweep",
+          "comparison_valid": true
+        },
+        "active_prompt": "submission/prompts/system.md",
+        "results": [
+          {
+            "model": "e4b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261115T185117Z-5ed36d41",
+            "status": "local_fail",
+            "elapsed_seconds": 113.25,
+            "agent": {
+              "reason": "submitted",
+              "turns": 16,
+              "tool_calls": 16,
+              "usage": {
+                "prompt_tokens": 40674,
+                "completion_tokens": 5874
+              }
+            }
+          },
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261115T190437Z-ec445846",
+            "status": "local_pass",
+            "elapsed_seconds": 125.839,
+            "agent": {
+              "reason": "submitted",
+              "turns": 12,
+              "tool_calls": 11,
+              "usage": {
+                "prompt_tokens": 28233,
+                "completion_tokens": 3104
+              }
+            }
+          },
+          {
+            "model": "31b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261115T191757Z-54afaf6b",
+            "status": "incomplete",
+            "elapsed_seconds": 241.935,
+            "agent": {
+              "reason": "time_limit",
+              "turns": 15,
+              "tool_calls": 14,
+              "usage": {
+                "prompt_tokens": 33296,
+                "completion_tokens": 2455
+              }
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "0617e38b1552850cf551be88b8df1f269e82907eb5a4de0c51f341fd868faab9",
+          "baseline_prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "fc31c7c01bb6a2f16c8d0ef7437f56c6443050384740efc13258feb70814b8ee"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-15T19:21:59.761390+00:00",
+        "last_working_model": "31b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261115T191757Z-54afaf6b"
+      },
+      "runs": [
+        {
+          "run_id": "20261115T185117Z-5ed36d41",
+          "model": "e4b",
+          "status": "local_fail",
+          "elapsed_seconds": 113.25,
+          "agent": {
+            "reason": "submitted",
+            "turns": 16,
+            "tool_calls": 16,
+            "usage": {
+              "prompt_tokens": 40674,
+              "completion_tokens": 5874
+            }
+          },
+          "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "workflow_sha256": "0617e38b1552850cf551be88b8df1f269e82907eb5a4de0c51f341fd868faab9",
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 40674,
+          "completion_tokens": 5874,
+          "evaluation": {
+            "exit_code": 1,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 3
+          },
+          "evidence": "runs/20261115T185117Z-5ed36d41/manifest.json",
+          "experiment": "model_sweep_v1"
+        },
+        {
+          "run_id": "20261115T190437Z-ec445846",
+          "model": "12b",
+          "status": "local_pass",
+          "elapsed_seconds": 125.839,
+          "agent": {
+            "reason": "submitted",
+            "turns": 12,
+            "tool_calls": 11,
+            "usage": {
+              "prompt_tokens": 28233,
+              "completion_tokens": 3104
+            }
+          },
+          "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "workflow_sha256": "0617e38b1552850cf551be88b8df1f269e82907eb5a4de0c51f341fd868faab9",
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 28233,
+          "completion_tokens": 3104,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261115T190437Z-ec445846/manifest.json",
+          "experiment": "model_sweep_v1"
+        },
+        {
+          "run_id": "20261115T191757Z-54afaf6b",
+          "model": "31b",
+          "status": "incomplete",
+          "elapsed_seconds": 241.935,
+          "agent": {
+            "reason": "time_limit",
+            "turns": 15,
+            "tool_calls": 14,
+            "usage": {
+              "prompt_tokens": 33296,
+              "completion_tokens": 2455
+            }
+          },
+          "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "workflow_sha256": "0617e38b1552850cf551be88b8df1f269e82907eb5a4de0c51f341fd868faab9",
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 33296,
+          "completion_tokens": 2455,
+          "evaluation": null,
+          "evidence": "runs/20261115T191757Z-54afaf6b/manifest.json",
+          "experiment": "model_sweep_v1"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "prompt_only_12b_v1",
+      "profile": "prompt_only",
+      "mode": "experiment",
+      "config": "configs/experiments/prompt_only.toml",
+      "state": {
+        "phase": "needs_review",
+        "model_index": 0,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "prompt_only_12b_v1",
+          "method": "prompt_only",
+          "comparison_valid": true
+        },
+        "active_prompt": "submission/prompts/system.md",
+        "results": [],
+        "invariants": {
+          "workflow_sha256": "0617e38b1552850cf551be88b8df1f269e82907eb5a4de0c51f341fd868faab9",
+          "baseline_prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "e1b885ec657afd61606d29792ee8b013e2208165d475e63ab13cb0d220e7c7e5"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-15T19:25:20.707773+00:00",
+        "error": "vLLM 12b failed to start; inspect runs/vllm-12b.log"
+      },
+      "runs": [],
+      "status": "needs_review",
+      "comparison_violations": []
+    },
+    {
+      "id": "workflow_code_12b_v1",
+      "mode": "definition",
+      "config": "configs/experiments/workflow_code.toml",
+      "definition": "experiments/methods/03-workflow-code.md",
+      "state": {},
+      "runs": [],
+      "status": "definition_only",
+      "comparison_violations": []
+    }
+  ],
+  "legacy_runs": [
+    {
+      "run_id": "20261115T174438Z-73755451",
+      "model": "e4b",
+      "status": "failed",
+      "elapsed_seconds": 0.48,
+      "agent": null,
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": "fatal: not in a git directory\n",
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "evaluation": null,
+      "evidence": "runs/20261115T174438Z-73755451/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T174450Z-aa699693",
+      "model": "e4b",
+      "status": "failed",
+      "elapsed_seconds": 0.467,
+      "agent": null,
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": "Command '['docker', 'cp', '-', 'gemma-lab-d04d642fde06:/tmp']' returned non-zero exit status 1.",
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "evaluation": null,
+      "evidence": "runs/20261115T174450Z-aa699693/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T174505Z-ddd966d9",
+      "model": "e4b",
+      "status": "failed",
+      "elapsed_seconds": 21.482,
+      "agent": null,
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": "Generation reached max_tokens; increase workflow.max_output_tokens",
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "evaluation": null,
+      "evidence": "runs/20261115T174505Z-ddd966d9/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T174601Z-eb44be25",
+      "model": "e4b",
+      "status": "local_fail",
+      "elapsed_seconds": 31.973,
+      "agent": {
+        "reason": "submitted",
+        "turns": 5,
+        "tool_calls": 5,
+        "usage": {
+          "prompt_tokens": 5196,
+          "completion_tokens": 1860
+        }
+      },
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": null,
+      "prompt_tokens": 5196,
+      "completion_tokens": 1860,
+      "evaluation": {
+        "exit_code": 1,
+        "timed_out": false,
+        "tests": 6,
+        "passed": 3
+      },
+      "evidence": "runs/20261115T174601Z-eb44be25/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T174806Z-6a5ac729",
+      "model": "e4b",
+      "status": "incomplete",
+      "elapsed_seconds": 235.263,
+      "agent": {
+        "reason": "turn_limit",
+        "turns": 24,
+        "tool_calls": 19,
+        "usage": {
+          "prompt_tokens": 51468,
+          "completion_tokens": 13936
+        }
+      },
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": null,
+      "prompt_tokens": 51468,
+      "completion_tokens": 13936,
+      "evaluation": null,
+      "evidence": "runs/20261115T174806Z-6a5ac729/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T175334Z-b1ad0c24",
+      "model": "e4b",
+      "status": "incomplete",
+      "elapsed_seconds": 201.863,
+      "agent": {
+        "reason": "turn_limit",
+        "turns": 24,
+        "tool_calls": 22,
+        "usage": {
+          "prompt_tokens": 57317,
+          "completion_tokens": 11440
+        }
+      },
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": null,
+      "prompt_tokens": 57317,
+      "completion_tokens": 11440,
+      "evaluation": null,
+      "evidence": "runs/20261115T175334Z-b1ad0c24/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T180351Z-02f03798",
+      "model": "12b",
+      "status": "incomplete",
+      "elapsed_seconds": 183.296,
+      "agent": {
+        "reason": "turn_limit",
+        "turns": 24,
+        "tool_calls": 22,
+        "usage": {
+          "prompt_tokens": 66870,
+          "completion_tokens": 4004
+        }
+      },
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": null,
+      "prompt_tokens": 66870,
+      "completion_tokens": 4004,
+      "evaluation": null,
+      "evidence": "runs/20261115T180351Z-02f03798/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T180853Z-836cb27c",
+      "model": "12b",
+      "status": "local_pass",
+      "elapsed_seconds": 124.222,
+      "agent": {
+        "reason": "submitted",
+        "turns": 12,
+        "tool_calls": 11,
+        "usage": {
+          "prompt_tokens": 28233,
+          "completion_tokens": 3104
+        }
+      },
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": null,
+      "prompt_tokens": 28233,
+      "completion_tokens": 3104,
+      "evaluation": {
+        "exit_code": 0,
+        "timed_out": false,
+        "tests": 6,
+        "passed": 6
+      },
+      "evidence": "runs/20261115T180853Z-836cb27c/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T182137Z-0fae42f7",
+      "model": "31b",
+      "status": "failed",
+      "elapsed_seconds": 241.499,
+      "agent": null,
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": "timed out",
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "evaluation": null,
+      "evidence": "runs/20261115T182137Z-0fae42f7/manifest.json",
+      "experiment": "legacy_mixed"
+    }
+  ]
+}

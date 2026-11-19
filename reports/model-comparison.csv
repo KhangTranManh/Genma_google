@@ -1,0 +1,4 @@
+model,status,submitted,public_test_passed,independent_tests_passed,independent_tests_total,elapsed_seconds,turns,tool_calls,prompt_tokens,completion_tokens,edit_errors,stop_reason,benchmark_tokens_per_second,benchmark_ttft_ms,benchmark_vram_gpu0_mib,benchmark_vram_gpu1_mib,protocol_sha256,evidence
+31b,incomplete,False,,,,344.454,48,48,123234,2125,2,turn_limit,15.423095395883182,85.457558001508,12874,12874,52be2a3355e94f26e12526576dda8e0dbe93ad00538e1d4f9c5bde6ce29e6fa2,runs/20261116T024750Z-4ba0b972/manifest.json
+12b,incomplete,False,,,,230.01,48,48,133807,3580,2,turn_limit,34.335995724674554,57.22594899998512,12884,12884,52be2a3355e94f26e12526576dda8e0dbe93ad00538e1d4f9c5bde6ce29e6fa2,runs/20261116T030440Z-921eab6d/manifest.json
+e4b,incomplete,False,,,,423.423,48,44,126816,23720,8,turn_limit,67.06363666067922,54.465508001158014,12876,12876,52be2a3355e94f26e12526576dda8e0dbe93ad00538e1d4f9c5bde6ce29e6fa2,runs/20261116T031312Z-7c7956c6/manifest.json

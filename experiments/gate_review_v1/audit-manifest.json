@@ -1,0 +1,527 @@
+{
+  "status": "defined_not_started",
+  "records": [
+    {
+      "record_id": "role-probes-v1/12b/0",
+      "source_run": "role-probes-v1",
+      "model": "12b",
+      "trajectory": "role-probes-v1/12b",
+      "source_index": 0,
+      "hypothesis": {
+        "id": "h1",
+        "filepath": "w3lib/html.py",
+        "start_line": 25,
+        "end_line": 27,
+        "cause": "The regex `_baseurl_re` uses a greedy `.*` which causes excessive backtracking when the engine fails to find a matching `href` attribute in a long string of `<base ` tags.",
+        "predicted_failure": "The engine explores many permutations of the `.*` match against the repeated `<base ` prefixes before failing, leading to quadratic time complexity relative to the number of tags.",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "plain_text"
+        ],
+        "contradicted": [
+          "single_open",
+          "closed_tags"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/role-probes-v1/12b/ranking.json",
+      "source_ranking_sha256": "ec305ca10941bf51c3c294e962696db2014530d5bab344af4f29abcdfbd7a7e9",
+      "historical_candidate_dir": null,
+      "attempt_status": "not_run",
+      "verified_patch_pass": null
+    },
+    {
+      "record_id": "role-probes-v1/12b/1",
+      "source_run": "role-probes-v1",
+      "model": "12b",
+      "trajectory": "role-probes-v1/12b",
+      "source_index": 1,
+      "hypothesis": {
+        "id": "h2",
+        "filepath": "w3lib/html.py",
+        "start_line": 25,
+        "end_line": 27,
+        "cause": "The `.*` in `_baseurl_re` is non-possessive and captures across multiple tag boundaries, forcing the engine to backtrack across all previous `<base ` tags when a match is not found.",
+        "predicted_failure": "The engine attempts to match the entire string as a single `<base ...>` tag, backtracking through every space and `<` character in the repeated sequence.",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "plain_text"
+        ],
+        "contradicted": [
+          "single_open",
+          "closed_tags"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/role-probes-v1/12b/ranking.json",
+      "source_ranking_sha256": "ec305ca10941bf51c3c294e962696db2014530d5bab344af4f29abcdfbd7a7e9",
+      "historical_candidate_dir": null,
+      "attempt_status": "not_run",
+      "verified_patch_pass": null
+    },
+    {
+      "record_id": "role-probes-v1/12b/2",
+      "source_run": "role-probes-v1",
+      "model": "12b",
+      "trajectory": "role-probes-v1/12b",
+      "source_index": 2,
+      "hypothesis": {
+        "id": "h3",
+        "filepath": "w3lib/html.py",
+        "start_line": 25,
+        "end_line": 27,
+        "cause": "The regex engine's handling of the `\b` or `\r\n` equivalents in `.*` combined with the `re.IGNORECASE` flag increases the state space for backtracking on malformed input.",
+        "predicted_failure": "The complexity is driven by the interaction between the greedy quantifier and the lack of a terminating boundary for the tag content.",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "plain_text"
+        ],
+        "contradicted": [
+          "single_open",
+          "closed_tags"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/role-probes-v1/12b/ranking.json",
+      "source_ranking_sha256": "ec305ca10941bf51c3c294e962696db2014530d5bab344af4f29abcdfbd7a7e9",
+      "historical_candidate_dir": null,
+      "attempt_status": "not_run",
+      "verified_patch_pass": null
+    },
+    {
+      "record_id": "role-probes-v1/31b/0",
+      "source_run": "role-probes-v1",
+      "model": "31b",
+      "trajectory": "role-probes-v1/31b",
+      "source_index": 0,
+      "hypothesis": {
+        "id": "catastrophic_backtracking_greedy_wildcard",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The greedy wildcard [^>]* in _baseurl_re causes catastrophic backtracking when the input contains many '<base ' sequences but lacks a closing '>' or a valid 'href' attribute, as the engine repeatedly attempts to expand the match and backtrack.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          }
+        ]
+      },
+      "old_gate": "patch_representative",
+      "old_skipped": false,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "single_open",
+          "closed_tags",
+          "plain_text"
+        ],
+        "contradicted": [],
+        "unknown": [],
+        "eligible": true,
+        "prediction_status": "consistent_not_proven"
+      },
+      "source_ranking": "runs/role-probes-v1/31b/ranking.json",
+      "source_ranking_sha256": "6ba2e174167cab02b1150da1ad75effd4880536dfcc7bcd14ca23d944f1a48b6",
+      "historical_candidate_dir": "runs/role-probes-v1/31b/role_split/hypothesis_0",
+      "attempt_status": "not_run",
+      "verified_patch_pass": null
+    },
+    {
+      "record_id": "role-probes-v1/31b/1",
+      "source_run": "role-probes-v1",
+      "model": "31b",
+      "trajectory": "role-probes-v1/31b",
+      "source_index": 1,
+      "hypothesis": {
+        "id": "greedy_attribute_overlap",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The regex fails specifically when multiple '<base' tags are present without closing brackets, because the [^>]* consumes subsequent '<base' strings, and the engine backtracks to try every possible split point to find a valid 'href' sequence.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          }
+        ]
+      },
+      "old_gate": "skip_not_distinguished",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "single_open",
+          "closed_tags",
+          "plain_text"
+        ],
+        "contradicted": [],
+        "unknown": [],
+        "eligible": true,
+        "prediction_status": "consistent_not_proven"
+      },
+      "source_ranking": "runs/role-probes-v1/31b/ranking.json",
+      "source_ranking_sha256": "6ba2e174167cab02b1150da1ad75effd4880536dfcc7bcd14ca23d944f1a48b6",
+      "historical_candidate_dir": null,
+      "attempt_status": "not_run",
+      "verified_patch_pass": null
+    },
+    {
+      "record_id": "role-probes-v1/31b/2",
+      "source_run": "role-probes-v1",
+      "model": "31b",
+      "trajectory": "role-probes-v1/31b",
+      "source_index": 2,
+      "hypothesis": {
+        "id": "linear_scan_failure",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The regex engine performs a linear scan of the input; however, the specific combination of the '<base' anchor and the subsequent greedy match causes the engine to restart the search at every single character position when no match is found, leading to quadratic time complexity relative to input length.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "slow"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open"
+        ],
+        "contradicted": [
+          "single_open",
+          "closed_tags",
+          "plain_text"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/role-probes-v1/31b/ranking.json",
+      "source_ranking_sha256": "6ba2e174167cab02b1150da1ad75effd4880536dfcc7bcd14ca23d944f1a48b6",
+      "historical_candidate_dir": null,
+      "attempt_status": "not_run",
+      "verified_patch_pass": null
+    },
+    {
+      "record_id": "revise-hyp-v1/31b/0",
+      "source_run": "revise-hyp-v1",
+      "model": "31b",
+      "trajectory": "revise-hyp-v1/31b",
+      "source_index": 0,
+      "hypothesis": {
+        "id": "catastrophic_backtracking_greedy_wildcard",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The regex _baseurl_re uses a greedy wildcard [^>]* following the '<base ' anchor. When the input contains multiple '<base ' sequences but no closing '>' or 'href', the engine attempts to match the first '<base ', then consumes subsequent '<base ' sequences via [^>]*. Upon failing to find 'href', it backtracks to the second '<base ' and repeats the process, leading to quadratic complexity relative to the number of '<base ' occurrences.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "repeated_open_then_close",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "repeated_open_then_href",
+            "expected": "slow"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "single_open",
+          "closed_tags",
+          "plain_text",
+          "repeated_open_then_close"
+        ],
+        "contradicted": [
+          "repeated_open_then_href"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/revise-hyp-v1/31b/ranking.json",
+      "source_ranking_sha256": "c2001ebdadc46340e2120d9e24dda60644d4af4dedc0006189c63ddabbcf4aa3",
+      "historical_candidate_dir": null,
+      "attempt_status": "not_run",
+      "verified_patch_pass": null
+    },
+    {
+      "record_id": "revise-hyp-v1/31b/1",
+      "source_run": "revise-hyp-v1",
+      "model": "31b",
+      "trajectory": "revise-hyp-v1/31b",
+      "source_index": 1,
+      "hypothesis": {
+        "id": "greedy_attribute_overlap",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The performance degradation is caused by the interaction between the greedy [^>]* and the required 'href' literal. In the absence of a closing '>', the engine treats the entire string as a potential attribute list for the first '<base ' match. When 'href' is missing, it backtracks to try the same greedy match starting from the second '<base ', and so on, creating a nested loop of failed match attempts.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "repeated_open_then_close",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "repeated_open_then_href",
+            "expected": "slow"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "single_open",
+          "closed_tags",
+          "plain_text",
+          "repeated_open_then_close"
+        ],
+        "contradicted": [
+          "repeated_open_then_href"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/revise-hyp-v1/31b/ranking.json",
+      "source_ranking_sha256": "c2001ebdadc46340e2120d9e24dda60644d4af4dedc0006189c63ddabbcf4aa3",
+      "historical_candidate_dir": null,
+      "attempt_status": "not_run",
+      "verified_patch_pass": null
+    },
+    {
+      "record_id": "revise-hyp-v1/31b/2",
+      "source_run": "revise-hyp-v1",
+      "model": "31b",
+      "trajectory": "revise-hyp-v1/31b",
+      "source_index": 2,
+      "hypothesis": {
+        "id": "linear_scan_failure",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The regex engine fails to efficiently discard non-matching prefixes when the input consists of repeated partial matches of the start of the regex. The combination of the anchor '<base' and the greedy [^>]* causes the engine to re-scan the remainder of the string for every instance of '<base ' encountered.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "repeated_open_then_close",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "repeated_open_then_href",
+            "expected": "slow"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "single_open",
+          "closed_tags",
+          "plain_text",
+          "repeated_open_then_close"
+        ],
+        "contradicted": [
+          "repeated_open_then_href"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/revise-hyp-v1/31b/ranking.json",
+      "source_ranking_sha256": "c2001ebdadc46340e2120d9e24dda60644d4af4dedc0006189c63ddabbcf4aa3",
+      "historical_candidate_dir": null,
+      "attempt_status": "not_run",
+      "verified_patch_pass": null
+    }
+  ],
+  "counts": {
+    "hypotheses": 9,
+    "skipped": 8,
+    "allowed_controls": 1
+  },
+  "excluded": [
+    {
+      "source_run": "revise-hyp-v1",
+      "model": "12b",
+      "reason": "Localize truncated; no complete hypotheses; not three failed hypotheses"
+    }
+  ],
+  "source_hashes": {
+    "runs/role-probes-v1/12b/ranking.json": "ec305ca10941bf51c3c294e962696db2014530d5bab344af4f29abcdfbd7a7e9",
+    "runs/role-probes-v1/31b/ranking.json": "6ba2e174167cab02b1150da1ad75effd4880536dfcc7bcd14ca23d944f1a48b6",
+    "runs/revise-hyp-v1/31b/ranking.json": "c2001ebdadc46340e2120d9e24dda60644d4af4dedc0006189c63ddabbcf4aa3"
+  }
+}

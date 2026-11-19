@@ -1,0 +1,12 @@
+[Unit]
+Description=Gemma Lab experiment sequencing and evidence report
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=@PROJECT_ROOT@
+ExecStart=@PROJECT_ROOT@/.venv/bin/python @PROJECT_ROOT@/scripts/study_runner.py --stop-timer-on-terminal
+Environment=PYTHONUNBUFFERED=1
+TimeoutStartSec=120
+StandardOutput=append:@PROJECT_ROOT@/runs/study/controller.log
+StandardError=inherit

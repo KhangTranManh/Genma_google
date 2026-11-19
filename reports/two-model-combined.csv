@@ -1,0 +1,5 @@
+model,experiment,run_id,status,autonomous_pass,seconds,turns,tool_calls,input_tokens,output_tokens,submission_origin,stop_reason,evidence
+12b,combined_control_v1,20261116T095110Z-1b568551,local_pass,True,109.01,16,16,40581,2208,model,submitted,runs/20261116T095110Z-1b568551/manifest.json
+31b,combined_control_v1,20261116T095508Z-17560357,local_pass,True,136.543,12,12,26379,1136,model,submitted,runs/20261116T095508Z-17560357/manifest.json
+12b,combined_prompt_v1,20261116T100127Z-9d8867f5,local_pass,True,102.178,14,14,35991,2150,model,submitted,runs/20261116T100127Z-9d8867f5/manifest.json
+31b,combined_prompt_v1,20261116T100516Z-7145d893,local_pass,True,214.338,17,17,41923,1795,model,submitted,runs/20261116T100516Z-7145d893/manifest.json

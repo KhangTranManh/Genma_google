@@ -1,0 +1,15 @@
+[Unit]
+Description=Gemma Lab isolated workflow-code experiment step
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=@PROJECT_ROOT@
+ExecStart=@PROJECT_ROOT@/.venv/bin/python @PROJECT_ROOT@/scripts/workflow_lab.py --stop-timer-on-terminal
+Environment=PYTHONUNBUFFERED=1
+TimeoutStartSec=15min
+TimeoutStopSec=45
+KillMode=control-group
+StandardOutput=append:@PROJECT_ROOT@/runs/pipeline/workflow_code_12b_v2/worker.log
+StandardError=inherit

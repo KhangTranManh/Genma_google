@@ -1,0 +1,983 @@
+{
+  "generated_at": "2026-11-16T17:52:43.054875+00:00",
+  "state": {
+    "status": "complete",
+    "phase": "complete",
+    "experiment": "focused-reading-v2",
+    "official_competition_score": false,
+    "completed": [
+      {
+        "model": "31b",
+        "task": "w3lib_264",
+        "arm": "prompt",
+        "resolved": true,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "w3lib_264",
+        "arm": "baseline",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "w3lib_264",
+        "arm": "skill",
+        "resolved": true,
+        "autonomous_pass": true
+      },
+      {
+        "model": "31b",
+        "task": "packaging_1125",
+        "arm": "prompt",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "packaging_1125",
+        "arm": "baseline",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "packaging_1125",
+        "arm": "skill",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "platformdirs_540",
+        "arm": "prompt",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "platformdirs_540",
+        "arm": "baseline",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "platformdirs_540",
+        "arm": "skill",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "w3lib_264",
+        "arm": "prompt",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "w3lib_264",
+        "arm": "baseline",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "w3lib_264",
+        "arm": "skill",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "packaging_1125",
+        "arm": "prompt",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "packaging_1125",
+        "arm": "baseline",
+        "resolved": true,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "packaging_1125",
+        "arm": "skill",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "platformdirs_540",
+        "arm": "prompt",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "platformdirs_540",
+        "arm": "baseline",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "platformdirs_540",
+        "arm": "skill",
+        "resolved": false,
+        "autonomous_pass": false
+      }
+    ],
+    "in_progress": false,
+    "image_ids": {
+      "w3lib_264": "sha256:8592d8130c55add0bd59372a466c8b29c7a760f3c446e94dd7b8b11383d749e7",
+      "packaging_1125": "sha256:96d9ef44608a80e49c6c0bfbb8f3484ca1a876b74b717b4ec835ab9e31cd2e51",
+      "platformdirs_540": "sha256:a8c04eb58be8358c428aee5d76532237ccd58661dfa4eba84d8bb6df2523c1f6"
+    },
+    "frozen_sha256": "edac1f47f5730acf3edbc08a340d285af4a383d723d420c5ddaee52d28a17eaa",
+    "current": {
+      "model": "12b",
+      "task": "platformdirs_540",
+      "arm": "skill"
+    },
+    "updated_at": "2026-11-16T16:47:47.882529+00:00",
+    "job_started_at": "2026-11-16T16:39:57.895355+00:00"
+  },
+  "live": {
+    "observed_at": "2026-11-16T16:48:38.250750+00:00",
+    "state": "complete",
+    "phase": "complete",
+    "current": {
+      "model": "12b",
+      "task": "platformdirs_540",
+      "arm": "skill"
+    },
+    "alerts": [],
+    "note": "Log-derived observations are partial; full ATIF analysis after completion. Alerts are passive, no agent feedback."
+  },
+  "rows": [
+    {
+      "model": "31b",
+      "arm": "baseline",
+      "task": "w3lib_264",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 904.9267840890097,
+      "llm_calls": 30,
+      "tools": 30,
+      "error": "Agent exceeded session timeout (15 min)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "read_file": 30
+        },
+        "read_requests": 30,
+        "successful_read_results": 30,
+        "bounded_read_requests": 0,
+        "repeated_identical_read_results": 29,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {},
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 202090,
+        "completion_tokens_observed": 1320,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+      "base_commit": "d5877fe4798609da79d7bfd0e683d4cd00a4dd27",
+      "evidence": "runs/reading-v2/31b/baseline/w3lib_264/summary.json"
+    },
+    {
+      "model": "31b",
+      "arm": "baseline",
+      "task": "packaging_1125",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 904.9812659140007,
+      "llm_calls": 39,
+      "tools": 39,
+      "error": "Agent exceeded session timeout (15 min)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "read_file": 30,
+          "run_command": 9
+        },
+        "read_requests": 30,
+        "successful_read_results": 30,
+        "bounded_read_requests": 0,
+        "repeated_identical_read_results": 29,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {},
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 182595,
+        "completion_tokens_observed": 1613,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+      "base_commit": "f294d529e2634798a98fd9cee6708307a5c1792c",
+      "evidence": "runs/reading-v2/31b/baseline/packaging_1125/summary.json"
+    },
+    {
+      "model": "31b",
+      "arm": "baseline",
+      "task": "platformdirs_540",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 634.9199599199928,
+      "llm_calls": 48,
+      "tools": 47,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 15,
+          "read_file": 33
+        },
+        "read_requests": 33,
+        "successful_read_results": 13,
+        "bounded_read_requests": 1,
+        "repeated_identical_read_results": 9,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 20,
+        "tool_errors_by_type": {
+          "FileReadError": 20,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 182076,
+        "completion_tokens_observed": 1461,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+      "base_commit": "a209bf88a0c5937d784baa1cddd67f69f4b411d2",
+      "evidence": "runs/reading-v2/31b/baseline/platformdirs_540/summary.json"
+    },
+    {
+      "model": "31b",
+      "arm": "prompt",
+      "task": "w3lib_264",
+      "status": "pass",
+      "autonomous_pass": false,
+      "seconds": 910.2268833459966,
+      "llm_calls": 35,
+      "tools": 35,
+      "error": null,
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 8,
+          "read_file": 25,
+          "write_file": 1,
+          "edit_file": 1
+        },
+        "read_requests": 25,
+        "successful_read_results": 25,
+        "bounded_read_requests": 1,
+        "repeated_identical_read_results": 23,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 2
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 32.25181198120117,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 213362,
+        "completion_tokens_observed": 1668,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "b105ead6d4604817647fcee48602b33b5aecc71d0aadd32de6c840a99f02c5be",
+      "base_commit": "d5877fe4798609da79d7bfd0e683d4cd00a4dd27",
+      "evidence": "runs/reading-v2/31b/prompt/w3lib_264/summary.json"
+    },
+    {
+      "model": "31b",
+      "arm": "prompt",
+      "task": "packaging_1125",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 608.7282730949955,
+      "llm_calls": 48,
+      "tools": 47,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "read_file": 29,
+          "run_command": 19
+        },
+        "read_requests": 29,
+        "successful_read_results": 28,
+        "bounded_read_requests": 21,
+        "repeated_identical_read_results": 12,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 4,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 193319,
+        "completion_tokens_observed": 1618,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "b105ead6d4604817647fcee48602b33b5aecc71d0aadd32de6c840a99f02c5be",
+      "base_commit": "f294d529e2634798a98fd9cee6708307a5c1792c",
+      "evidence": "runs/reading-v2/31b/prompt/packaging_1125/summary.json"
+    },
+    {
+      "model": "31b",
+      "arm": "prompt",
+      "task": "platformdirs_540",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 781.1060046399944,
+      "llm_calls": 48,
+      "tools": 46,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 19,
+          "read_file": 21,
+          "write_file": 4,
+          "edit_file": 4
+        },
+        "read_requests": 21,
+        "successful_read_results": 20,
+        "bounded_read_requests": 12,
+        "repeated_identical_read_results": 3,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 5,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 422.3519525527954,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 198610,
+        "completion_tokens_observed": 4003,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "b105ead6d4604817647fcee48602b33b5aecc71d0aadd32de6c840a99f02c5be",
+      "base_commit": "a209bf88a0c5937d784baa1cddd67f69f4b411d2",
+      "evidence": "runs/reading-v2/31b/prompt/platformdirs_540/summary.json"
+    },
+    {
+      "model": "31b",
+      "arm": "skill",
+      "task": "w3lib_264",
+      "status": "pass",
+      "autonomous_pass": true,
+      "seconds": 554.8731010889896,
+      "llm_calls": 48,
+      "tools": 39,
+      "error": null,
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "load_skill": 7,
+          "run_command": 13,
+          "read_file": 22,
+          "write_file": 4,
+          "edit_file": 1,
+          "submit_patch": 1
+        },
+        "read_requests": 22,
+        "successful_read_results": 21,
+        "bounded_read_requests": 22,
+        "repeated_identical_read_results": 11,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 2,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": true,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 37.51824688911438,
+        "skill_loaded_observed": true,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 190169,
+        "completion_tokens_observed": 3638,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "193e71f0e0c6a097fbe9e8a74953d3ac50af2f07cb9d1fd8b2c6bfa44576fef4",
+      "base_commit": "d5877fe4798609da79d7bfd0e683d4cd00a4dd27",
+      "evidence": "runs/reading-v2/31b/skill/w3lib_264/summary.json"
+    },
+    {
+      "model": "31b",
+      "arm": "skill",
+      "task": "packaging_1125",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 690.5473184950097,
+      "llm_calls": 48,
+      "tools": 46,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "load_skill": 1,
+          "read_file": 31,
+          "run_command": 16
+        },
+        "read_requests": 31,
+        "successful_read_results": 31,
+        "bounded_read_requests": 23,
+        "repeated_identical_read_results": 17,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": true,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 217822,
+        "completion_tokens_observed": 1638,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "193e71f0e0c6a097fbe9e8a74953d3ac50af2f07cb9d1fd8b2c6bfa44576fef4",
+      "base_commit": "f294d529e2634798a98fd9cee6708307a5c1792c",
+      "evidence": "runs/reading-v2/31b/skill/packaging_1125/summary.json"
+    },
+    {
+      "model": "31b",
+      "arm": "skill",
+      "task": "platformdirs_540",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 798.3808800359984,
+      "llm_calls": 48,
+      "tools": 37,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "load_skill": 7,
+          "run_command": 19,
+          "read_file": 17,
+          "write_file": 5
+        },
+        "read_requests": 17,
+        "successful_read_results": 15,
+        "bounded_read_requests": 9,
+        "repeated_identical_read_results": 2,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 2,
+        "tool_errors_by_type": {
+          "CommandError": 2,
+          "FileReadError": 2,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 629.6263813972473,
+        "skill_loaded_observed": true,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 236719,
+        "completion_tokens_observed": 3335,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "193e71f0e0c6a097fbe9e8a74953d3ac50af2f07cb9d1fd8b2c6bfa44576fef4",
+      "base_commit": "a209bf88a0c5937d784baa1cddd67f69f4b411d2",
+      "evidence": "runs/reading-v2/31b/skill/platformdirs_540/summary.json"
+    },
+    {
+      "model": "12b",
+      "arm": "baseline",
+      "task": "w3lib_264",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 163.5670898249955,
+      "llm_calls": 22,
+      "tools": 18,
+      "error": "Agent completed execution without calling submit_patch.",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 10,
+          "read_file": 8
+        },
+        "read_requests": 8,
+        "successful_read_results": 8,
+        "bounded_read_requests": 2,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 84726,
+        "completion_tokens_observed": 1358,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+      "base_commit": "d5877fe4798609da79d7bfd0e683d4cd00a4dd27",
+      "evidence": "runs/reading-v2/12b/baseline/w3lib_264/summary.json"
+    },
+    {
+      "model": "12b",
+      "arm": "baseline",
+      "task": "packaging_1125",
+      "status": "pass",
+      "autonomous_pass": false,
+      "seconds": 313.6955391740048,
+      "llm_calls": 48,
+      "tools": 47,
+      "error": null,
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "read_file": 33,
+          "run_command": 13,
+          "edit_file": 2
+        },
+        "read_requests": 33,
+        "successful_read_results": 32,
+        "bounded_read_requests": 27,
+        "repeated_identical_read_results": 8,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 3,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 118.97345542907715,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 185749,
+        "completion_tokens_observed": 1851,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+      "base_commit": "f294d529e2634798a98fd9cee6708307a5c1792c",
+      "evidence": "runs/reading-v2/12b/baseline/packaging_1125/summary.json"
+    },
+    {
+      "model": "12b",
+      "arm": "baseline",
+      "task": "platformdirs_540",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 208.2035681289999,
+      "llm_calls": 24,
+      "tools": 18,
+      "error": null,
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 8,
+          "read_file": 8,
+          "write_file": 1,
+          "edit_file": 1
+        },
+        "read_requests": 8,
+        "successful_read_results": 8,
+        "bounded_read_requests": 1,
+        "repeated_identical_read_results": 1,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 2
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 83.28973245620728,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 97720,
+        "completion_tokens_observed": 1681,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+      "base_commit": "a209bf88a0c5937d784baa1cddd67f69f4b411d2",
+      "evidence": "runs/reading-v2/12b/baseline/platformdirs_540/summary.json"
+    },
+    {
+      "model": "12b",
+      "arm": "prompt",
+      "task": "w3lib_264",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 354.66846200299915,
+      "llm_calls": 48,
+      "tools": 47,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 46,
+          "read_file": 2
+        },
+        "read_requests": 2,
+        "successful_read_results": 2,
+        "bounded_read_requests": 1,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 32,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 173555,
+        "completion_tokens_observed": 4503,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "b105ead6d4604817647fcee48602b33b5aecc71d0aadd32de6c840a99f02c5be",
+      "base_commit": "d5877fe4798609da79d7bfd0e683d4cd00a4dd27",
+      "evidence": "runs/reading-v2/12b/prompt/w3lib_264/summary.json"
+    },
+    {
+      "model": "12b",
+      "arm": "prompt",
+      "task": "packaging_1125",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 546.6553822150017,
+      "llm_calls": 48,
+      "tools": 45,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "read_file": 23,
+          "run_command": 18,
+          "edit_file": 4
+        },
+        "read_requests": 23,
+        "successful_read_results": 23,
+        "bounded_read_requests": 10,
+        "repeated_identical_read_results": 5,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "FileEditError": 2,
+          "CommandError": 2
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 213688,
+        "completion_tokens_observed": 8131,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "b105ead6d4604817647fcee48602b33b5aecc71d0aadd32de6c840a99f02c5be",
+      "base_commit": "f294d529e2634798a98fd9cee6708307a5c1792c",
+      "evidence": "runs/reading-v2/12b/prompt/packaging_1125/summary.json"
+    },
+    {
+      "model": "12b",
+      "arm": "prompt",
+      "task": "platformdirs_540",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 589.304921048999,
+      "llm_calls": 48,
+      "tools": 47,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 19,
+          "read_file": 25,
+          "write_file": 3,
+          "edit_file": 1
+        },
+        "read_requests": 25,
+        "successful_read_results": 24,
+        "bounded_read_requests": 11,
+        "repeated_identical_read_results": 6,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 4,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 367.79311895370483,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 272111,
+        "completion_tokens_observed": 5362,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "b105ead6d4604817647fcee48602b33b5aecc71d0aadd32de6c840a99f02c5be",
+      "base_commit": "a209bf88a0c5937d784baa1cddd67f69f4b411d2",
+      "evidence": "runs/reading-v2/12b/prompt/platformdirs_540/summary.json"
+    },
+    {
+      "model": "12b",
+      "arm": "skill",
+      "task": "w3lib_264",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 164.94684284599498,
+      "llm_calls": 48,
+      "tools": 46,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "load_skill": 1,
+          "run_command": 47
+        },
+        "read_requests": 0,
+        "successful_read_results": 0,
+        "bounded_read_requests": 0,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": true,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 176378,
+        "completion_tokens_observed": 2873,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "193e71f0e0c6a097fbe9e8a74953d3ac50af2f07cb9d1fd8b2c6bfa44576fef4",
+      "base_commit": "d5877fe4798609da79d7bfd0e683d4cd00a4dd27",
+      "evidence": "runs/reading-v2/12b/skill/w3lib_264/summary.json"
+    },
+    {
+      "model": "12b",
+      "arm": "skill",
+      "task": "packaging_1125",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 453.27678600800573,
+      "llm_calls": 48,
+      "tools": 40,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "load_skill": 3,
+          "run_command": 11,
+          "read_file": 30,
+          "list_skills": 1
+        },
+        "read_requests": 30,
+        "successful_read_results": 29,
+        "bounded_read_requests": 18,
+        "repeated_identical_read_results": 4,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": true,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 247274,
+        "completion_tokens_observed": 2374,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "193e71f0e0c6a097fbe9e8a74953d3ac50af2f07cb9d1fd8b2c6bfa44576fef4",
+      "base_commit": "f294d529e2634798a98fd9cee6708307a5c1792c",
+      "evidence": "runs/reading-v2/12b/skill/packaging_1125/summary.json"
+    },
+    {
+      "model": "12b",
+      "arm": "skill",
+      "task": "platformdirs_540",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 431.70811933701043,
+      "llm_calls": 48,
+      "tools": 46,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "load_skill": 1,
+          "run_command": 23,
+          "read_file": 22,
+          "write_file": 1,
+          "edit_file": 1
+        },
+        "read_requests": 22,
+        "successful_read_results": 21,
+        "bounded_read_requests": 6,
+        "repeated_identical_read_results": 10,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 3,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 201.1036081314087,
+        "skill_loaded_observed": true,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 243815,
+        "completion_tokens_observed": 2288,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "prompt_sha256": "193e71f0e0c6a097fbe9e8a74953d3ac50af2f07cb9d1fd8b2c6bfa44576fef4",
+      "base_commit": "a209bf88a0c5937d784baa1cddd67f69f4b411d2",
+      "evidence": "runs/reading-v2/12b/skill/platformdirs_540/summary.json"
+    }
+  ],
+  "warnings": [],
+  "assessments": [
+    {
+      "model": "31b",
+      "task": "w3lib_264",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem lỗi tool, đọc lặp và patch."
+    },
+    {
+      "model": "31b",
+      "task": "w3lib_264",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Tăng tự submit + pass trên lượt này; chưa chứng minh ổn định."
+    },
+    {
+      "model": "31b",
+      "task": "packaging_1125",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem lỗi tool, đọc lặp và patch."
+    },
+    {
+      "model": "31b",
+      "task": "packaging_1125",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem lỗi tool, đọc lặp và patch."
+    },
+    {
+      "model": "31b",
+      "task": "platformdirs_540",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem lỗi tool, đọc lặp và patch."
+    },
+    {
+      "model": "31b",
+      "task": "platformdirs_540",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem lỗi tool, đọc lặp và patch."
+    },
+    {
+      "model": "12b",
+      "task": "w3lib_264",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem lỗi tool, đọc lặp và patch."
+    },
+    {
+      "model": "12b",
+      "task": "w3lib_264",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem lỗi tool, đọc lặp và patch."
+    },
+    {
+      "model": "12b",
+      "task": "packaging_1125",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem lỗi tool, đọc lặp và patch."
+    },
+    {
+      "model": "12b",
+      "task": "packaging_1125",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem lỗi tool, đọc lặp và patch."
+    },
+    {
+      "model": "12b",
+      "task": "platformdirs_540",
+      "candidate": "prompt",
+      "reference": "baseline",
+      "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem lỗi tool, đọc lặp và patch."
+    },
+    {
+      "model": "12b",
+      "task": "platformdirs_540",
+      "candidate": "skill",
+      "reference": "prompt",
+      "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem lỗi tool, đọc lặp và patch."
+    }
+  ],
+  "scope": "18 development trials on previously observed FreshSWE tasks; not holdout or Kaggle score."
+}

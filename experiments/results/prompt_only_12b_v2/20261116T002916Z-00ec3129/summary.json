@@ -1,0 +1,26 @@
+{
+  "run_id": "20261116T002916Z-00ec3129",
+  "experiment_id": "prompt_only_12b_v2",
+  "method": "prompt_only",
+  "comparison_valid": true,
+  "model": "12b",
+  "task": "demo-urlkit-query",
+  "status": "incomplete",
+  "elapsed_seconds": 148.035,
+  "agent": {
+    "reason": "turn_limit",
+    "turns": 24,
+    "tool_calls": 24,
+    "usage": {
+      "prompt_tokens": 65525,
+      "completion_tokens": 2699
+    }
+  },
+  "error": null,
+  "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+  "workflow_sha256": "5acd3af557455fe5cefc9c5142964efb7072159fee73bebe36b9d6a859bdcaca",
+  "workflow_variant": null,
+  "variant_workflow_sha256": null,
+  "raw_sha256": "5de33b4955cfa1b1523c333a875bc7913963c9aea23b78a4fa848ee3fa1918fa",
+  "source_run": "runs/20261116T002916Z-00ec3129"
+}

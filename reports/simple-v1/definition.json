@@ -1,0 +1,25 @@
+{
+  "candidates": [
+    {
+      "model": "12b",
+      "arm": "simple",
+      "path": "submission_candidates/simple_v1/simple/12b"
+    },
+    {
+      "model": "12b",
+      "arm": "control",
+      "path": "submission_candidates/simple_v1/control/12b"
+    },
+    {
+      "model": "31b",
+      "arm": "simple",
+      "path": "submission_candidates/simple_v1/simple/31b"
+    },
+    {
+      "model": "31b",
+      "arm": "control",
+      "path": "submission_candidates/simple_v1/control/31b"
+    }
+  ],
+  "scope": "Four synthetic tool diagnostics, then 12 paired real-issue development trials."
+}

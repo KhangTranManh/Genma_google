@@ -1,0 +1,185 @@
+{
+  "generated_at": "2026-11-18T01:45:41.997640+00:00",
+  "state": {
+    "status": "complete",
+    "tools_executed": 0,
+    "model_order": [
+      "31b",
+      "12b"
+    ],
+    "completed": [
+      {
+        "model": "31b",
+        "case": "read_range",
+        "label": "correct"
+      },
+      {
+        "model": "31b",
+        "case": "write_quotes_newlines",
+        "label": "correct"
+      },
+      {
+        "model": "31b",
+        "case": "edit_exact_line",
+        "label": "correct"
+      },
+      {
+        "model": "31b",
+        "case": "run_test_command",
+        "label": "correct"
+      },
+      {
+        "model": "12b",
+        "case": "read_range",
+        "label": "correct"
+      },
+      {
+        "model": "12b",
+        "case": "write_quotes_newlines",
+        "label": "correct"
+      },
+      {
+        "model": "12b",
+        "case": "edit_exact_line",
+        "label": "raw_output_defect"
+      },
+      {
+        "model": "12b",
+        "case": "run_test_command",
+        "label": "correct"
+      }
+    ],
+    "current": {
+      "model": "12b",
+      "case": "run_test_command"
+    },
+    "updated_at": "2026-11-18T01:40:23.914967+00:00"
+  },
+  "rows": [
+    {
+      "model": "12b",
+      "case": "read_range",
+      "label": "correct",
+      "native_expected_match": true,
+      "api_expected_match": true,
+      "native_equals_api": true,
+      "replay_matches_api": true,
+      "output_tokens": 33,
+      "elapsed_seconds": 4.152,
+      "reason": "Comparison uses raw and parsed output from one generation; suspected mismatches still require engine/config review.",
+      "error": null,
+      "evidence": "runs/toolcall-probe-v1/12b/read_range"
+    },
+    {
+      "model": "12b",
+      "case": "write_quotes_newlines",
+      "label": "correct",
+      "native_expected_match": true,
+      "api_expected_match": true,
+      "native_equals_api": true,
+      "replay_matches_api": true,
+      "output_tokens": 35,
+      "elapsed_seconds": 3.581,
+      "reason": "Comparison uses raw and parsed output from one generation; suspected mismatches still require engine/config review.",
+      "error": null,
+      "evidence": "runs/toolcall-probe-v1/12b/write_quotes_newlines"
+    },
+    {
+      "model": "12b",
+      "case": "edit_exact_line",
+      "label": "raw_output_defect",
+      "native_expected_match": false,
+      "api_expected_match": false,
+      "native_equals_api": true,
+      "replay_matches_api": true,
+      "output_tokens": 19,
+      "elapsed_seconds": 3.135,
+      "reason": "Comparison uses raw and parsed output from one generation; suspected mismatches still require engine/config review.",
+      "error": null,
+      "evidence": "runs/toolcall-probe-v1/12b/edit_exact_line"
+    },
+    {
+      "model": "12b",
+      "case": "run_test_command",
+      "label": "correct",
+      "native_expected_match": true,
+      "api_expected_match": true,
+      "native_equals_api": true,
+      "replay_matches_api": true,
+      "output_tokens": 27,
+      "elapsed_seconds": 3.435,
+      "reason": "Comparison uses raw and parsed output from one generation; suspected mismatches still require engine/config review.",
+      "error": null,
+      "evidence": "runs/toolcall-probe-v1/12b/run_test_command"
+    },
+    {
+      "model": "31b",
+      "case": "read_range",
+      "label": "correct",
+      "native_expected_match": true,
+      "api_expected_match": true,
+      "native_equals_api": true,
+      "replay_matches_api": true,
+      "output_tokens": 33,
+      "elapsed_seconds": 13.24,
+      "reason": "Comparison uses raw and parsed output from one generation; suspected mismatches still require engine/config review.",
+      "error": null,
+      "evidence": "runs/toolcall-probe-v1/31b/read_range"
+    },
+    {
+      "model": "31b",
+      "case": "write_quotes_newlines",
+      "label": "correct",
+      "native_expected_match": true,
+      "api_expected_match": true,
+      "native_equals_api": true,
+      "replay_matches_api": true,
+      "output_tokens": 35,
+      "elapsed_seconds": 11.499,
+      "reason": "Comparison uses raw and parsed output from one generation; suspected mismatches still require engine/config review.",
+      "error": null,
+      "evidence": "runs/toolcall-probe-v1/31b/write_quotes_newlines"
+    },
+    {
+      "model": "31b",
+      "case": "edit_exact_line",
+      "label": "correct",
+      "native_expected_match": true,
+      "api_expected_match": true,
+      "native_equals_api": true,
+      "replay_matches_api": true,
+      "output_tokens": 45,
+      "elapsed_seconds": 5.753,
+      "reason": "Comparison uses raw and parsed output from one generation; suspected mismatches still require engine/config review.",
+      "error": null,
+      "evidence": "runs/toolcall-probe-v1/31b/edit_exact_line"
+    },
+    {
+      "model": "31b",
+      "case": "run_test_command",
+      "label": "correct",
+      "native_expected_match": true,
+      "api_expected_match": true,
+      "native_equals_api": true,
+      "replay_matches_api": true,
+      "output_tokens": 27,
+      "elapsed_seconds": 4.519,
+      "reason": "Comparison uses raw and parsed output from one generation; suspected mismatches still require engine/config review.",
+      "error": null,
+      "evidence": "runs/toolcall-probe-v1/31b/run_test_command"
+    }
+  ],
+  "label_counts": {
+    "correct": 7,
+    "raw_output_defect": 1
+  },
+  "inference_requests_captured": 8,
+  "tools_executed": 0,
+  "limits": "Eight short single-call requests; not long conversations, streaming, real-repo solving or an error-rate estimate.",
+  "interpretation": [
+    "8/8 capture có native arguments, API arguments và engine replay khớp nhau. Chưa tái hiện mất/ghép field do parser trong bộ ca nhỏ này.",
+    "12B/edit_exact_line: output gốc là read_file(src/example.py), trong khi yêu cầu edit_file. Đây là lệch lựa chọn tool so với yêu cầu, không phải native syntax hỏng hay field bị parser làm mất. Có thể liên quan thói quen đọc trước sửa; phép thử chưa xác định cơ chế nội tại.",
+    "Chưa kiểm tra ADK/LiteLLM response adapter, streaming, chuỗi hội thoại dài hoặc run_skill_script với arguments lồng nhau. Không kết luận parser hoàn toàn không lỗi hoặc quy mọi thất bại repo cho model.",
+    "Bước tiếp theo nên tái hiện một trường hợp từng lỗi bằng context/schema phức tạp hơn, vẫn thu raw và parsed cùng generation; không sửa parser hoặc weights chỉ dựa vào 8 mẫu này."
+  ]
+}

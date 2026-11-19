@@ -1,0 +1,78 @@
+{
+  "control": [
+    {
+      "id": "short",
+      "pair_reference": "stepwise_v1_edit",
+      "tool": "edit_file",
+      "instruction": "Make exactly one edit_file call on w3lib/html.py. The exact current source block is shown below; copy its characters literally into old_string (native tool strings do not require extra JSON escaping). Change only the character class [^>]* immediately after <base\\s to [^<>]*. Preserve all other characters. Do not read files, explain, or retry.\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\nEND_SOURCE",
+      "expected_arguments": {
+        "filepath": "w3lib/html.py",
+        "old_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n",
+        "new_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^<>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n"
+      },
+      "target_prompt_tokens": 0
+    },
+    {
+      "id": "4k",
+      "pair_reference": "stepwise_v1_edit",
+      "tool": "edit_file",
+      "instruction": "Make exactly one edit_file call on w3lib/html.py. The exact current source block is shown below; copy its characters literally into old_string (native tool strings do not require extra JSON escaping). Change only the character class [^>]* immediately after <base\\s to [^<>]*. Preserve all other characters. Do not read files, explain, or retry.\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\nEND_SOURCE",
+      "expected_arguments": {
+        "filepath": "w3lib/html.py",
+        "old_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n",
+        "new_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^<>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n"
+      },
+      "target_prompt_tokens": 4096
+    },
+    {
+      "id": "12k",
+      "pair_reference": "stepwise_v1_edit",
+      "tool": "edit_file",
+      "instruction": "Make exactly one edit_file call on w3lib/html.py. The exact current source block is shown below; copy its characters literally into old_string (native tool strings do not require extra JSON escaping). Change only the character class [^>]* immediately after <base\\s to [^<>]*. Preserve all other characters. Do not read files, explain, or retry.\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\nEND_SOURCE",
+      "expected_arguments": {
+        "filepath": "w3lib/html.py",
+        "old_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n",
+        "new_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^<>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n"
+      },
+      "target_prompt_tokens": 12288
+    }
+  ],
+  "careful": [
+    {
+      "id": "short",
+      "pair_reference": "stepwise_v1_edit",
+      "tool": "edit_file",
+      "instruction": "Make exactly one edit_file call on w3lib/html.py. The exact current source block is shown below; copy its characters literally into old_string (native tool strings do not require extra JSON escaping). Change only the character class [^>]* immediately after <base\\s to [^<>]*. Preserve all other characters. Do not read files, explain, or retry.\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\nEND_SOURCE\nWork carefully on this one block only. Before emitting the call, check internally: (1) old_string occurs verbatim in the supplied source; (2) all backslashes, quotes, spacing and newlines are preserved; (3) new_string changes only [^>]* to [^<>]*; (4) the path is w3lib/html.py. Prefer copying the entire supplied block; do not reconstruct unrelated regex syntax. Emit one edit_file call only.",
+      "expected_arguments": {
+        "filepath": "w3lib/html.py",
+        "old_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n",
+        "new_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^<>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n"
+      },
+      "target_prompt_tokens": 0
+    },
+    {
+      "id": "4k",
+      "pair_reference": "stepwise_v1_edit",
+      "tool": "edit_file",
+      "instruction": "Make exactly one edit_file call on w3lib/html.py. The exact current source block is shown below; copy its characters literally into old_string (native tool strings do not require extra JSON escaping). Change only the character class [^>]* immediately after <base\\s to [^<>]*. Preserve all other characters. Do not read files, explain, or retry.\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\nEND_SOURCE\nWork carefully on this one block only. Before emitting the call, check internally: (1) old_string occurs verbatim in the supplied source; (2) all backslashes, quotes, spacing and newlines are preserved; (3) new_string changes only [^>]* to [^<>]*; (4) the path is w3lib/html.py. Prefer copying the entire supplied block; do not reconstruct unrelated regex syntax. Emit one edit_file call only.",
+      "expected_arguments": {
+        "filepath": "w3lib/html.py",
+        "old_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n",
+        "new_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^<>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n"
+      },
+      "target_prompt_tokens": 4096
+    },
+    {
+      "id": "12k",
+      "pair_reference": "stepwise_v1_edit",
+      "tool": "edit_file",
+      "instruction": "Make exactly one edit_file call on w3lib/html.py. The exact current source block is shown below; copy its characters literally into old_string (native tool strings do not require extra JSON escaping). Change only the character class [^>]* immediately after <base\\s to [^<>]*. Preserve all other characters. Do not read files, explain, or retry.\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\nEND_SOURCE\nWork carefully on this one block only. Before emitting the call, check internally: (1) old_string occurs verbatim in the supplied source; (2) all backslashes, quotes, spacing and newlines are preserved; (3) new_string changes only [^>]* to [^<>]*; (4) the path is w3lib/html.py. Prefer copying the entire supplied block; do not reconstruct unrelated regex syntax. Emit one edit_file call only.",
+      "expected_arguments": {
+        "filepath": "w3lib/html.py",
+        "old_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n",
+        "new_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^<>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n"
+      },
+      "target_prompt_tokens": 12288
+    }
+  ]
+}

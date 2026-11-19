@@ -1,0 +1,111 @@
+{
+  "status": "post_hoc_after_observing_31b_AG_pattern",
+  "used_for_selection_or_feedback": false,
+  "pre_registered_accepted_unchanged": true,
+  "check": "href text that appears AFTER a closed <base ...> tag must not be extracted (original and reference both return no match)",
+  "cases": [
+    "<base target=\"_top\">see href=\"http://x.example/\" in text",
+    "<base target=_top> href=\"http://y.example/\"<p>"
+  ],
+  "results": [
+    {
+      "model": "31b",
+      "arm": "B",
+      "pattern": "<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": false,
+      "matches_outside_base_tag": [
+        null,
+        null
+      ],
+      "tag_boundary_preserved": true
+    },
+    {
+      "model": "31b",
+      "arm": "G",
+      "pattern": "<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": false,
+      "matches_outside_base_tag": [
+        null,
+        null
+      ],
+      "tag_boundary_preserved": true
+    },
+    {
+      "model": "31b",
+      "arm": "AG",
+      "pattern": "<base\\s[^<]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": true,
+      "matches_outside_base_tag": [
+        "http://x.example/",
+        "http://y.example/"
+      ],
+      "tag_boundary_preserved": false
+    },
+    {
+      "model": "31b",
+      "arm": "AB_s17",
+      "pattern": "<base\\s[^<>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": true,
+      "matches_outside_base_tag": [
+        null,
+        null
+      ],
+      "tag_boundary_preserved": true
+    },
+    {
+      "model": "31b",
+      "arm": "AB_s29",
+      "pattern": "<base\\s[^< >]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": false,
+      "matches_outside_base_tag": [
+        null,
+        null
+      ],
+      "tag_boundary_preserved": true
+    },
+    {
+      "model": "31b",
+      "arm": "AB_s43",
+      "pattern": "<base\\s[^<>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": true,
+      "matches_outside_base_tag": [
+        null,
+        null
+      ],
+      "tag_boundary_preserved": true
+    },
+    {
+      "model": "31b",
+      "arm": "AG_s17",
+      "pattern": "<base\\s[^<]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": true,
+      "matches_outside_base_tag": [
+        "http://x.example/",
+        "http://y.example/"
+      ],
+      "tag_boundary_preserved": false
+    },
+    {
+      "model": "31b",
+      "arm": "AG_s29",
+      "pattern": "<base\\s[^<]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": true,
+      "matches_outside_base_tag": [
+        "http://x.example/",
+        "http://y.example/"
+      ],
+      "tag_boundary_preserved": false
+    },
+    {
+      "model": "31b",
+      "arm": "AG_s43",
+      "pattern": "<base\\s[^<]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": true,
+      "matches_outside_base_tag": [
+        "http://x.example/",
+        "http://y.example/"
+      ],
+      "tag_boundary_preserved": false
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+[Unit]
+Description=Gemma Lab vLLM model %i
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=@PROJECT_ROOT@
+ExecStart=@PROJECT_ROOT@/.venv/bin/gemma-lab --config @PROJECT_ROOT@/configs/project.toml serve --model %i
+Environment=PYTHONUNBUFFERED=1
+Restart=no
+TimeoutStopSec=45
+KillMode=control-group
+StandardOutput=append:@PROJECT_ROOT@/runs/vllm-%i.log
+StandardError=inherit

@@ -1,0 +1,1108 @@
+<!doctype html><meta charset="utf-8"><title>Role probes v1</title><style>body{font:16px system-ui;margin:30px}td,th{border:1px solid #aaa;padding:8px}table{border-collapse:collapse}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style><h1>Một model — sửa giả thuyết rồi probe mới — Python chọn</h1><p>Một lần sửa giả thuyết từ bốn kết quả cũ, rồi kiểm tra dự đoán trên hai probe mới chưa reveal. Model-stage unavailable không phải dự đoán sai và không được tính như patch fail. Batch complete nghĩa chạy hết ngân sách, không có nghĩa mọi model hoàn tất vai hay giải được issue. Source, issue và grader giữ riêng; chỉ một task đã biết, không phải benchmark generalization. Python chỉ cho Patch nếu prediction gate đạt; không có retained patch thì không chạy independent final grader.</p><table><tr><th>model</th><th>candidate</th><th>hypothesis</th><th>ochiai</th><th>capture</th><th>raw_equals_api</th><th>public_failures</th><th>retain</th><th>duplicate</th><th>review_hypothesis_status</th><th>review_patch_status</th><th>final_independent_pass</th></tr><tr><td>12b</td><td>localize_unavailable</td><td>None</td><td>None</td><td>model_stage_output_unavailable</td><td>None</td><td>None</td><td>False</td><td>None</td><td>None</td><td>not_run</td><td>None</td></tr><tr><td>31b</td><td>not_run_0</td><td>catastrophic_backtracking_greedy_wildcard</td><td>0</td><td>skip_contradicted_or_uninformative</td><td>None</td><td>None</td><td>False</td><td>None</td><td>None</td><td>not_run</td><td>None</td></tr><tr><td>31b</td><td>not_run_1</td><td>greedy_attribute_overlap</td><td>0</td><td>skip_contradicted_or_uninformative</td><td>None</td><td>None</td><td>False</td><td>None</td><td>None</td><td>not_run</td><td>None</td></tr><tr><td>31b</td><td>not_run_2</td><td>linear_scan_failure</td><td>0</td><td>skip_contradicted_or_uninformative</td><td>None</td><td>None</td><td>False</td><td>None</td><td>None</td><td>not_run</td><td>None</td></tr></table><h2>Phân tích</h2><pre>Batch revise-hyp-v1 đã chạy xong đúng ngân sách. Source/input hashes không đổi trong inference; summary.json ghi đối chiếu. Sau inference chỉ bổ sung báo cáo stage unavailable và thống kê, không sửa response/candidate. Tổng3 model calls,3342 output tokens,0 patch calls. Không có patch được giữ/chọn, không có submission và KHÔNG chạy independent final grader.
+
+| Model | Localize ban đầu | Một lần revise | Hai probe mới | Patch |
+|---|---|---|---|---|
+|31B|Hoàn tất, một giả thuyết sai3/4 probe đã biết sau đo|Hoàn tất; cả3 khớp4/4 kết quả được reveal|Mỗi giả thuyết chỉ đúng1/2, sai case có href ở cuối|Không cấp edit|
+|12B|Sinh lặp trong cause đến2048 tokens, finish_reason=length, JSON chưa hoàn chỉnh|Không chạy|Không có prediction hợp lệ để chấm|Không cấp edit|
+
+31B: initial hypotheses có known-probe matches4/4,1/4,4/4. Sau khi nhận bốn phép đo, cả3 hypotheses đều khớp4/4, mô tả cơ chế cũng cụ thể hơn về việc quét qua các prefix&lt;base lặp lại. Nhưng cả3 cùng dự đoán repeated_open_then_href là slow trong khi thực tế fast. Đây là sai dự đoán trên code gốc chưa sửa, không phải patch execution failure. Catalog mới phân biệt được việc model nhớ/restate bốn observations với việc dự đoán thêm input chưa xem kết quả. Nó chưa chứng minh model không thể suy luận tổng quát vì chỉ hai probes cùng một issue.
+
+Phép đo baseline: repeated_open≈0.719s; single_open≈0.000061s; closed_tags≈0.000274s; plain_text≈0.000021s; repeated_open_then_close≈0.714s; repeated_open_then_href≈0.000237s. Ngưỡng fast≤0.05s,slow≥0.2s; mỗi case3 mẫu,function time không gồm startup. Case thêmhref được regex gốc match thành công nhanh, khác case thiếuhref khiến phải tìm qua các điểm bắt đầu rồi thất bại. Diễn giải này là suy luận từ source và quan sát, không phải định lý độ phức tạp mọi input. Model không nhận biểu thức sửa đúng.
+
+12B: critical Localize output không hoàn chỉnh do lặp một cụm mô tả word boundary. Không trích partial hypotheses để sửa hộ schema, không gọi lại ngầm, không đi vào revise vì chưa có artifacts hợp lệ. Do đó tuyệt đối không ghi12B0/3 về inference accuracy hay so revision trực tiếp với31B. Đây là model generation/schema compliance failure trong setup này; chưa cô lập model weights, decoding backend hay prompt là nguồn lỗi. Budget2048 đã lớn hơn lượt trước nhưng vẫn có repetition, nên không coi tăng token đơn thuần là giải pháp đã được chứng minh.
+
+Leakage audit: request REVISE_HYPOTHESIS chỉ chứa bốn original-source observations, initial hypotheses/host assessment và định nghĩa hai probe mới, KHÔNG chứa hai số đo mới. Revision được lưu trước reveal. Sáu kết quả được đo/cache trong preflight trước model, không phải mới chạy sau prediction. Diagnostic fixed có qua preflight nhưng implementation/results không đưa vào model prompt. Các artifacts request/response đều lưu đầy đủ.
+
+Ý nghĩa: harness đã đi hết các bước có điều kiện và không cho edit khi thiếu/không khớp bằng chứng. Với31B, sửa giả thuyết sau phản hồi giúp khớp các quan sát được xem nhưng chưa vượt qua transfer check mới. Với12B, nút thắt lần này là không hoàn thành output có cấu trúc. Chưa có dữ liệu patch mới để kết luận khả năng sửa code được cải thiện hay giảm.
+
+Giới hạn: đây vẫn là issuew3lib_264 được quan sát nhiều lần; location/code excerpt do host cấp. Thêm revision budget và hai probes đồng thời, không equal-compute với role-probes. Gate yêu cầu không có mâu thuẫn có thể loại một nguyên nhân đúng chung chỉ vì dự đoán control sai. Do đó skip là quyết định phân bổ tìm kiếm, không phải bác bỏ mọi dạng giả thuyết. Review-role không chạy vì không candidate; optional-review hardening chưa được kiểm thử model-run ở nhánh này.
+
+Hướng tiếp nên riêng biệt: (A) schema Localize ngắn, enum đường dẫn và maxLength cho cause/prediction để đo việc hoàn tất12B, giữ nội dung và budget có kiểm soát; (B) đối chứng dự đoán trên issue/probe khác để tránh tiếp tục tối ưu một bài; (C) nếu thử reasoning/thinking settings, giữ một nhánh tách và cùng input. Chưa chạy những nhánh này. Không tự thêm lượt để đổi kết quả đã đo.
+</pre><h2>Execution status</h2><p>complete</p><p><a href="../role-split-v1/comparison.html">Đối chiếu role-split-v1 trước probe gate</a></p><h2>Dự đoán và phép đo trên code gốc</h2><table><tr><th>model</th><th>hypothesis</th><th>probe</th><th>predicted</th><th>observed_original</th><th>gate</th></tr><tr><td>31b</td><td>catastrophic_backtracking_greedy_wildcard</td><td>repeated_open</td><td>slow</td><td>slow</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>catastrophic_backtracking_greedy_wildcard</td><td>single_open</td><td>fast</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>catastrophic_backtracking_greedy_wildcard</td><td>closed_tags</td><td>fast</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>catastrophic_backtracking_greedy_wildcard</td><td>plain_text</td><td>fast</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>catastrophic_backtracking_greedy_wildcard</td><td>repeated_open_then_close</td><td>slow</td><td>slow</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>catastrophic_backtracking_greedy_wildcard</td><td>repeated_open_then_href</td><td>slow</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>greedy_attribute_overlap</td><td>repeated_open</td><td>slow</td><td>slow</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>greedy_attribute_overlap</td><td>single_open</td><td>fast</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>greedy_attribute_overlap</td><td>closed_tags</td><td>fast</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>greedy_attribute_overlap</td><td>plain_text</td><td>fast</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>greedy_attribute_overlap</td><td>repeated_open_then_close</td><td>slow</td><td>slow</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>greedy_attribute_overlap</td><td>repeated_open_then_href</td><td>slow</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>linear_scan_failure</td><td>repeated_open</td><td>slow</td><td>slow</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>linear_scan_failure</td><td>single_open</td><td>fast</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>linear_scan_failure</td><td>closed_tags</td><td>fast</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>linear_scan_failure</td><td>plain_text</td><td>fast</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>linear_scan_failure</td><td>repeated_open_then_close</td><td>slow</td><td>slow</td><td>skip_contradicted_or_uninformative</td></tr><tr><td>31b</td><td>linear_scan_failure</td><td>repeated_open_then_href</td><td>slow</td><td>fast</td><td>skip_contradicted_or_uninformative</td></tr></table><h2>Tổng kết model stages và ngân sách</h2><pre>{
+  &quot;batch_status&quot;: &quot;complete&quot;,
+  &quot;frozen_source_changes&quot;: [],
+  &quot;models&quot;: {
+    &quot;31b&quot;: {
+      &quot;calls&quot;: 2,
+      &quot;output_tokens&quot;: 1294,
+      &quot;truncated_calls&quot;: 0,
+      &quot;patches&quot;: 0,
+      &quot;selected&quot;: null,
+      &quot;selection_reason&quot;: null,
+      &quot;revision_completed&quot;: true,
+      &quot;initial_known_probe_matches&quot;: [
+        4,
+        1,
+        4
+      ],
+      &quot;initial_known_probe_contradictions&quot;: [
+        [],
+        [
+          &quot;single_open&quot;,
+          &quot;closed_tags&quot;,
+          &quot;plain_text&quot;
+        ],
+        []
+      ],
+      &quot;revised_known_probe_matches&quot;: [
+        4,
+        4,
+        4
+      ],
+      &quot;revised_new_probe_matches&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;revised_contradictions&quot;: [
+        [
+          &quot;repeated_open_then_href&quot;
+        ],
+        [
+          &quot;repeated_open_then_href&quot;
+        ],
+        [
+          &quot;repeated_open_then_href&quot;
+        ]
+      ]
+    },
+    &quot;12b&quot;: {
+      &quot;calls&quot;: 1,
+      &quot;output_tokens&quot;: 2048,
+      &quot;truncated_calls&quot;: 1,
+      &quot;patches&quot;: 0,
+      &quot;selected&quot;: null,
+      &quot;selection_reason&quot;: &quot;localize_output_unavailable&quot;,
+      &quot;revision_completed&quot;: false
+    }
+  }
+}
+</pre><details><summary>12b / localize/request.json</summary><pre>{
+  &quot;model&quot;: &quot;gemma-4-12b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;List exactly three causal hypotheses with source locations and probe-specific observable predictions. Predict fast, slow or uncertain for every probe, without seeing its measurements. Distinct wording is not distinct mechanism. Do not fake a prediction merely to manufacture diversity; use uncertain when evidence is insufficient. Do not edit, produce a patch, or rank your own proposals. Base statements on the supplied evidence.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nOriginal code (line numbers shown for location only):\n1: \&quot;\&quot;\&quot;\n2: Functions for dealing with markup text\n3: \&quot;\&quot;\&quot;\n4: \n5: from __future__ import annotations\n6: \n7: import functools\n8: import re\n9: from html.entities import name2codepoint\n10: from typing import TYPE_CHECKING\n11: from urllib.parse import urljoin\n12: \n13: from w3lib.url import safe_url_string\n14: from w3lib.util import to_unicode\n15: \n16: if TYPE_CHECKING:\n17:     from collections.abc import Iterable\n18: \n19: \n20: _ent_re = re.compile(\n21:     r\&quot;&amp;((?P&lt;named&gt;[a-z\\d]+)|#(?P&lt;dec&gt;\\d+)|#x(?P&lt;hex&gt;[a-f\\d]+))(?P&lt;semicolon&gt;;?)\&quot;,\n22:     re.IGNORECASE,\n23: )\n24: _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n25: _baseurl_re = re.compile(\n26:     r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n27: )\n28: _meta_refresh_re = re.compile(\n29:     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n30:     re.DOTALL | re.IGNORECASE,\n31: )\n32: _meta_refresh_re2 = re.compile(\n33:     r&#x27;&lt;meta\\s[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)[^&gt;]*?\\shttp-equiv\\s*=[^&gt;]*refresh&#x27;,\n34:     re.DOTALL | re.IGNORECASE,\n35: )\n36: \n37: _cdata_re = re.compile(\n38:     r\&quot;((?P&lt;cdata_s&gt;&lt;!\\[CDATA\\[)(?P&lt;cdata_d&gt;.*?)(?P&lt;cdata_e&gt;\\]\\]&gt;))\&quot;, re.DOTALL\n39: )\n40: _tags_re = re.compile(\&quot;&lt;/?([^ &gt;/]+).*?&gt;\&quot;, re.DOTALL | re.IGNORECASE)\n336: def get_base_url(\n337:     text: str | bytes, baseurl: str | bytes = \&quot;\&quot;, encoding: str = \&quot;utf-8\&quot;\n338: ) -&gt; str:\n339:     \&quot;\&quot;\&quot;Return the base url if declared in the given HTML `text`,\n340:     relative to the given base url.\n341: \n342:     If no base url is found, the given `baseurl` is returned.\n343: \n344:     \&quot;\&quot;\&quot;\n345: \n346:     utext = remove_comments(text, encoding=encoding)\n347:     if m := _baseurl_re.search(utext):\n348:         return urljoin(\n349:             safe_url_string(baseurl), safe_url_string(m.group(1), encoding=encoding)\n350:         )\n351:     return safe_url_string(baseurl)\nBaseline observations:\n{\&quot;performance\&quot;: {\&quot;reproducer\&quot;: \&quot;get_base_url(\\\&quot;&lt;base \\\&quot; * 6000)\&quot;, \&quot;measure\&quot;: \&quot;function time only, excluding Python startup\&quot;, \&quot;samples_seconds\&quot;: [0.6997749109868892, 0.7187714469910134, 0.7233439210103825], \&quot;median_seconds\&quot;: 0.7187714469910134, \&quot;timeout_seconds\&quot;: 2, \&quot;median_limit_seconds\&quot;: 0.2, \&quot;timed_out\&quot;: false, \&quot;error\&quot;: null, \&quot;passed\&quot;: false}, \&quot;functional\&quot;: {\&quot;tests\&quot;: 67, \&quot;failures\&quot;: 0, \&quot;errors\&quot;: 0, \&quot;skipped\&quot;: 0, \&quot;exit_code\&quot;: 0, \&quot;valid_result\&quot;: true}, \&quot;semantic_guard\&quot;: {\&quot;passed\&quot;: true, \&quot;cases\&quot;: [{\&quot;attribute_length\&quot;: 0, \&quot;passed\&quot;: true, \&quot;actual\&quot;: \&quot;https://example.org/path/\&quot;}, {\&quot;attribute_length\&quot;: 200, \&quot;passed\&quot;: true, \&quot;actual\&quot;: \&quot;https://example.org/path/\&quot;}, {\&quot;attribute_length\&quot;: 1000, \&quot;passed\&quot;: true, \&quot;actual\&quot;: \&quot;https://example.org/path/\&quot;}]}, \&quot;infrastructure_error\&quot;: false, \&quot;failure_count\&quot;: 1, \&quot;passed\&quot;: false}\nProbe catalog (original-source measurements are not shown yet):\n[{\&quot;id\&quot;: \&quot;repeated_open\&quot;, \&quot;description\&quot;: \&quot;Repeat the incomplete fragment &lt;base SPACE 6000 times; no href and no closing greater-than.\&quot;, \&quot;repetitions\&quot;: 6000}, {\&quot;id\&quot;: \&quot;single_open\&quot;, \&quot;description\&quot;: \&quot;One &lt;base SPACE followed by 6000 x characters; no href and no closing greater-than.\&quot;, \&quot;repetitions\&quot;: 6000}, {\&quot;id\&quot;: \&quot;closed_tags\&quot;, \&quot;description\&quot;: \&quot;Repeat the complete fragment &lt;base &gt; 6000 times; no href.\&quot;, \&quot;repetitions\&quot;: 6000}, {\&quot;id\&quot;: \&quot;plain_text\&quot;, \&quot;description\&quot;: \&quot;6000 x characters, no markup and no href.\&quot;, \&quot;repetitions\&quot;: 6000}]\nPredict each probe exactly once for each hypothesis. fast means median &lt;=0.05s; slow means median &gt;=0.2s or timeout3s; between thresholds is uncertain. These are function times excluding process startup. Prefer distinct mechanisms, not paraphrases. If hypotheses make identical predictions, acknowledge uncertainty rather than inventing differences. No patch has been applied.&quot;
+    }
+  ],
+  &quot;temperature&quot;: 0,
+  &quot;max_tokens&quot;: 2048,
+  &quot;stream&quot;: false,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  },
+  &quot;response_format&quot;: {
+    &quot;type&quot;: &quot;json_schema&quot;,
+    &quot;json_schema&quot;: {
+      &quot;name&quot;: &quot;localize&quot;,
+      &quot;strict&quot;: true,
+      &quot;schema&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;hypotheses&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;minItems&quot;: 3,
+            &quot;maxItems&quot;: 3,
+            &quot;items&quot;: {
+              &quot;type&quot;: &quot;object&quot;,
+              &quot;properties&quot;: {
+                &quot;id&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;filepath&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;start_line&quot;: {
+                  &quot;type&quot;: &quot;integer&quot;
+                },
+                &quot;end_line&quot;: {
+                  &quot;type&quot;: &quot;integer&quot;
+                },
+                &quot;cause&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;predicted_failure&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;predictions&quot;: {
+                  &quot;type&quot;: &quot;array&quot;,
+                  &quot;minItems&quot;: 4,
+                  &quot;maxItems&quot;: 4,
+                  &quot;items&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                      &quot;probe_id&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;enum&quot;: [
+                          &quot;repeated_open&quot;,
+                          &quot;single_open&quot;,
+                          &quot;closed_tags&quot;,
+                          &quot;plain_text&quot;
+                        ]
+                      },
+                      &quot;expected&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;enum&quot;: [
+                          &quot;fast&quot;,
+                          &quot;slow&quot;,
+                          &quot;uncertain&quot;
+                        ]
+                      }
+                    },
+                    &quot;required&quot;: [
+                      &quot;probe_id&quot;,
+                      &quot;expected&quot;
+                    ],
+                    &quot;additionalProperties&quot;: false
+                  }
+                }
+              },
+              &quot;required&quot;: [
+                &quot;id&quot;,
+                &quot;filepath&quot;,
+                &quot;start_line&quot;,
+                &quot;end_line&quot;,
+                &quot;cause&quot;,
+                &quot;predicted_failure&quot;,
+                &quot;predictions&quot;
+              ],
+              &quot;additionalProperties&quot;: false
+            }
+          }
+        },
+        &quot;required&quot;: [
+          &quot;hypotheses&quot;
+        ],
+        &quot;additionalProperties&quot;: false
+      }
+    }
+  }
+}
+</pre></details><details><summary>12b / localize/response.json</summary><pre>{
+  &quot;id&quot;: &quot;chatcmpl-9f566f749dcf2b28&quot;,
+  &quot;object&quot;: &quot;chat.completion&quot;,
+  &quot;created&quot;: 1794988093,
+  &quot;model&quot;: &quot;gemma-4-12b-it-qat-w4a16-ct&quot;,
+  &quot;choices&quot;: [
+    {
+      &quot;index&quot;: 0,
+      &quot;message&quot;: {
+        &quot;role&quot;: &quot;assistant&quot;,
+        &quot;content&quot;: &quot;{\&quot;hypotheses\&quot;: [{\&quot;id\&quot;: \&quot;h1\&quot;, \&quot;filepath\&quot;: \&quot;w3lib.html\&quot;, \&quot;start_line\&quot;: 25, \&quot;end_line\&quot;: 27, \&quot;cause\&quot;: \&quot;The use of the `.*` quantifier in `_baseurl_re` causes the regex engine to perform extensive backtracking when it encounters a long string of characters that do not satisfy the `href` attribute requirement, especially when the string starts with `&lt;base ` but lacks a closing `&gt;` or `href`.\&quot;, \&quot;predicted_failure\&quot;: \&quot;The regex engine explores many permutations of the `.*` match before failing, leading to quadratic time complexity relative to the input length.\&quot; \t, \&quot;predictions\&quot;: [{\&quot;probe_id\&quot;: \&quot;repeated_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;single_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;closed_tags\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;plain_text\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}] \t}, {\&quot;id\&quot;: \&quot;h2\&quot;, \&quot;filepath\&quot;: \&quot;w3lib.html\&quot;, \&quot;start_line\&quot;: 25, \&quot;end_line\&quot;: 27, \&quot;cause\&quot;: \&quot;The `[^&gt;]*` part of the `_baseurl_re` regex is greedy and captures all characters until the first `&gt;`. In the presence of many `&lt;base ` prefixes without closing brackets, the engine may repeatedly attempt to match the `href` pattern against increasingly large segments of the input.\&quot;, \&quot;predicted_failure\&quot;: \&quot;The engine&#x27;s attempt to satisfy the `[^&gt;]*` while simultaneously looking for `href` causes excessive state exploration in malformed inputs.\&quot;, \&quot;predictions\&quot;: [{\&quot;probe_id\&quot;: \&quot;repeated_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;single_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;closed_tags\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;plain_text\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}] \t}, {\&quot;id\&quot;: \&quot;h3\&quot;, \&quot;filepath\&quot;: \&quot;w3lib.html\&quot;, \&quot;start_line\&quot;: 25, \&quot;end_line\&quot;: 27, \&quot;cause\&quot;: \&quot;The regex engine&#x27;s backtracking behavior is triggered by the combination of the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the `\\b` (implicit in `\\b` or start of string) and the&quot;,
+        &quot;refusal&quot;: null,
+        &quot;annotations&quot;: null,
+        &quot;audio&quot;: null,
+        &quot;function_call&quot;: null,
+        &quot;reasoning&quot;: null
+      },
+      &quot;logprobs&quot;: null,
+      &quot;finish_reason&quot;: &quot;length&quot;,
+      &quot;stop_reason&quot;: null,
+      &quot;token_ids&quot;: null,
+      &quot;routed_experts&quot;: null,
+      &quot;weight_versions&quot;: null
+    }
+  ],
+  &quot;service_tier&quot;: null,
+  &quot;system_fingerprint&quot;: &quot;vllm-0.33.0-tp2-533cdd3b&quot;,
+  &quot;usage&quot;: {
+    &quot;prompt_tokens&quot;: 1660,
+    &quot;total_tokens&quot;: 3708,
+    &quot;completion_tokens&quot;: 2048,
+    &quot;prompt_tokens_details&quot;: null,
+    &quot;completion_tokens_details&quot;: {
+      &quot;reasoning_tokens&quot;: 0
+    }
+  },
+  &quot;prompt_logprobs&quot;: null,
+  &quot;prompt_token_ids&quot;: null,
+  &quot;prompt_text&quot;: null,
+  &quot;kv_transfer_params&quot;: null,
+  &quot;ec_transfer_params&quot;: null,
+  &quot;metrics&quot;: null
+}
+</pre></details><details><summary>12b / localize/unavailable.json</summary><pre>{
+  &quot;error&quot;: &quot;RuntimeError(&#x27;localize truncated; keep artifacts for review&#x27;)&quot;,
+  &quot;stage_failed&quot;: &quot;localize&quot;,
+  &quot;no_retry&quot;: true
+}
+</pre></details><details><summary>12b / selection.json</summary><pre>{
+  &quot;retained&quot;: [],
+  &quot;selected&quot;: null,
+  &quot;no_patch_submitted&quot;: true,
+  &quot;reason&quot;: &quot;localize_output_unavailable&quot;
+}
+</pre></details><details><summary>31b / localize/request.json</summary><pre>{
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;List exactly three causal hypotheses with source locations and probe-specific observable predictions. Predict fast, slow or uncertain for every probe, without seeing its measurements. Distinct wording is not distinct mechanism. Do not fake a prediction merely to manufacture diversity; use uncertain when evidence is insufficient. Do not edit, produce a patch, or rank your own proposals. Base statements on the supplied evidence.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nOriginal code (line numbers shown for location only):\n1: \&quot;\&quot;\&quot;\n2: Functions for dealing with markup text\n3: \&quot;\&quot;\&quot;\n4: \n5: from __future__ import annotations\n6: \n7: import functools\n8: import re\n9: from html.entities import name2codepoint\n10: from typing import TYPE_CHECKING\n11: from urllib.parse import urljoin\n12: \n13: from w3lib.url import safe_url_string\n14: from w3lib.util import to_unicode\n15: \n16: if TYPE_CHECKING:\n17:     from collections.abc import Iterable\n18: \n19: \n20: _ent_re = re.compile(\n21:     r\&quot;&amp;((?P&lt;named&gt;[a-z\\d]+)|#(?P&lt;dec&gt;\\d+)|#x(?P&lt;hex&gt;[a-f\\d]+))(?P&lt;semicolon&gt;;?)\&quot;,\n22:     re.IGNORECASE,\n23: )\n24: _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n25: _baseurl_re = re.compile(\n26:     r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n27: )\n28: _meta_refresh_re = re.compile(\n29:     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n30:     re.DOTALL | re.IGNORECASE,\n31: )\n32: _meta_refresh_re2 = re.compile(\n33:     r&#x27;&lt;meta\\s[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)[^&gt;]*?\\shttp-equiv\\s*=[^&gt;]*refresh&#x27;,\n34:     re.DOTALL | re.IGNORECASE,\n35: )\n36: \n37: _cdata_re = re.compile(\n38:     r\&quot;((?P&lt;cdata_s&gt;&lt;!\\[CDATA\\[)(?P&lt;cdata_d&gt;.*?)(?P&lt;cdata_e&gt;\\]\\]&gt;))\&quot;, re.DOTALL\n39: )\n40: _tags_re = re.compile(\&quot;&lt;/?([^ &gt;/]+).*?&gt;\&quot;, re.DOTALL | re.IGNORECASE)\n336: def get_base_url(\n337:     text: str | bytes, baseurl: str | bytes = \&quot;\&quot;, encoding: str = \&quot;utf-8\&quot;\n338: ) -&gt; str:\n339:     \&quot;\&quot;\&quot;Return the base url if declared in the given HTML `text`,\n340:     relative to the given base url.\n341: \n342:     If no base url is found, the given `baseurl` is returned.\n343: \n344:     \&quot;\&quot;\&quot;\n345: \n346:     utext = remove_comments(text, encoding=encoding)\n347:     if m := _baseurl_re.search(utext):\n348:         return urljoin(\n349:             safe_url_string(baseurl), safe_url_string(m.group(1), encoding=encoding)\n350:         )\n351:     return safe_url_string(baseurl)\nBaseline observations:\n{\&quot;performance\&quot;: {\&quot;reproducer\&quot;: \&quot;get_base_url(\\\&quot;&lt;base \\\&quot; * 6000)\&quot;, \&quot;measure\&quot;: \&quot;function time only, excluding Python startup\&quot;, \&quot;samples_seconds\&quot;: [0.6997749109868892, 0.7187714469910134, 0.7233439210103825], \&quot;median_seconds\&quot;: 0.7187714469910134, \&quot;timeout_seconds\&quot;: 2, \&quot;median_limit_seconds\&quot;: 0.2, \&quot;timed_out\&quot;: false, \&quot;error\&quot;: null, \&quot;passed\&quot;: false}, \&quot;functional\&quot;: {\&quot;tests\&quot;: 67, \&quot;failures\&quot;: 0, \&quot;errors\&quot;: 0, \&quot;skipped\&quot;: 0, \&quot;exit_code\&quot;: 0, \&quot;valid_result\&quot;: true}, \&quot;semantic_guard\&quot;: {\&quot;passed\&quot;: true, \&quot;cases\&quot;: [{\&quot;attribute_length\&quot;: 0, \&quot;passed\&quot;: true, \&quot;actual\&quot;: \&quot;https://example.org/path/\&quot;}, {\&quot;attribute_length\&quot;: 200, \&quot;passed\&quot;: true, \&quot;actual\&quot;: \&quot;https://example.org/path/\&quot;}, {\&quot;attribute_length\&quot;: 1000, \&quot;passed\&quot;: true, \&quot;actual\&quot;: \&quot;https://example.org/path/\&quot;}]}, \&quot;infrastructure_error\&quot;: false, \&quot;failure_count\&quot;: 1, \&quot;passed\&quot;: false}\nProbe catalog (original-source measurements are not shown yet):\n[{\&quot;id\&quot;: \&quot;repeated_open\&quot;, \&quot;description\&quot;: \&quot;Repeat the incomplete fragment &lt;base SPACE 6000 times; no href and no closing greater-than.\&quot;, \&quot;repetitions\&quot;: 6000}, {\&quot;id\&quot;: \&quot;single_open\&quot;, \&quot;description\&quot;: \&quot;One &lt;base SPACE followed by 6000 x characters; no href and no closing greater-than.\&quot;, \&quot;repetitions\&quot;: 6000}, {\&quot;id\&quot;: \&quot;closed_tags\&quot;, \&quot;description\&quot;: \&quot;Repeat the complete fragment &lt;base &gt; 6000 times; no href.\&quot;, \&quot;repetitions\&quot;: 6000}, {\&quot;id\&quot;: \&quot;plain_text\&quot;, \&quot;description\&quot;: \&quot;6000 x characters, no markup and no href.\&quot;, \&quot;repetitions\&quot;: 6000}]\nPredict each probe exactly once for each hypothesis. fast means median &lt;=0.05s; slow means median &gt;=0.2s or timeout3s; between thresholds is uncertain. These are function times excluding process startup. Prefer distinct mechanisms, not paraphrases. If hypotheses make identical predictions, acknowledge uncertainty rather than inventing differences. No patch has been applied.&quot;
+    }
+  ],
+  &quot;temperature&quot;: 0,
+  &quot;max_tokens&quot;: 2048,
+  &quot;stream&quot;: false,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  },
+  &quot;response_format&quot;: {
+    &quot;type&quot;: &quot;json_schema&quot;,
+    &quot;json_schema&quot;: {
+      &quot;name&quot;: &quot;localize&quot;,
+      &quot;strict&quot;: true,
+      &quot;schema&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;hypotheses&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;minItems&quot;: 3,
+            &quot;maxItems&quot;: 3,
+            &quot;items&quot;: {
+              &quot;type&quot;: &quot;object&quot;,
+              &quot;properties&quot;: {
+                &quot;id&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;filepath&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;start_line&quot;: {
+                  &quot;type&quot;: &quot;integer&quot;
+                },
+                &quot;end_line&quot;: {
+                  &quot;type&quot;: &quot;integer&quot;
+                },
+                &quot;cause&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;predicted_failure&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;predictions&quot;: {
+                  &quot;type&quot;: &quot;array&quot;,
+                  &quot;minItems&quot;: 4,
+                  &quot;maxItems&quot;: 4,
+                  &quot;items&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                      &quot;probe_id&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;enum&quot;: [
+                          &quot;repeated_open&quot;,
+                          &quot;single_open&quot;,
+                          &quot;closed_tags&quot;,
+                          &quot;plain_text&quot;
+                        ]
+                      },
+                      &quot;expected&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;enum&quot;: [
+                          &quot;fast&quot;,
+                          &quot;slow&quot;,
+                          &quot;uncertain&quot;
+                        ]
+                      }
+                    },
+                    &quot;required&quot;: [
+                      &quot;probe_id&quot;,
+                      &quot;expected&quot;
+                    ],
+                    &quot;additionalProperties&quot;: false
+                  }
+                }
+              },
+              &quot;required&quot;: [
+                &quot;id&quot;,
+                &quot;filepath&quot;,
+                &quot;start_line&quot;,
+                &quot;end_line&quot;,
+                &quot;cause&quot;,
+                &quot;predicted_failure&quot;,
+                &quot;predictions&quot;
+              ],
+              &quot;additionalProperties&quot;: false
+            }
+          }
+        },
+        &quot;required&quot;: [
+          &quot;hypotheses&quot;
+        ],
+        &quot;additionalProperties&quot;: false
+      }
+    }
+  }
+}
+</pre></details><details><summary>31b / localize/response.json</summary><pre>{
+  &quot;id&quot;: &quot;chatcmpl-a8adeb68c352b532&quot;,
+  &quot;object&quot;: &quot;chat.completion&quot;,
+  &quot;created&quot;: 1794987931,
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;choices&quot;: [
+    {
+      &quot;index&quot;: 0,
+      &quot;message&quot;: {
+        &quot;role&quot;: &quot;assistant&quot;,
+        &quot;content&quot;: &quot;{\&quot;hypotheses\&quot;: [{\&quot;id\&quot;: \&quot;catastrophic_backtracking_greedy_wildcard\&quot;, \&quot;filepath\&quot;: \&quot;w3lib/html.py\&quot;, \&quot;start_line\&quot;: 26, \&quot;end_line\&quot;: 26, \&quot;cause\&quot;: \&quot;The greedy wildcard [^&gt;]* in _baseurl_re causes catastrophic backtracking when the input contains many &#x27;&lt;base &#x27; sequences but lacks a closing &#x27;&gt;&#x27; or a valid &#x27;href&#x27; attribute, as the engine repeatedly attempts to expand the match and backtrack.\&quot;, \&quot;predicted_failure\&quot;: \&quot;slow\&quot;, \&quot;predictions\&quot;: [{\&quot;probe_id\&quot;: \&quot;repeated_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;single_open\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;closed_tags\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;plain_text\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}]}, {\&quot;id\&quot;: \&quot;linear_scan_failure\&quot;, \&quot;filepath\&quot;: \&quot;w3lib/html.py\&quot;, \&quot;start_line\&quot;: 26, \&quot;end_line\&quot;: 26, \&quot;cause\&quot;: \&quot;The regex engine performs a linear scan of the input; however, the specific combination of the &#x27;&lt;base&#x27; anchor and the subsequent greedy match causes the engine to restart the search at every single character position when no match is found, leading to quadratic time complexity relative to input length.\&quot;, \&quot;predicted_failure\&quot;: \&quot;slow\&quot;, \&quot;predictions\&quot;: [{\&quot;probe_id\&quot;: \&quot;repeated_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;single_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;closed_tags\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;plain_text\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}]}, {\&quot;id\&quot;: \&quot;greedy_attribute_overlap\&quot;, \&quot;filepath\&quot;: \&quot;w3lib/html.py\&quot;, \&quot;start_line\&quot;: 26, \&quot;end_line\&quot;: 26, \&quot;cause\&quot;: \&quot;The regex fails specifically when multiple &#x27;&lt;base&#x27; tags are present without closing brackets, because the [^&gt;]* consumes subsequent &#x27;&lt;base&#x27; strings, and the engine backtracks to try every permutation of where the &#x27;href&#x27; might start across the repeated fragments.\&quot;, \&quot;predicted_failure\&quot;: \&quot;slow\&quot;, \&quot;predictions\&quot;: [{\&quot;probe_id\&quot;: \&quot;repeated_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;single_open\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;closed_tags\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;plain_text\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}]}]}&quot;,
+        &quot;refusal&quot;: null,
+        &quot;annotations&quot;: null,
+        &quot;audio&quot;: null,
+        &quot;function_call&quot;: null,
+        &quot;reasoning&quot;: null
+      },
+      &quot;logprobs&quot;: null,
+      &quot;finish_reason&quot;: &quot;stop&quot;,
+      &quot;stop_reason&quot;: 106,
+      &quot;token_ids&quot;: null,
+      &quot;routed_experts&quot;: null,
+      &quot;weight_versions&quot;: null
+    }
+  ],
+  &quot;service_tier&quot;: null,
+  &quot;system_fingerprint&quot;: &quot;vllm-0.33.0-tp2-8d5dedb0&quot;,
+  &quot;usage&quot;: {
+    &quot;prompt_tokens&quot;: 1660,
+    &quot;total_tokens&quot;: 2216,
+    &quot;completion_tokens&quot;: 556,
+    &quot;prompt_tokens_details&quot;: null,
+    &quot;completion_tokens_details&quot;: {
+      &quot;reasoning_tokens&quot;: 0
+    }
+  },
+  &quot;prompt_logprobs&quot;: null,
+  &quot;prompt_token_ids&quot;: null,
+  &quot;prompt_text&quot;: null,
+  &quot;kv_transfer_params&quot;: null,
+  &quot;ec_transfer_params&quot;: null,
+  &quot;metrics&quot;: null
+}
+</pre></details><details><summary>31b / revise/request.json</summary><pre>{
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;Revise the causal hypotheses once using ORIGINAL-source evidence and counterexamples. Return exactly three hypotheses and predictions for all six probes. Measurements for the two new probes are withheld. Do not edit or provide a patch, do not invent measurements, do not rank your own proposals. Distinguish observed facts from causal hypotheses. Use uncertain when a prediction cannot be justified.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nOriginal code:\n1: \&quot;\&quot;\&quot;\n2: Functions for dealing with markup text\n3: \&quot;\&quot;\&quot;\n4: \n5: from __future__ import annotations\n6: \n7: import functools\n8: import re\n9: from html.entities import name2codepoint\n10: from typing import TYPE_CHECKING\n11: from urllib.parse import urljoin\n12: \n13: from w3lib.url import safe_url_string\n14: from w3lib.util import to_unicode\n15: \n16: if TYPE_CHECKING:\n17:     from collections.abc import Iterable\n18: \n19: \n20: _ent_re = re.compile(\n21:     r\&quot;&amp;((?P&lt;named&gt;[a-z\\d]+)|#(?P&lt;dec&gt;\\d+)|#x(?P&lt;hex&gt;[a-f\\d]+))(?P&lt;semicolon&gt;;?)\&quot;,\n22:     re.IGNORECASE,\n23: )\n24: _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n25: _baseurl_re = re.compile(\n26:     r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n27: )\n28: _meta_refresh_re = re.compile(\n29:     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n30:     re.DOTALL | re.IGNORECASE,\n31: )\n32: _meta_refresh_re2 = re.compile(\n33:     r&#x27;&lt;meta\\s[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)[^&gt;]*?\\shttp-equiv\\s*=[^&gt;]*refresh&#x27;,\n34:     re.DOTALL | re.IGNORECASE,\n35: )\n36: \n37: _cdata_re = re.compile(\n38:     r\&quot;((?P&lt;cdata_s&gt;&lt;!\\[CDATA\\[)(?P&lt;cdata_d&gt;.*?)(?P&lt;cdata_e&gt;\\]\\]&gt;))\&quot;, re.DOTALL\n39: )\n40: _tags_re = re.compile(\&quot;&lt;/?([^ &gt;/]+).*?&gt;\&quot;, re.DOTALL | re.IGNORECASE)\n336: def get_base_url(\n337:     text: str | bytes, baseurl: str | bytes = \&quot;\&quot;, encoding: str = \&quot;utf-8\&quot;\n338: ) -&gt; str:\n339:     \&quot;\&quot;\&quot;Return the base url if declared in the given HTML `text`,\n340:     relative to the given base url.\n341: \n342:     If no base url is found, the given `baseurl` is returned.\n343: \n344:     \&quot;\&quot;\&quot;\n345: \n346:     utext = remove_comments(text, encoding=encoding)\n347:     if m := _baseurl_re.search(utext):\n348:         return urljoin(\n349:             safe_url_string(baseurl), safe_url_string(m.group(1), encoding=encoding)\n350:         )\n351:     return safe_url_string(baseurl)\nYour initial hypotheses and Python comparison with ORIGINAL-source four-probe measurements:\n[{\&quot;hypothesis\&quot;: {\&quot;id\&quot;: \&quot;catastrophic_backtracking_greedy_wildcard\&quot;, \&quot;filepath\&quot;: \&quot;w3lib/html.py\&quot;, \&quot;start_line\&quot;: 26, \&quot;end_line\&quot;: 26, \&quot;cause\&quot;: \&quot;The greedy wildcard [^&gt;]* in _baseurl_re causes catastrophic backtracking when the input contains many &#x27;&lt;base &#x27; sequences but lacks a closing &#x27;&gt;&#x27; or a valid &#x27;href&#x27; attribute, as the engine repeatedly attempts to expand the match and backtrack.\&quot;, \&quot;predicted_failure\&quot;: \&quot;slow\&quot;, \&quot;predictions\&quot;: [{\&quot;probe_id\&quot;: \&quot;repeated_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;single_open\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;closed_tags\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;plain_text\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}]}, \&quot;assessment\&quot;: {\&quot;matched\&quot;: [\&quot;repeated_open\&quot;, \&quot;single_open\&quot;, \&quot;closed_tags\&quot;, \&quot;plain_text\&quot;], \&quot;contradicted\&quot;: [], \&quot;unknown\&quot;: [], \&quot;eligible\&quot;: true, \&quot;prediction_status\&quot;: \&quot;consistent_not_proven\&quot;}}, {\&quot;hypothesis\&quot;: {\&quot;id\&quot;: \&quot;linear_scan_failure\&quot;, \&quot;filepath\&quot;: \&quot;w3lib/html.py\&quot;, \&quot;start_line\&quot;: 26, \&quot;end_line\&quot;: 26, \&quot;cause\&quot;: \&quot;The regex engine performs a linear scan of the input; however, the specific combination of the &#x27;&lt;base&#x27; anchor and the subsequent greedy match causes the engine to restart the search at every single character position when no match is found, leading to quadratic time complexity relative to input length.\&quot;, \&quot;predicted_failure\&quot;: \&quot;slow\&quot;, \&quot;predictions\&quot;: [{\&quot;probe_id\&quot;: \&quot;repeated_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;single_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;closed_tags\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;plain_text\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}]}, \&quot;assessment\&quot;: {\&quot;matched\&quot;: [\&quot;repeated_open\&quot;], \&quot;contradicted\&quot;: [\&quot;single_open\&quot;, \&quot;closed_tags\&quot;, \&quot;plain_text\&quot;], \&quot;unknown\&quot;: [], \&quot;eligible\&quot;: false, \&quot;prediction_status\&quot;: \&quot;contradicted\&quot;}}, {\&quot;hypothesis\&quot;: {\&quot;id\&quot;: \&quot;greedy_attribute_overlap\&quot;, \&quot;filepath\&quot;: \&quot;w3lib/html.py\&quot;, \&quot;start_line\&quot;: 26, \&quot;end_line\&quot;: 26, \&quot;cause\&quot;: \&quot;The regex fails specifically when multiple &#x27;&lt;base&#x27; tags are present without closing brackets, because the [^&gt;]* consumes subsequent &#x27;&lt;base&#x27; strings, and the engine backtracks to try every permutation of where the &#x27;href&#x27; might start across the repeated fragments.\&quot;, \&quot;predicted_failure\&quot;: \&quot;slow\&quot;, \&quot;predictions\&quot;: [{\&quot;probe_id\&quot;: \&quot;repeated_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;single_open\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;closed_tags\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;plain_text\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}]}, \&quot;assessment\&quot;: {\&quot;matched\&quot;: [\&quot;repeated_open\&quot;, \&quot;single_open\&quot;, \&quot;closed_tags\&quot;, \&quot;plain_text\&quot;], \&quot;contradicted\&quot;: [], \&quot;unknown\&quot;: [], \&quot;eligible\&quot;: true, \&quot;prediction_status\&quot;: \&quot;consistent_not_proven\&quot;}}]\nOriginal four-probe measured results:\n{\&quot;repeated_open\&quot;: {\&quot;samples_seconds\&quot;: [0.7061013630009256, 0.7586034800042398, 0.7193353219772689], \&quot;median_seconds\&quot;: 0.7193353219772689, \&quot;observed\&quot;: \&quot;slow\&quot;, \&quot;timed_out\&quot;: false, \&quot;error\&quot;: null, \&quot;returned_empty\&quot;: true}, \&quot;single_open\&quot;: {\&quot;samples_seconds\&quot;: [5.95090095885098e-05, 6.249500438570976e-05, 6.121801561675966e-05], \&quot;median_seconds\&quot;: 6.121801561675966e-05, \&quot;observed\&quot;: \&quot;fast\&quot;, \&quot;timed_out\&quot;: false, \&quot;error\&quot;: null, \&quot;returned_empty\&quot;: true}, \&quot;closed_tags\&quot;: {\&quot;samples_seconds\&quot;: [0.0002859590167645365, 0.0002701949852053076, 0.00027409198810346425], \&quot;median_seconds\&quot;: 0.00027409198810346425, \&quot;observed\&quot;: \&quot;fast\&quot;, \&quot;timed_out\&quot;: false, \&quot;error\&quot;: null, \&quot;returned_empty\&quot;: true}, \&quot;plain_text\&quot;: {\&quot;samples_seconds\&quot;: [2.0789011614397168e-05, 2.0814011804759502e-05, 2.0356004824861884e-05], \&quot;median_seconds\&quot;: 2.0789011614397168e-05, \&quot;observed\&quot;: \&quot;fast\&quot;, \&quot;timed_out\&quot;: false, \&quot;error\&quot;: null, \&quot;returned_empty\&quot;: true}}\nRevise your causal hypotheses ONCE using this evidence. No patch is allowed yet. Predict all six probes exactly once, including the two NEW probes whose outcomes are not revealed:\n[{\&quot;id\&quot;: \&quot;repeated_open\&quot;, \&quot;description\&quot;: \&quot;Repeat the incomplete fragment &lt;base SPACE 6000 times; no href and no closing greater-than.\&quot;, \&quot;repetitions\&quot;: 6000}, {\&quot;id\&quot;: \&quot;single_open\&quot;, \&quot;description\&quot;: \&quot;One &lt;base SPACE followed by 6000 x characters; no href and no closing greater-than.\&quot;, \&quot;repetitions\&quot;: 6000}, {\&quot;id\&quot;: \&quot;closed_tags\&quot;, \&quot;description\&quot;: \&quot;Repeat the complete fragment &lt;base &gt; 6000 times; no href.\&quot;, \&quot;repetitions\&quot;: 6000}, {\&quot;id\&quot;: \&quot;plain_text\&quot;, \&quot;description\&quot;: \&quot;6000 x characters, no markup and no href.\&quot;, \&quot;repetitions\&quot;: 6000}, {\&quot;id\&quot;: \&quot;repeated_open_then_close\&quot;, \&quot;description\&quot;: \&quot;Repeat incomplete fragment &lt;base SPACE 6000 times, then append one closing &gt; at the end. No href.\&quot;}, {\&quot;id\&quot;: \&quot;repeated_open_then_href\&quot;, \&quot;description\&quot;: \&quot;Repeat incomplete fragment &lt;base SPACE 6000 times, then append href=\\\&quot;https://example.org/path/\\\&quot;&gt; at the end.\&quot;}]\nThresholds unchanged: fast &lt;=0.05s; slow &gt;=0.2s or timeout3s; unknown -&gt; uncertain. Do not just copy the four observations: explain an updated causal mechanism and predict the new input outcomes. Distinguish hypotheses only where justified; do not fabricate diversity. No implementation or repair expression is supplied.&quot;
+    }
+  ],
+  &quot;temperature&quot;: 0,
+  &quot;max_tokens&quot;: 2048,
+  &quot;stream&quot;: false,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  },
+  &quot;response_format&quot;: {
+    &quot;type&quot;: &quot;json_schema&quot;,
+    &quot;json_schema&quot;: {
+      &quot;name&quot;: &quot;revise&quot;,
+      &quot;strict&quot;: true,
+      &quot;schema&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;hypotheses&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;minItems&quot;: 3,
+            &quot;maxItems&quot;: 3,
+            &quot;items&quot;: {
+              &quot;type&quot;: &quot;object&quot;,
+              &quot;properties&quot;: {
+                &quot;id&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;filepath&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;start_line&quot;: {
+                  &quot;type&quot;: &quot;integer&quot;
+                },
+                &quot;end_line&quot;: {
+                  &quot;type&quot;: &quot;integer&quot;
+                },
+                &quot;cause&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;predicted_failure&quot;: {
+                  &quot;type&quot;: &quot;string&quot;
+                },
+                &quot;predictions&quot;: {
+                  &quot;type&quot;: &quot;array&quot;,
+                  &quot;minItems&quot;: 6,
+                  &quot;maxItems&quot;: 6,
+                  &quot;items&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                      &quot;probe_id&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;enum&quot;: [
+                          &quot;repeated_open&quot;,
+                          &quot;single_open&quot;,
+                          &quot;closed_tags&quot;,
+                          &quot;plain_text&quot;,
+                          &quot;repeated_open_then_close&quot;,
+                          &quot;repeated_open_then_href&quot;
+                        ]
+                      },
+                      &quot;expected&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;enum&quot;: [
+                          &quot;fast&quot;,
+                          &quot;slow&quot;,
+                          &quot;uncertain&quot;
+                        ]
+                      }
+                    },
+                    &quot;required&quot;: [
+                      &quot;probe_id&quot;,
+                      &quot;expected&quot;
+                    ],
+                    &quot;additionalProperties&quot;: false
+                  }
+                }
+              },
+              &quot;required&quot;: [
+                &quot;id&quot;,
+                &quot;filepath&quot;,
+                &quot;start_line&quot;,
+                &quot;end_line&quot;,
+                &quot;cause&quot;,
+                &quot;predicted_failure&quot;,
+                &quot;predictions&quot;
+              ],
+              &quot;additionalProperties&quot;: false
+            }
+          }
+        },
+        &quot;required&quot;: [
+          &quot;hypotheses&quot;
+        ],
+        &quot;additionalProperties&quot;: false
+      }
+    }
+  }
+}
+</pre></details><details><summary>31b / revise/response.json</summary><pre>{
+  &quot;id&quot;: &quot;chatcmpl-8eed4a74622d96ac&quot;,
+  &quot;object&quot;: &quot;chat.completion&quot;,
+  &quot;created&quot;: 1794987973,
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;choices&quot;: [
+    {
+      &quot;index&quot;: 0,
+      &quot;message&quot;: {
+        &quot;role&quot;: &quot;assistant&quot;,
+        &quot;content&quot;: &quot;{\&quot;hypotheses\&quot;: [{\&quot;id\&quot;: \&quot;catastrophic_backtracking_greedy_wildcard\&quot;, \&quot;filepath\&quot;: \&quot;w3lib/html.py\&quot;, \&quot;start_line\&quot;: 26, \&quot;end_line\&quot;: 26, \&quot;cause\&quot;: \&quot;The regex _baseurl_re uses a greedy wildcard [^&gt;]* following the &#x27;&lt;base &#x27; anchor. When the input contains multiple &#x27;&lt;base &#x27; sequences but no closing &#x27;&gt;&#x27; or &#x27;href&#x27;, the engine attempts to match the first &#x27;&lt;base &#x27;, then consumes subsequent &#x27;&lt;base &#x27; sequences via [^&gt;]*. Upon failing to find &#x27;href&#x27;, it backtracks to the second &#x27;&lt;base &#x27; and repeats the process, leading to quadratic complexity relative to the number of &#x27;&lt;base &#x27; occurrences.\&quot;, \&quot;predicted_failure\&quot;: \&quot;slow\&quot;, \&quot;predictions\&quot;: [{\&quot;probe_id\&quot;: \&quot;repeated_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;single_open\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;closed_tags\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;plain_text\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;repeated_open_then_close\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;repeated_open_then_href\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}]}, {\&quot;id\&quot;: \&quot;greedy_attribute_overlap\&quot;, \&quot;filepath\&quot;: \&quot;w3lib/html.py\&quot;, \&quot;start_line\&quot;: 26, \&quot;end_line\&quot;: 26, \&quot;cause\&quot;: \&quot;The performance degradation is caused by the interaction between the greedy [^&gt;]* and the required &#x27;href&#x27; literal. In the absence of a closing &#x27;&gt;&#x27;, the engine treats the entire string as a potential attribute list for the first &#x27;&lt;base &#x27; match. When &#x27;href&#x27; is missing, it backtracks to try the same greedy match starting from the second &#x27;&lt;base &#x27;, and so on, creating a nested loop of failed match attempts.\&quot;, \&quot;predicted_failure\&quot;: \&quot;slow\&quot;, \&quot;predictions\&quot;: [{\&quot;probe_id\&quot;: \&quot;repeated_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;single_open\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;closed_tags\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;plain_text\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;repeated_open_then_close\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;repeated_open_then_href\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}]}, {\&quot;id\&quot;: \&quot;linear_scan_failure\&quot;, \&quot;filepath\&quot;: \&quot;w3lib/html.py\&quot;, \&quot;start_line\&quot;: 26, \&quot;end_line\&quot;: 26, \&quot;cause\&quot;: \&quot;The regex engine fails to efficiently discard non-matching prefixes when the input consists of repeated partial matches of the start of the regex. The combination of the anchor &#x27;&lt;base&#x27; and the greedy [^&gt;]* causes the engine to re-scan the remainder of the string for every instance of &#x27;&lt;base &#x27; encountered.\&quot;, \&quot;predicted_failure\&quot;: \&quot;slow\&quot;, \&quot;predictions\&quot;: [{\&quot;probe_id\&quot;: \&quot;repeated_open\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;single_open\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;closed_tags\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;plain_text\&quot;, \&quot;expected\&quot;: \&quot;fast\&quot;}, {\&quot;probe_id\&quot;: \&quot;repeated_open_then_close\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}, {\&quot;probe_id\&quot;: \&quot;repeated_open_then_href\&quot;, \&quot;expected\&quot;: \&quot;slow\&quot;}]}]}&quot;,
+        &quot;refusal&quot;: null,
+        &quot;annotations&quot;: null,
+        &quot;audio&quot;: null,
+        &quot;function_call&quot;: null,
+        &quot;reasoning&quot;: null
+      },
+      &quot;logprobs&quot;: null,
+      &quot;finish_reason&quot;: &quot;stop&quot;,
+      &quot;stop_reason&quot;: 106,
+      &quot;token_ids&quot;: null,
+      &quot;routed_experts&quot;: null,
+      &quot;weight_versions&quot;: null
+    }
+  ],
+  &quot;service_tier&quot;: null,
+  &quot;system_fingerprint&quot;: &quot;vllm-0.33.0-tp2-8d5dedb0&quot;,
+  &quot;usage&quot;: {
+    &quot;prompt_tokens&quot;: 2663,
+    &quot;total_tokens&quot;: 3401,
+    &quot;completion_tokens&quot;: 738,
+    &quot;prompt_tokens_details&quot;: null,
+    &quot;completion_tokens_details&quot;: {
+      &quot;reasoning_tokens&quot;: 0
+    }
+  },
+  &quot;prompt_logprobs&quot;: null,
+  &quot;prompt_token_ids&quot;: null,
+  &quot;prompt_text&quot;: null,
+  &quot;kv_transfer_params&quot;: null,
+  &quot;ec_transfer_params&quot;: null,
+  &quot;metrics&quot;: null
+}
+</pre></details><details><summary>31b / localize/result.json</summary><pre>{
+  &quot;hypotheses&quot;: [
+    {
+      &quot;id&quot;: &quot;catastrophic_backtracking_greedy_wildcard&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;start_line&quot;: 26,
+      &quot;end_line&quot;: 26,
+      &quot;cause&quot;: &quot;The greedy wildcard [^&gt;]* in _baseurl_re causes catastrophic backtracking when the input contains many &#x27;&lt;base &#x27; sequences but lacks a closing &#x27;&gt;&#x27; or a valid &#x27;href&#x27; attribute, as the engine repeatedly attempts to expand the match and backtrack.&quot;,
+      &quot;predicted_failure&quot;: &quot;slow&quot;,
+      &quot;predictions&quot;: [
+        {
+          &quot;probe_id&quot;: &quot;repeated_open&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;single_open&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;closed_tags&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;plain_text&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        }
+      ]
+    },
+    {
+      &quot;id&quot;: &quot;linear_scan_failure&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;start_line&quot;: 26,
+      &quot;end_line&quot;: 26,
+      &quot;cause&quot;: &quot;The regex engine performs a linear scan of the input; however, the specific combination of the &#x27;&lt;base&#x27; anchor and the subsequent greedy match causes the engine to restart the search at every single character position when no match is found, leading to quadratic time complexity relative to input length.&quot;,
+      &quot;predicted_failure&quot;: &quot;slow&quot;,
+      &quot;predictions&quot;: [
+        {
+          &quot;probe_id&quot;: &quot;repeated_open&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;single_open&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;closed_tags&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;plain_text&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        }
+      ]
+    },
+    {
+      &quot;id&quot;: &quot;greedy_attribute_overlap&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;start_line&quot;: 26,
+      &quot;end_line&quot;: 26,
+      &quot;cause&quot;: &quot;The regex fails specifically when multiple &#x27;&lt;base&#x27; tags are present without closing brackets, because the [^&gt;]* consumes subsequent &#x27;&lt;base&#x27; strings, and the engine backtracks to try every permutation of where the &#x27;href&#x27; might start across the repeated fragments.&quot;,
+      &quot;predicted_failure&quot;: &quot;slow&quot;,
+      &quot;predictions&quot;: [
+        {
+          &quot;probe_id&quot;: &quot;repeated_open&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;single_open&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;closed_tags&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;plain_text&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        }
+      ]
+    }
+  ]
+}
+</pre></details><details><summary>31b / initial-assessment.json</summary><pre>[
+  {
+    &quot;hypothesis&quot;: {
+      &quot;id&quot;: &quot;catastrophic_backtracking_greedy_wildcard&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;start_line&quot;: 26,
+      &quot;end_line&quot;: 26,
+      &quot;cause&quot;: &quot;The greedy wildcard [^&gt;]* in _baseurl_re causes catastrophic backtracking when the input contains many &#x27;&lt;base &#x27; sequences but lacks a closing &#x27;&gt;&#x27; or a valid &#x27;href&#x27; attribute, as the engine repeatedly attempts to expand the match and backtrack.&quot;,
+      &quot;predicted_failure&quot;: &quot;slow&quot;,
+      &quot;predictions&quot;: [
+        {
+          &quot;probe_id&quot;: &quot;repeated_open&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;single_open&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;closed_tags&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;plain_text&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        }
+      ]
+    },
+    &quot;assessment&quot;: {
+      &quot;matched&quot;: [
+        &quot;repeated_open&quot;,
+        &quot;single_open&quot;,
+        &quot;closed_tags&quot;,
+        &quot;plain_text&quot;
+      ],
+      &quot;contradicted&quot;: [],
+      &quot;unknown&quot;: [],
+      &quot;eligible&quot;: true,
+      &quot;prediction_status&quot;: &quot;consistent_not_proven&quot;
+    }
+  },
+  {
+    &quot;hypothesis&quot;: {
+      &quot;id&quot;: &quot;linear_scan_failure&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;start_line&quot;: 26,
+      &quot;end_line&quot;: 26,
+      &quot;cause&quot;: &quot;The regex engine performs a linear scan of the input; however, the specific combination of the &#x27;&lt;base&#x27; anchor and the subsequent greedy match causes the engine to restart the search at every single character position when no match is found, leading to quadratic time complexity relative to input length.&quot;,
+      &quot;predicted_failure&quot;: &quot;slow&quot;,
+      &quot;predictions&quot;: [
+        {
+          &quot;probe_id&quot;: &quot;repeated_open&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;single_open&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;closed_tags&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;plain_text&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        }
+      ]
+    },
+    &quot;assessment&quot;: {
+      &quot;matched&quot;: [
+        &quot;repeated_open&quot;
+      ],
+      &quot;contradicted&quot;: [
+        &quot;single_open&quot;,
+        &quot;closed_tags&quot;,
+        &quot;plain_text&quot;
+      ],
+      &quot;unknown&quot;: [],
+      &quot;eligible&quot;: false,
+      &quot;prediction_status&quot;: &quot;contradicted&quot;
+    }
+  },
+  {
+    &quot;hypothesis&quot;: {
+      &quot;id&quot;: &quot;greedy_attribute_overlap&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;start_line&quot;: 26,
+      &quot;end_line&quot;: 26,
+      &quot;cause&quot;: &quot;The regex fails specifically when multiple &#x27;&lt;base&#x27; tags are present without closing brackets, because the [^&gt;]* consumes subsequent &#x27;&lt;base&#x27; strings, and the engine backtracks to try every permutation of where the &#x27;href&#x27; might start across the repeated fragments.&quot;,
+      &quot;predicted_failure&quot;: &quot;slow&quot;,
+      &quot;predictions&quot;: [
+        {
+          &quot;probe_id&quot;: &quot;repeated_open&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;single_open&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;closed_tags&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;plain_text&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        }
+      ]
+    },
+    &quot;assessment&quot;: {
+      &quot;matched&quot;: [
+        &quot;repeated_open&quot;,
+        &quot;single_open&quot;,
+        &quot;closed_tags&quot;,
+        &quot;plain_text&quot;
+      ],
+      &quot;contradicted&quot;: [],
+      &quot;unknown&quot;: [],
+      &quot;eligible&quot;: true,
+      &quot;prediction_status&quot;: &quot;consistent_not_proven&quot;
+    }
+  }
+]
+</pre></details><details><summary>31b / revise/result.json</summary><pre>{
+  &quot;hypotheses&quot;: [
+    {
+      &quot;id&quot;: &quot;catastrophic_backtracking_greedy_wildcard&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;start_line&quot;: 26,
+      &quot;end_line&quot;: 26,
+      &quot;cause&quot;: &quot;The regex _baseurl_re uses a greedy wildcard [^&gt;]* following the &#x27;&lt;base &#x27; anchor. When the input contains multiple &#x27;&lt;base &#x27; sequences but no closing &#x27;&gt;&#x27; or &#x27;href&#x27;, the engine attempts to match the first &#x27;&lt;base &#x27;, then consumes subsequent &#x27;&lt;base &#x27; sequences via [^&gt;]*. Upon failing to find &#x27;href&#x27;, it backtracks to the second &#x27;&lt;base &#x27; and repeats the process, leading to quadratic complexity relative to the number of &#x27;&lt;base &#x27; occurrences.&quot;,
+      &quot;predicted_failure&quot;: &quot;slow&quot;,
+      &quot;predictions&quot;: [
+        {
+          &quot;probe_id&quot;: &quot;repeated_open&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;single_open&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;closed_tags&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;plain_text&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;repeated_open_then_close&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;repeated_open_then_href&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        }
+      ]
+    },
+    {
+      &quot;id&quot;: &quot;greedy_attribute_overlap&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;start_line&quot;: 26,
+      &quot;end_line&quot;: 26,
+      &quot;cause&quot;: &quot;The performance degradation is caused by the interaction between the greedy [^&gt;]* and the required &#x27;href&#x27; literal. In the absence of a closing &#x27;&gt;&#x27;, the engine treats the entire string as a potential attribute list for the first &#x27;&lt;base &#x27; match. When &#x27;href&#x27; is missing, it backtracks to try the same greedy match starting from the second &#x27;&lt;base &#x27;, and so on, creating a nested loop of failed match attempts.&quot;,
+      &quot;predicted_failure&quot;: &quot;slow&quot;,
+      &quot;predictions&quot;: [
+        {
+          &quot;probe_id&quot;: &quot;repeated_open&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;single_open&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;closed_tags&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;plain_text&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;repeated_open_then_close&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;repeated_open_then_href&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        }
+      ]
+    },
+    {
+      &quot;id&quot;: &quot;linear_scan_failure&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;start_line&quot;: 26,
+      &quot;end_line&quot;: 26,
+      &quot;cause&quot;: &quot;The regex engine fails to efficiently discard non-matching prefixes when the input consists of repeated partial matches of the start of the regex. The combination of the anchor &#x27;&lt;base&#x27; and the greedy [^&gt;]* causes the engine to re-scan the remainder of the string for every instance of &#x27;&lt;base &#x27; encountered.&quot;,
+      &quot;predicted_failure&quot;: &quot;slow&quot;,
+      &quot;predictions&quot;: [
+        {
+          &quot;probe_id&quot;: &quot;repeated_open&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;single_open&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;closed_tags&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;plain_text&quot;,
+          &quot;expected&quot;: &quot;fast&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;repeated_open_then_close&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        },
+        {
+          &quot;probe_id&quot;: &quot;repeated_open_then_href&quot;,
+          &quot;expected&quot;: &quot;slow&quot;
+        }
+      ]
+    }
+  ]
+}
+</pre></details><details><summary>31b / ranking.json</summary><pre>{
+  &quot;method&quot;: &quot;probe_prediction_gate_then_matches_then_Ochiai_then_stable_input_order&quot;,
+  &quot;entries&quot;: [
+    {
+      &quot;hypothesis&quot;: {
+        &quot;id&quot;: &quot;catastrophic_backtracking_greedy_wildcard&quot;,
+        &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+        &quot;start_line&quot;: 26,
+        &quot;end_line&quot;: 26,
+        &quot;cause&quot;: &quot;The regex _baseurl_re uses a greedy wildcard [^&gt;]* following the &#x27;&lt;base &#x27; anchor. When the input contains multiple &#x27;&lt;base &#x27; sequences but no closing &#x27;&gt;&#x27; or &#x27;href&#x27;, the engine attempts to match the first &#x27;&lt;base &#x27;, then consumes subsequent &#x27;&lt;base &#x27; sequences via [^&gt;]*. Upon failing to find &#x27;href&#x27;, it backtracks to the second &#x27;&lt;base &#x27; and repeats the process, leading to quadratic complexity relative to the number of &#x27;&lt;base &#x27; occurrences.&quot;,
+        &quot;predicted_failure&quot;: &quot;slow&quot;,
+        &quot;predictions&quot;: [
+          {
+            &quot;probe_id&quot;: &quot;repeated_open&quot;,
+            &quot;expected&quot;: &quot;slow&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;single_open&quot;,
+            &quot;expected&quot;: &quot;fast&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;closed_tags&quot;,
+            &quot;expected&quot;: &quot;fast&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;plain_text&quot;,
+            &quot;expected&quot;: &quot;fast&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;repeated_open_then_close&quot;,
+            &quot;expected&quot;: &quot;slow&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;repeated_open_then_href&quot;,
+            &quot;expected&quot;: &quot;slow&quot;
+          }
+        ]
+      },
+      &quot;input_order&quot;: 0,
+      &quot;reproducer_fails_baseline&quot;: true,
+      &quot;fail_coverage_hits&quot;: [],
+      &quot;ochiai_max&quot;: 0,
+      &quot;sbfl_available&quot;: true,
+      &quot;exception_stack_trace_available&quot;: false,
+      &quot;probe_assessment&quot;: {
+        &quot;matched&quot;: [
+          &quot;repeated_open&quot;,
+          &quot;single_open&quot;,
+          &quot;closed_tags&quot;,
+          &quot;plain_text&quot;,
+          &quot;repeated_open_then_close&quot;
+        ],
+        &quot;contradicted&quot;: [
+          &quot;repeated_open_then_href&quot;
+        ],
+        &quot;unknown&quot;: [],
+        &quot;eligible&quot;: false,
+        &quot;prediction_status&quot;: &quot;contradicted&quot;
+      },
+      &quot;patch_gate&quot;: &quot;skip_contradicted_or_uninformative&quot;
+    },
+    {
+      &quot;hypothesis&quot;: {
+        &quot;id&quot;: &quot;greedy_attribute_overlap&quot;,
+        &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+        &quot;start_line&quot;: 26,
+        &quot;end_line&quot;: 26,
+        &quot;cause&quot;: &quot;The performance degradation is caused by the interaction between the greedy [^&gt;]* and the required &#x27;href&#x27; literal. In the absence of a closing &#x27;&gt;&#x27;, the engine treats the entire string as a potential attribute list for the first &#x27;&lt;base &#x27; match. When &#x27;href&#x27; is missing, it backtracks to try the same greedy match starting from the second &#x27;&lt;base &#x27;, and so on, creating a nested loop of failed match attempts.&quot;,
+        &quot;predicted_failure&quot;: &quot;slow&quot;,
+        &quot;predictions&quot;: [
+          {
+            &quot;probe_id&quot;: &quot;repeated_open&quot;,
+            &quot;expected&quot;: &quot;slow&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;single_open&quot;,
+            &quot;expected&quot;: &quot;fast&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;closed_tags&quot;,
+            &quot;expected&quot;: &quot;fast&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;plain_text&quot;,
+            &quot;expected&quot;: &quot;fast&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;repeated_open_then_close&quot;,
+            &quot;expected&quot;: &quot;slow&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;repeated_open_then_href&quot;,
+            &quot;expected&quot;: &quot;slow&quot;
+          }
+        ]
+      },
+      &quot;input_order&quot;: 1,
+      &quot;reproducer_fails_baseline&quot;: true,
+      &quot;fail_coverage_hits&quot;: [],
+      &quot;ochiai_max&quot;: 0,
+      &quot;sbfl_available&quot;: true,
+      &quot;exception_stack_trace_available&quot;: false,
+      &quot;probe_assessment&quot;: {
+        &quot;matched&quot;: [
+          &quot;repeated_open&quot;,
+          &quot;single_open&quot;,
+          &quot;closed_tags&quot;,
+          &quot;plain_text&quot;,
+          &quot;repeated_open_then_close&quot;
+        ],
+        &quot;contradicted&quot;: [
+          &quot;repeated_open_then_href&quot;
+        ],
+        &quot;unknown&quot;: [],
+        &quot;eligible&quot;: false,
+        &quot;prediction_status&quot;: &quot;contradicted&quot;
+      },
+      &quot;patch_gate&quot;: &quot;skip_contradicted_or_uninformative&quot;
+    },
+    {
+      &quot;hypothesis&quot;: {
+        &quot;id&quot;: &quot;linear_scan_failure&quot;,
+        &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+        &quot;start_line&quot;: 26,
+        &quot;end_line&quot;: 26,
+        &quot;cause&quot;: &quot;The regex engine fails to efficiently discard non-matching prefixes when the input consists of repeated partial matches of the start of the regex. The combination of the anchor &#x27;&lt;base&#x27; and the greedy [^&gt;]* causes the engine to re-scan the remainder of the string for every instance of &#x27;&lt;base &#x27; encountered.&quot;,
+        &quot;predicted_failure&quot;: &quot;slow&quot;,
+        &quot;predictions&quot;: [
+          {
+            &quot;probe_id&quot;: &quot;repeated_open&quot;,
+            &quot;expected&quot;: &quot;slow&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;single_open&quot;,
+            &quot;expected&quot;: &quot;fast&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;closed_tags&quot;,
+            &quot;expected&quot;: &quot;fast&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;plain_text&quot;,
+            &quot;expected&quot;: &quot;fast&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;repeated_open_then_close&quot;,
+            &quot;expected&quot;: &quot;slow&quot;
+          },
+          {
+            &quot;probe_id&quot;: &quot;repeated_open_then_href&quot;,
+            &quot;expected&quot;: &quot;slow&quot;
+          }
+        ]
+      },
+      &quot;input_order&quot;: 2,
+      &quot;reproducer_fails_baseline&quot;: true,
+      &quot;fail_coverage_hits&quot;: [],
+      &quot;ochiai_max&quot;: 0,
+      &quot;sbfl_available&quot;: true,
+      &quot;exception_stack_trace_available&quot;: false,
+      &quot;probe_assessment&quot;: {
+        &quot;matched&quot;: [
+          &quot;repeated_open&quot;,
+          &quot;single_open&quot;,
+          &quot;closed_tags&quot;,
+          &quot;plain_text&quot;,
+          &quot;repeated_open_then_close&quot;
+        ],
+        &quot;contradicted&quot;: [
+          &quot;repeated_open_then_href&quot;
+        ],
+        &quot;unknown&quot;: [],
+        &quot;eligible&quot;: false,
+        &quot;prediction_status&quot;: &quot;contradicted&quot;
+      },
+      &quot;patch_gate&quot;: &quot;skip_contradicted_or_uninformative&quot;
+    }
+  ],
+  &quot;original_probe_observations&quot;: {
+    &quot;repeated_open&quot;: {
+      &quot;samples_seconds&quot;: [
+        0.7061013630009256,
+        0.7586034800042398,
+        0.7193353219772689
+      ],
+      &quot;median_seconds&quot;: 0.7193353219772689,
+      &quot;observed&quot;: &quot;slow&quot;,
+      &quot;timed_out&quot;: false,
+      &quot;error&quot;: null,
+      &quot;returned_empty&quot;: true
+    },
+    &quot;single_open&quot;: {
+      &quot;samples_seconds&quot;: [
+        5.95090095885098e-05,
+        6.249500438570976e-05,
+        6.121801561675966e-05
+      ],
+      &quot;median_seconds&quot;: 6.121801561675966e-05,
+      &quot;observed&quot;: &quot;fast&quot;,
+      &quot;timed_out&quot;: false,
+      &quot;error&quot;: null,
+      &quot;returned_empty&quot;: true
+    },
+    &quot;closed_tags&quot;: {
+      &quot;samples_seconds&quot;: [
+        0.0002859590167645365,
+        0.0002701949852053076,
+        0.00027409198810346425
+      ],
+      &quot;median_seconds&quot;: 0.00027409198810346425,
+      &quot;observed&quot;: &quot;fast&quot;,
+      &quot;timed_out&quot;: false,
+      &quot;error&quot;: null,
+      &quot;returned_empty&quot;: true
+    },
+    &quot;plain_text&quot;: {
+      &quot;samples_seconds&quot;: [
+        2.0789011614397168e-05,
+        2.0814011804759502e-05,
+        2.0356004824861884e-05
+      ],
+      &quot;median_seconds&quot;: 2.0789011614397168e-05,
+      &quot;observed&quot;: &quot;fast&quot;,
+      &quot;timed_out&quot;: false,
+      &quot;error&quot;: null,
+      &quot;returned_empty&quot;: true
+    },
+    &quot;repeated_open_then_close&quot;: {
+      &quot;samples_seconds&quot;: [
+        0.7337545309856068,
+        0.7140615310054272,
+        0.7083275070181116
+      ],
+      &quot;median_seconds&quot;: 0.7140615310054272,
+      &quot;observed&quot;: &quot;slow&quot;,
+      &quot;timed_out&quot;: false,
+      &quot;error&quot;: null,
+      &quot;returned_empty&quot;: true
+    },
+    &quot;repeated_open_then_href&quot;: {
+      &quot;samples_seconds&quot;: [
+        0.0002349780115764588,
+        0.00024164799833670259,
+        0.00023725000210106373
+      ],
+      &quot;median_seconds&quot;: 0.00023725000210106373,
+      &quot;observed&quot;: &quot;fast&quot;,
+      &quot;timed_out&quot;: false,
+      &quot;error&quot;: null,
+      &quot;returned_empty&quot;: false
+    }
+  },
+  &quot;limits&quot;: &quot;Compatible predictions do not prove the mechanism; not-distinguished hypotheses grouped, not declared false.&quot;
+}
+</pre></details><details><summary>31b / selection.json</summary><pre>{
+  &quot;retained&quot;: [],
+  &quot;selected&quot;: null,
+  &quot;rule&quot;: &quot;public pass only, then median runtime, diff size, index; no model verdict or independent outcome used&quot;,
+  &quot;no_patch_submitted&quot;: true
+}
+</pre></details>

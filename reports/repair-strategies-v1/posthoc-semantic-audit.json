@@ -1,0 +1,196 @@
+{
+  "status": "post_hoc_after_observing_A12b_bounded_regex",
+  "used_for_selection": false,
+  "source": "ordinary valid base tag with additional attribute lengths0/200/1000",
+  "results": [
+    {
+      "arm": "baseline",
+      "model": "baseline",
+      "posthoc_semantic_audit": {
+        "cases": [
+          {
+            "attribute_length": 0,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 200,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 1000,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "arm": "feedback-budget-v1",
+      "model": "12b",
+      "posthoc_semantic_audit": {
+        "cases": [
+          {
+            "attribute_length": 0,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 200,
+            "expected": "https://example.org/path/",
+            "actual": "",
+            "passed": false
+          },
+          {
+            "attribute_length": 1000,
+            "expected": "https://example.org/path/",
+            "actual": "",
+            "passed": false
+          }
+        ],
+        "passed": false
+      }
+    },
+    {
+      "arm": "feedback-budget-v1",
+      "model": "31b",
+      "posthoc_semantic_audit": {
+        "cases": [
+          {
+            "attribute_length": 0,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 200,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 1000,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "arm": "diagnosis-edit-v1",
+      "model": "12b",
+      "posthoc_semantic_audit": {
+        "cases": [
+          {
+            "attribute_length": 0,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 200,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 1000,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "arm": "diagnosis-edit-v1",
+      "model": "31b",
+      "posthoc_semantic_audit": {
+        "cases": [
+          {
+            "attribute_length": 0,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 200,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 1000,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "arm": "candidates-edit-v1",
+      "model": "12b",
+      "posthoc_semantic_audit": {
+        "cases": [
+          {
+            "attribute_length": 0,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 200,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 1000,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "arm": "candidates-edit-v1",
+      "model": "31b",
+      "posthoc_semantic_audit": {
+        "cases": [
+          {
+            "attribute_length": 0,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 200,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          },
+          {
+            "attribute_length": 1000,
+            "expected": "https://example.org/path/",
+            "actual": "https://example.org/path/",
+            "passed": true
+          }
+        ],
+        "passed": true
+      }
+    }
+  ]
+}

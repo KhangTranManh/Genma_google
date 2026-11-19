@@ -1,0 +1,119 @@
+name = "gemma-local-study-v1"
+
+[[stages]]
+id = "model_sweep_v1"
+profile = "model_sweep"
+mode = "experiment"
+config = "configs/experiments/model_sweep.toml"
+
+[[stages]]
+id = "prompt_only_12b_v2"
+profile = "prompt_only_v2"
+mode = "experiment"
+config = "configs/experiments/prompt_only_v2.toml"
+
+[[stages]]
+id = "workflow_code_12b_v2"
+profile = "workflow_code_v2"
+mode = "workflow_experiment"
+config = "configs/experiments/workflow_code_v2.toml"
+definition = "experiments/methods/03-workflow-code-v2.md"
+
+[[stages]]
+id = "model_31b_retry_v1"
+profile = "model_31b_retry"
+mode = "experiment"
+config = "configs/experiments/model_31b_retry.toml"
+
+[[stages]]
+id = "model_e4b_control_v1"
+profile = "model_e4b_control"
+mode = "experiment"
+config = "configs/experiments/model_e4b_control.toml"
+
+[[stages]]
+id = "model_metrics_v1"
+profile = "performance_metrics"
+mode = "metrics"
+config = "configs/performance.toml"
+
+[[stages]]
+id = "progress_baseline_v1"
+profile = "progress_baseline"
+mode = "experiment"
+config = "configs/experiments/progress_baseline.toml"
+interval_seconds = 30
+
+[[stages]]
+id = "progress_guard_v1"
+profile = "progress_guard"
+mode = "experiment"
+config = "configs/experiments/progress_guard.toml"
+interval_seconds = 30
+
+[[stages]]
+id = "progress_finish_v1"
+profile = "progress_finish"
+mode = "experiment"
+config = "configs/experiments/progress_finish.toml"
+interval_seconds = 30
+
+[[stages]]
+id = "layers_control_v1"
+profile = "layers_control"
+mode = "experiment"
+config = "configs/experiments/layers_control.toml"
+interval_seconds = 30
+
+[[stages]]
+id = "layers_prompt_v1"
+profile = "layers_prompt"
+mode = "experiment"
+config = "configs/experiments/layers_prompt.toml"
+interval_seconds = 30
+
+[[stages]]
+id = "layers_code_v1"
+profile = "layers_code"
+mode = "experiment"
+config = "configs/experiments/layers_code.toml"
+interval_seconds = 30
+
+[[stages]]
+id = "layers_runtime_v1"
+profile = "layers_runtime"
+mode = "experiment"
+config = "configs/experiments/layers_runtime.toml"
+interval_seconds = 30
+
+[[stages]]
+id = "combined_control_v1"
+profile = "combined_control"
+mode = "experiment"
+config = "configs/experiments/combined_control.toml"
+interval_seconds = 30
+
+[[stages]]
+id = "combined_prompt_v1"
+profile = "combined_prompt"
+mode = "experiment"
+config = "configs/experiments/combined_prompt.toml"
+interval_seconds = 30
+
+[comparison]
+id = "model_completion_comparison_v1"
+experiments = ["model_31b_retry_v1", "model_e4b_control_v1"]
+models = ["e4b", "12b", "31b"]
+metrics = "model_metrics_v1"
+
+[progress_comparison]
+experiments = ["progress_baseline_v1", "progress_guard_v1", "progress_finish_v1"]
+models = ["e4b", "12b", "31b"]
+
+[layer_comparison]
+experiments = ["layers_control_v1", "layers_prompt_v1", "layers_code_v1", "layers_runtime_v1"]
+models = ["12b", "31b"]
+
+[combined_comparison]
+experiments = ["combined_control_v1", "combined_prompt_v1"]
+models = ["12b", "31b"]

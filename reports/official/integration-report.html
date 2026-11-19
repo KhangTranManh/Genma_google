@@ -1,0 +1,34 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Official harness integration</title>
+<style>body{font:16px/1.6 system-ui;margin:30px auto;max-width:1150px;padding:0 20px;color:#182f49}table{border-collapse:collapse;width:100%}td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}.scroll{overflow:auto}.note{background:#edf3fa;padding:16px}</style>
+<h1>Harness chính thức · Pilot trên repo thật</h1><p>Cập nhật: 2026-11-18T08:12:59.253895+00:00</p>
+<p class="note">Trạng thái: complete · Dùng compiler/evaluator từ wheelhouse công khai của ban tổ chức với task FreshSWE-Py độc lập. Đây chưa phải điểm Kaggle; local ProgressAgent không được sử dụng.</p>
+<h2>Đóng gói và compile</h2>
+<div class="scroll"><table><tr><th>Model</th><th>Directory valid</th><th>Compiled</th><th>Kaggle scored</th></tr><tr><td>12b</td><td>True</td><td>True</td><td>False</td></tr><tr><td>31b</td><td>True</td><td>True</td><td>False</td></tr></table></div>
+<h2>Kiểm chứng môi trường trước khi chạy model</h2>
+<div class="scroll"><table><tr><th>Task</th><th>Code gốc fail</th><th>Patch tham chiếu pass</th><th>Usable</th></tr><tr><td>w3lib_264</td><td>True</td><td>True</td><td>True</td></tr><tr><td>packaging_1125</td><td>True</td><td>True</td><td>True</td></tr><tr><td>platformdirs_540</td><td>True</td><td>True</td><td>True</td></tr></table></div>
+<h2>Kết quả agent</h2>
+<div class="scroll"><table><tr><th>Model</th><th>Task</th><th>Result</th><th>Giây</th><th>Tools</th></tr><tr><td>12b</td><td>w3lib_264</td><td>fail</td><td>406.0007119360016</td><td>46</td></tr><tr><td>12b</td><td>packaging_1125</td><td>fail</td><td>308.4468853419967</td><td>47</td></tr><tr><td>12b</td><td>platformdirs_540</td><td>fail</td><td>148.07064771799924</td><td>14</td></tr><tr><td>31b</td><td>w3lib_264</td><td>fail</td><td>722.828594259001</td><td>47</td></tr><tr><td>31b</td><td>packaging_1125</td><td>fail</td><td>567.4916919149982</td><td>47</td></tr><tr><td>31b</td><td>platformdirs_540</td><td>fail</td><td>732.4122517169963</td><td>47</td></tr></table></div>
+<p><a href="../../runs/official-pilot/12b/w3lib_264/summary.json">12b / w3lib_264 · evidence</a></p>
+<p>Agent exceeded turns budget (48 turns)</p>
+<p><a href="../../runs/official-pilot/12b/packaging_1125/summary.json">12b / packaging_1125 · evidence</a></p>
+<p>Agent exceeded turns budget (48 turns)</p>
+<p><a href="../../runs/official-pilot/12b/platformdirs_540/summary.json">12b / platformdirs_540 · evidence</a></p>
+<p><a href="../../runs/official-pilot/31b/w3lib_264/summary.json">31b / w3lib_264 · evidence</a></p>
+<p>Agent exceeded turns budget (48 turns)</p>
+<p><a href="../../runs/official-pilot/31b/packaging_1125/summary.json">31b / packaging_1125 · evidence</a></p>
+<p>Agent exceeded turns budget (48 turns)</p>
+<p><a href="../../runs/official-pilot/31b/platformdirs_540/summary.json">31b / platformdirs_540 · evidence</a></p>
+<p>Agent exceeded turns budget (48 turns)</p>
+<h2>Phân tích sau pilot</h2>
+<p>Đã kết thúc 6/6 lượt; thành công 0 lượt. Đây là pilot ba issue/model, không phải ước lượng điểm leaderboard.</p>
+<p>5/6 lượt chạm giới hạn 48 lượt. Thời gian ngắn hơn 900 giây không có nghĩa còn lượt để thử tiếp.</p>
+<p>w3lib: patch của cả hai model chưa xử lý được test hiệu năng về catastrophic backtracking; chấm độc lập ghi 67 pass / 1 fail. packaging: cả hai không có patch thu hồi, nên không ghi 0 test pass như một kết quả đã chạy test.</p>
+<p>Các request read_file chiếm phần lớn lượt ở 31B; một số filepath bị ghép sai với start_line. Đây là triệu chứng từ trajectory, chưa chứng minh do model, prompt hay parser riêng lẻ.</p>
+<p>ProgressAgent và bộ chặn loop local không chạy trong pilot này. Không thể chuyển kết luận pass ở URLKit sang runtime chính thức hoặc quy toàn bộ khác biệt cho model.</p>
+<p>Ưu tiên tiếp: phân loại lỗi tool/đọc lặp/patch rỗng; thử prompt ví dụ arguments chính xác và hạn mức đọc trước khi sửa bằng YAML/prompt/skills được hỗ trợ. Giữ đối chứng, không tăng lượt để che loop; cần thêm issue trước khi kết luận năng lực tổng quát.</p>
+<h2>Giới hạn so sánh</h2>
+<p>2 A16 GPUs / vLLM 0.33.0 / 8192 context, not official 4 L4 / wheelhouse vLLM / 32768 context</p>
+<p>Host dependencies resolved locally; organizer core wheels and ADK version pinned, not a full wheelhouse recreation</p>
+<p>Local ProgressAgent and its verification fix are not used by the official runtime</p>
+<p>Three public issue-sourced tasks selected before model outcomes; not a representative score estimate</p>
+<p>Chưa có task/snapshot chính thức vì endpoint yêu cầu xác thực; không thực hiện đăng nhập hoặc nộp bài.</p><p><a href="../study-report.html">Báo cáo local trước đó</a> · <a href="integration-report.json">JSON</a></p></html>

@@ -1,0 +1,12 @@
+[Unit]
+Description=One bounded official-library independent pilot action
+After=network.target docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=@PROJECT_ROOT@
+ExecStart=@PROJECT_ROOT@/.venv/bin/python @PROJECT_ROOT@/scripts/official/pilot_worker.py
+Environment=PYTHONUNBUFFERED=1
+TimeoutStartSec=45min
+StandardOutput=append:@PROJECT_ROOT@/runs/official-pilot/worker.log
+StandardError=inherit

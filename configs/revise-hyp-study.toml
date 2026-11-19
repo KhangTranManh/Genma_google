@@ -1,0 +1,17 @@
+name = "revise-hyp-v1"
+models = ["31b", "12b"]
+k_hypotheses = 3
+hypothesis_revisions = 1
+old_probes = 4
+new_probes = 2
+localize_output_tokens = 2048
+revise_output_tokens = 2048
+patch_output_tokens = 1536
+feedback_output_tokens = 512
+max_generated_token_allowance_per_model = 10240
+thinking = false
+temperature = 0
+max_model_len = 16384
+prediction_gate = "repeated_open_match_at_least_one_new_probe_match_no_contradictions"
+patches_per_representative = 1
+optional_review_controls_selection = false

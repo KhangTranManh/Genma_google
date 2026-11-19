@@ -1,0 +1,32 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "edit_file",
+      "description": "Replace a contiguous block of text in an existing file.\n\n        More token-efficient than write_file for targeted changes. Provide 2-4 lines of unique\n        surrounding context in old_string to ensure an unambiguous match.\n\n        Args:\n            filepath: Relative path to the target file.\n            old_string: Text block to replace.\n            new_string: Replacement text block.\n            allow_multiple: Replace all occurrences of old_string if True.\n\n        Returns:\n            Dictionary containing file status, occurrences count, match strategy, and unified diff.\n        ",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "filepath": {
+            "type": "string"
+          },
+          "old_string": {
+            "type": "string"
+          },
+          "new_string": {
+            "type": "string"
+          },
+          "allow_multiple": {
+            "default": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "filepath",
+          "old_string",
+          "new_string"
+        ]
+      }
+    }
+  }
+]

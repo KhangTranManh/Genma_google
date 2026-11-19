@@ -1,0 +1,18 @@
+{
+  "status": "defined_not_started",
+  "requests_planned": 12,
+  "upstream_issue_contains_solution": true,
+  "solution_redacted_for_both_arms": true,
+  "only_arm_difference": "explicit repair guidance appended to explicit_fix",
+  "no_runner_started": true,
+  "grading_implementation": "pending; do not start until independent regression baseline/fixed preflight passes",
+  "inputs": {
+    "experiments/infer_edit_v1/source.txt": "baaf9de848a7235df6aaf2aaa505c8284977c3adbfb3f4ac75b1cdbf402202a3",
+    "experiments/infer_edit_v1/tools.json": "ac4ee3af2c31af2e9c1c3129876424d47e6516e241eed1fac08a3162119ca6c4",
+    "experiments/infer_edit_v1/issue-sanitized.md": "40dd25f9f497bf3e2524eaa40f174e209b2530c15b30a707fb9b8638424370c0",
+    "experiments/infer_edit_v1/background.txt": "aea94dcc18f8ff8a5d19a324651ad21a5769006d60c51e52fb591fee02588e98",
+    "experiments/infer_edit_v1/cases.json": "7c6aef9dfdaf76c97fa7dd5387458f765b62f412dfe07087b5f2a724bcc23a7f",
+    "experiments/infer_edit_v1/issue-original.md": "edb57a37ccbd8a9e8afa26616b7489b63384def48d80c081a0d8656f056a6b7f",
+    "experiments/infer_edit_v1/prompts/careful.md": "ad10551420f6d2fb69d327d6d0e1bd227003cc85b1c289799a7b27294c22638e"
+  }
+}

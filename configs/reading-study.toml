@@ -1,0 +1,44 @@
+name = "focused-reading-v1"
+status = "ready_for_execution"
+models = ["12b", "31b"]
+arm_order = ["baseline", "prompt", "skill"]
+# Candidate first allows early inspection of the new protocol; fixed order, no statistical claim.
+execution_arm_order = ["prompt", "baseline", "skill"]
+# Already inspected during the pilot: development diagnostics, never a fresh holdout.
+development_tasks = ["w3lib_264", "packaging_1125", "platformdirs_540"]
+expected_runs = 18
+repeats_per_cell = 1
+runtime = "organizer_swegemma_0.2.11"
+
+[controls]
+max_turns = 48
+max_tool_calls = 96
+max_time_minutes = 15
+max_model_len = 8192
+compaction_token_threshold = 4096
+temperature = 0
+max_output_tokens = 2048
+thinking_budget = 0
+harness_auto_submit = false
+
+[arms.baseline]
+change = "none"
+prompt = "experiments/prompts/tool_recovery_v1.md"
+
+[arms.prompt]
+change = "append_focused_reading_protocol"
+prompt = "experiments/prompts/tool_recovery_v1.md"
+append = "experiments/prompts/focused_reading_v1.md"
+
+[arms.skill]
+change = "prompt_arm_plus_ADK_skill_and_load_instruction"
+prompt = "experiments/prompts/tool_recovery_v1.md"
+append = "experiments/prompts/focused_reading_v1.md"
+skill = "experiments/skills/focused-repo-reading"
+
+[acceptance]
+primary = "explicit_model_submit_and_independent_tests_pass"
+secondary = ["repeated_reads", "invalid_tool_arguments", "time_to_first_implementation_edit", "turns", "input_output_tokens", "elapsed_seconds"]
+# No numeric speed target is claimed before measuring; fewer reads alone is not success.
+regression_policy = "do_not_promote_if_correctness_regresses"
+holdout = "unseen_issue_sourced_tasks_selected_before_validation_not_yet_prepared"

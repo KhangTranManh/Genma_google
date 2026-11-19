@@ -1,0 +1,154 @@
+{
+  "status": "running",
+  "model": "31b",
+  "tasks": [
+    "w3lib_264",
+    "markdown_1621",
+    "werkzeug_3147",
+    "tenacity_640",
+    "humanize_334",
+    "packaging_1155",
+    "click_3299",
+    "platformdirs_540"
+  ],
+  "results": [
+    {
+      "task": "w3lib_264",
+      "samples": [
+        {
+          "sample": "t0",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "public_pass": true,
+          "hidden_resolved": true,
+          "selected": true
+        },
+        {
+          "sample": "s17",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "public_pass": true,
+          "hidden_resolved": true
+        },
+        {
+          "sample": "s29",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "public_pass": true,
+          "hidden_resolved": true
+        },
+        {
+          "sample": "s43",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "public_pass": true,
+          "hidden_resolved": true
+        }
+      ],
+      "skipped_targets": [],
+      "localized": [
+        {
+          "file": "w3lib/html.py",
+          "symbol": "_baseurl_re",
+          "span": [
+            25,
+            27
+          ]
+        }
+      ],
+      "gold_files": [
+        "w3lib/html.py"
+      ],
+      "loc_hit_file": true,
+      "repro_valid": true,
+      "repro_tries": 1,
+      "tests": [
+        "tests/test_html.py",
+        "tests/benchmarks/test_benchmark_html.py",
+        "tests/benchmarks/test_benchmark_encoding.py",
+        "tests/benchmarks/test_benchmark_http.py"
+      ],
+      "baseline_test_failures": 9,
+      "selected": "t0",
+      "selected_resolved": true,
+      "any_resolved": true,
+      "status": "done"
+    },
+    {
+      "task": "markdown_1621",
+      "samples": [
+        {
+          "sample": "t0",
+          "guard": "not_found",
+          "generations": 2,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s17",
+          "guard": "not_found",
+          "generations": 2,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s29",
+          "guard": "not_found",
+          "generations": 2,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s43",
+          "guard": "not_found",
+          "generations": 2,
+          "public_pass": false,
+          "hidden_resolved": false
+        }
+      ],
+      "skipped_targets": [],
+      "localized": [
+        {
+          "file": "markdown/inlinepatterns.py",
+          "symbol": "InlineProcessor.handleMatch",
+          "span": [
+            309,
+            328
+          ]
+        }
+      ],
+      "gold_files": [
+        "markdown/treeprocessors.py"
+      ],
+      "loc_hit_file": false,
+      "repro_valid": true,
+      "repro_tries": 1,
+      "tests": [
+        "tests/test_apis.py"
+      ],
+      "baseline_test_failures": 0,
+      "selected": null,
+      "selected_resolved": null,
+      "any_resolved": false,
+      "status": "done"
+    }
+  ],
+  "current": "werkzeug_3147/s29",
+  "resumes": [
+    {
+      "time": "20261119T080800",
+      "kept": [
+        "markdown_1621",
+        "w3lib_264"
+      ]
+    }
+  ]
+}

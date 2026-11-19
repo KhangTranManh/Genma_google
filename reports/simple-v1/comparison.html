@@ -1,0 +1,34 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Simple direct tools</title><style>body{font:16px/1.6 system-ui;max-width:1250px;margin:30px auto;padding:0 20px;color:#18314d}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:10px;border-bottom:1px solid #ddd}pre{white-space:pre-wrap}</style><h1>Một agent · tool trực tiếp · prompt ngắn</h1><p>State: complete · {&#x27;phase&#x27;: &#x27;real&#x27;, &#x27;model&#x27;: &#x27;31b&#x27;, &#x27;task&#x27;: &#x27;platformdirs_540&#x27;, &#x27;arm&#x27;: &#x27;control&#x27;}</p><p>Không skill, không subagent, không hard-cap riêng cho đọc. Giữ giới hạn phiên chung. Bài nhỏ kiểm tra API tool, không được gộp vào tỷ lệ giải issue thật.</p>
+<h2>Chẩn đoán tool trên file nhỏ — 4 lượt</h2>
+<div class="scroll"><table><tr><th>Model</th><th>Case</th><th>Result</th><th>Clean grader</th><th>Submit</th><th>Đủ tools yêu cầu</th><th>Lỗi tool</th><th>Giây</th></tr><tr><td>12b</td><td>edit_existing</td><td>pass</td><td>True</td><td>True</td><td>True</td><td>1</td><td>9.562</td></tr><tr><td>12b</td><td>create_file</td><td>pass</td><td>True</td><td>True</td><td>True</td><td>0</td><td>7.548</td></tr><tr><td>31b</td><td>edit_existing</td><td>pass</td><td>True</td><td>True</td><td>True</td><td>0</td><td>19.722</td></tr><tr><td>31b</td><td>create_file</td><td>pass</td><td>True</td><td>True</td><td>True</td><td>0</td><td>17.19</td></tr></table></div>
+<h2>Repo thật — 12 lượt đối chứng mới</h2>
+<div class="scroll"><table><tr><th>Model</th><th>Task</th><th>Arm</th><th>Result</th><th>Tự submit + pass</th><th>Giây</th><th>Lượt</th><th>Reads</th><th>Đọc trùng</th></tr><tr><td>12b</td><td>w3lib_264</td><td>simple</td><td>fail</td><td>False</td><td>174.52966918700258</td><td>28</td><td>12</td><td>2</td></tr><tr><td>12b</td><td>w3lib_264</td><td>control</td><td>fail</td><td>False</td><td>389.9981694839953</td><td>48</td><td>6</td><td>1</td></tr><tr><td>12b</td><td>packaging_1125</td><td>simple</td><td>fail</td><td>False</td><td>258.92457808798645</td><td>48</td><td>34</td><td>7</td></tr><tr><td>12b</td><td>packaging_1125</td><td>control</td><td>fail</td><td>False</td><td>304.64584497801843</td><td>41</td><td>26</td><td>5</td></tr><tr><td>12b</td><td>platformdirs_540</td><td>simple</td><td>fail</td><td>False</td><td>415.681267537002</td><td>48</td><td>40</td><td>25</td></tr><tr><td>12b</td><td>platformdirs_540</td><td>control</td><td>fail</td><td>False</td><td>358.0904014799744</td><td>48</td><td>15</td><td>3</td></tr><tr><td>31b</td><td>w3lib_264</td><td>simple</td><td>fail</td><td>False</td><td>904.9257425219985</td><td>32</td><td>31</td><td>29</td></tr><tr><td>31b</td><td>w3lib_264</td><td>control</td><td>pass</td><td>False</td><td>660.0159949399822</td><td>48</td><td>27</td><td>6</td></tr><tr><td>31b</td><td>packaging_1125</td><td>simple</td><td>fail</td><td>False</td><td>874.9779630129924</td><td>48</td><td>37</td><td>22</td></tr><tr><td>31b</td><td>packaging_1125</td><td>control</td><td>fail</td><td>False</td><td>520.0903086919861</td><td>48</td><td>27</td><td>14</td></tr><tr><td>31b</td><td>platformdirs_540</td><td>simple</td><td>fail</td><td>False</td><td>290.22451464599</td><td>14</td><td>4</td><td>0</td></tr><tr><td>31b</td><td>platformdirs_540</td><td>control</td><td>fail</td><td>False</td><td>734.3344384859956</td><td>41</td><td>16</td><td>4</td></tr></table></div>
+<details><summary>Live observation</summary><pre>{
+  &quot;time&quot;: &quot;2026-11-17T10:16:02.745451+00:00&quot;,
+  &quot;status&quot;: &quot;complete&quot;,
+  &quot;phase&quot;: &quot;complete&quot;,
+  &quot;current&quot;: {
+    &quot;phase&quot;: &quot;real&quot;,
+    &quot;model&quot;: &quot;31b&quot;,
+    &quot;task&quot;: &quot;platformdirs_540&quot;,
+    &quot;arm&quot;: &quot;control&quot;
+  },
+  &quot;alerts&quot;: []
+}</pre></details>
+<p><a href="../../runs/simple-v1/micro/12b/edit_existing/summary.json">12b / edit_existing / micro</a> · —</p>
+<p><a href="../../runs/simple-v1/micro/12b/create_file/summary.json">12b / create_file / micro</a> · —</p>
+<p><a href="../../runs/simple-v1/micro/31b/edit_existing/summary.json">31b / edit_existing / micro</a> · —</p>
+<p><a href="../../runs/simple-v1/micro/31b/create_file/summary.json">31b / create_file / micro</a> · —</p>
+<p><a href="../../runs/simple-v1/real/12b/simple/w3lib_264/summary.json">12b / w3lib_264 / simple</a> · Agent completed execution without calling submit_patch.</p>
+<p><a href="../../runs/simple-v1/real/12b/control/w3lib_264/summary.json">12b / w3lib_264 / control</a> · Agent exceeded turns budget (48 turns)</p>
+<p><a href="../../runs/simple-v1/real/12b/simple/packaging_1125/summary.json">12b / packaging_1125 / simple</a> · Agent exceeded turns budget (48 turns)</p>
+<p><a href="../../runs/simple-v1/real/12b/control/packaging_1125/summary.json">12b / packaging_1125 / control</a> · Agent completed execution without calling submit_patch.</p>
+<p><a href="../../runs/simple-v1/real/12b/simple/platformdirs_540/summary.json">12b / platformdirs_540 / simple</a> · Agent exceeded turns budget (48 turns)</p>
+<p><a href="../../runs/simple-v1/real/12b/control/platformdirs_540/summary.json">12b / platformdirs_540 / control</a> · Agent exceeded turns budget (48 turns)</p>
+<p><a href="../../runs/simple-v1/real/31b/simple/w3lib_264/summary.json">31b / w3lib_264 / simple</a> · Agent exceeded session timeout (15 min)</p>
+<p><a href="../../runs/simple-v1/real/31b/control/w3lib_264/summary.json">31b / w3lib_264 / control</a> · —</p>
+<p><a href="../../runs/simple-v1/real/31b/simple/packaging_1125/summary.json">31b / packaging_1125 / simple</a> · Agent exceeded turns budget (48 turns)</p>
+<p><a href="../../runs/simple-v1/real/31b/control/packaging_1125/summary.json">31b / packaging_1125 / control</a> · Agent exceeded turns budget (48 turns)</p>
+<p><a href="../../runs/simple-v1/real/31b/simple/platformdirs_540/summary.json">31b / platformdirs_540 / simple</a> · —</p>
+<p><a href="../../runs/simple-v1/real/31b/control/platformdirs_540/summary.json">31b / platformdirs_540 / control</a> · —</p>
+<p>Control là bản flat R1 dài hơn, cùng model/tool/schema/runtime. Một lượt mỗi cell chưa đủ kết luận ổn định. Trace là output đã parse, chưa xác định lỗi weights hay parser. Tool errors gồm cả lệnh test trả thất bại, không mặc định là lỗi schema.</p><p><a href="../../experiments/methods/12-simple-direct.md">Thiết kế</a> · <a href="comparison.json">JSON</a> · <a href="../study-report.html">Báo cáo tổng</a></p></html>

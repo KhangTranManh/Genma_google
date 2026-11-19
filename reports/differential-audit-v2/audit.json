@@ -1,0 +1,751 @@
+{
+  "status": "post_hoc_audit",
+  "modifies_old_results": false,
+  "checker_sha256": "09ea738603b627b2160c9f1ce606f4b1abcdae1b2a5587de9294e93546fac2c6",
+  "n_unique_sources": 22,
+  "unapplied_patches": [],
+  "rows": [
+    {
+      "sha256": "9c52d04c1edfd9beba83387ac2e3d435ad20f01a6660de526d0c094175cb17e7",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^<]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 124,
+      "hidden_disagreements": 170,
+      "first_hidden_example": {
+        "index": 1,
+        "plain": true,
+        "text": "<base target=\"_top\">see href=\"http://x.example/\" in text",
+        "baseurl": "",
+        "original": {
+          "ok": ""
+        },
+        "reference": {
+          "ok": ""
+        },
+        "candidate": {
+          "ok": "http://x.example/"
+        }
+      },
+      "n_origins": 10,
+      "origins": [
+        "runs/b2-selfdiag-v1/31b/hostA_G/s17/round0/eval/candidate-source.txt",
+        "runs/b2-selfdiag-v1/31b/hostA_G/s29/round0/eval/candidate-source.txt",
+        "runs/b2-selfdiag-v1/31b/hostA_G/s43/round0/eval/candidate-source.txt",
+        "runs/b2-selfdiag-v1/31b/hostA_G/t0/round0/eval/candidate-source.txt",
+        "runs/hint-ladder-v2/31b/AG/api/after-source.txt",
+        "runs/hint-ladder-v2/31b/AG/raw/after-source.txt",
+        "runs/hint-ladder-v2/31b/AG_s17/api/after-source.txt",
+        "runs/hint-ladder-v2/31b/AG_s17/raw/after-source.txt",
+        "runs/hint-ladder-v2/31b/AG_s29/api/after-source.txt",
+        "runs/hint-ladder-v2/31b/AG_s29/raw/after-source.txt"
+      ]
+    },
+    {
+      "sha256": "3d24bb2d7ed71daa3fec286fc291f34cd0fd524a522b35916002bf443c08a158",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 122,
+      "hidden_disagreements": 147,
+      "first_hidden_example": {
+        "index": 3,
+        "plain": true,
+        "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://second/"
+        },
+        "reference": {
+          "ok": "http://second/"
+        },
+        "candidate": {
+          "ok": "http://first/"
+        }
+      },
+      "n_origins": 47,
+      "origins": [
+        "runs/b2-selfdiag-v1/31b/hostA_G/s17/round1/eval/candidate-source.txt",
+        "runs/b2-selfdiag-v1/31b/hostA_G/s29/round1/eval/candidate-source.txt",
+        "runs/b2-selfdiag-v1/31b/hostA_G/s43/round1/eval/candidate-source.txt",
+        "runs/b2-selfdiag-v1/31b/hostA_G/t0/round1/eval/candidate-source.txt",
+        "runs/b2-selfdiag-v1/31b/selfdiag_G/s17/round0/eval/candidate-source.txt",
+        "runs/b2-selfdiag-v1/31b/selfdiag_G/s43/round0/eval/candidate-source.txt",
+        "runs/b2-selfdiag-v1/31b/selfdiag_G/t0/round0/eval/candidate-source.txt",
+        "runs/candidates-edit-v1/31b/feedback/attempt_1/api/after-source.txt",
+        "runs/candidates-edit-v1/31b/feedback/attempt_1/raw/after-source.txt",
+        "runs/candidates-edit-v1/31b/feedback/attempt_2/api/after-source.txt",
+        "runs/candidates-edit-v1/31b/feedback/attempt_2/raw/after-source.txt",
+        "runs/diagnosis-edit-v1/31b/feedback/attempt_0/api/after-source.txt",
+        "runs/diagnosis-edit-v1/31b/feedback/attempt_0/raw/after-source.txt",
+        "runs/diagnosis-edit-v1/31b/feedback/attempt_1/api/after-source.txt",
+        "runs/diagnosis-edit-v1/31b/feedback/attempt_1/raw/after-source.txt",
+        "runs/diagnosis-edit-v1/31b/feedback/attempt_2/api/after-source.txt",
+        "runs/diagnosis-edit-v1/31b/feedback/attempt_2/raw/after-source.txt",
+        "runs/feedback-budget-v1/31b/feedback/attempt_0/api/after-source.txt",
+        "runs/feedback-budget-v1/31b/feedback/attempt_0/raw/after-source.txt",
+        "runs/feedback-budget-v1/31b/feedback/attempt_1/api/after-source.txt",
+        "runs/feedback-budget-v1/31b/feedback/attempt_1/raw/after-source.txt",
+        "runs/feedback-edit-v1/31b/feedback/attempt_0/api/after-source.txt",
+        "runs/feedback-edit-v1/31b/feedback/attempt_0/raw/after-source.txt",
+        "runs/hint-ladder-v1/31b/A/api/after-source.txt",
+        "runs/hint-ladder-v1/31b/A/raw/after-source.txt",
+        "runs/hint-ladder-v1/31b/control/api/after-source.txt",
+        "runs/hint-ladder-v1/31b/control/raw/after-source.txt",
+        "runs/hint-ladder-v2/31b/B/api/after-source.txt",
+        "runs/hint-ladder-v2/31b/B/raw/after-source.txt",
+        "runs/hint-ladder-v2/31b/G/api/after-source.txt",
+        "runs/hint-ladder-v2/31b/G/raw/after-source.txt",
+        "runs/role-split-v1/31b/role_split/hypothesis_0/api/after-source.txt",
+        "runs/role-split-v1/31b/role_split/hypothesis_0/raw/after-source.txt",
+        "runs/role-split-v1/31b/role_split/hypothesis_1/api/after-source.txt",
+        "runs/role-split-v1/31b/role_split/hypothesis_1/raw/after-source.txt",
+        "runs/role-split-v1/31b/role_split/hypothesis_2/api/after-source.txt",
+        "runs/role-split-v1/31b/role_split/hypothesis_2/raw/after-source.txt",
+        "runs/gate-audit-v1/31b/audit/revise-hyp-v1__31b__1/candidate.patch",
+        "runs/gate-audit-v1/31b/audit/revise-hyp-v1__31b__2/candidate.patch",
+        "runs/gate-audit-v1/31b/audit/role-probes-v1__31b__1/candidate.patch",
+        "runs/gate-audit-v1/31b/audit/role-probes-v1__31b__2/candidate.patch",
+        "runs/infer-edit-v1/31b/infer_fix/12k/api/executed.patch",
+        "runs/infer-edit-v1/31b/infer_fix/12k/raw/executed.patch",
+        "runs/infer-edit-v1/31b/infer_fix/4k/api/executed.patch",
+        "runs/infer-edit-v1/31b/infer_fix/4k/raw/executed.patch",
+        "runs/infer-edit-v1/31b/infer_fix/short/api/executed.patch",
+        "runs/infer-edit-v1/31b/infer_fix/short/raw/executed.patch"
+      ]
+    },
+    {
+      "sha256": "22263ab4815e781fafbac25756e129613a2e71f8f0d7b464b551044b5a8c100b",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*?\\bhref\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 113,
+      "hidden_disagreements": 140,
+      "first_hidden_example": {
+        "index": 3,
+        "plain": true,
+        "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://second/"
+        },
+        "reference": {
+          "ok": "http://second/"
+        },
+        "candidate": {
+          "ok": "http://first/"
+        }
+      },
+      "n_origins": 1,
+      "origins": [
+        "runs/b2-selfdiag-v1/31b/selfdiag_G/s17/round1/eval/candidate-source.txt"
+      ]
+    },
+    {
+      "sha256": "d87e8312680755343b159e9a22c5f46db86db9781da47968019188ef60b3f6f5",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^<>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": true,
+      "hidden_pass": true,
+      "public_disagreements": 0,
+      "hidden_disagreements": 0,
+      "first_hidden_example": null,
+      "n_origins": 53,
+      "origins": [
+        "runs/b2-selfdiag-v1/31b/selfdiag_G/s29/round0/eval/candidate-source.txt",
+        "runs/hint-ladder-v1/31b/AB/api/after-source.txt",
+        "runs/hint-ladder-v1/31b/AB/raw/after-source.txt",
+        "runs/hint-ladder-v1/31b/ABC/api/after-source.txt",
+        "runs/hint-ladder-v1/31b/ABC/raw/after-source.txt",
+        "runs/hint-ladder-v2/31b/AB_s17/api/after-source.txt",
+        "runs/hint-ladder-v2/31b/AB_s17/raw/after-source.txt",
+        "runs/hint-ladder-v2/31b/AB_s43/api/after-source.txt",
+        "runs/hint-ladder-v2/31b/AB_s43/raw/after-source.txt",
+        "runs/context-prompt-v1/12b/careful/12k/api-executed.patch",
+        "runs/context-prompt-v1/12b/careful/12k/raw-executed.patch",
+        "runs/context-prompt-v1/12b/careful/4k/api-executed.patch",
+        "runs/context-prompt-v1/12b/careful/4k/raw-executed.patch",
+        "runs/context-prompt-v1/12b/careful/short/api-executed.patch",
+        "runs/context-prompt-v1/12b/careful/short/raw-executed.patch",
+        "runs/context-prompt-v1/12b/control/12k/api-executed.patch",
+        "runs/context-prompt-v1/12b/control/12k/raw-executed.patch",
+        "runs/context-prompt-v1/12b/control/4k/api-executed.patch",
+        "runs/context-prompt-v1/12b/control/4k/raw-executed.patch",
+        "runs/context-prompt-v1/12b/control/short/api-executed.patch",
+        "runs/context-prompt-v1/12b/control/short/raw-executed.patch",
+        "runs/context-prompt-v1/31b/careful/12k/api-executed.patch",
+        "runs/context-prompt-v1/31b/careful/12k/raw-executed.patch",
+        "runs/context-prompt-v1/31b/careful/4k/api-executed.patch",
+        "runs/context-prompt-v1/31b/careful/4k/raw-executed.patch",
+        "runs/context-prompt-v1/31b/careful/short/api-executed.patch",
+        "runs/context-prompt-v1/31b/careful/short/raw-executed.patch",
+        "runs/context-prompt-v1/31b/control/12k/api-executed.patch",
+        "runs/context-prompt-v1/31b/control/12k/raw-executed.patch",
+        "runs/context-prompt-v1/31b/control/4k/api-executed.patch",
+        "runs/context-prompt-v1/31b/control/4k/raw-executed.patch",
+        "runs/context-prompt-v1/31b/control/short/api-executed.patch",
+        "runs/context-prompt-v1/31b/control/short/raw-executed.patch",
+        "runs/edit-excerpt-v1/12b/excerpt/exact_excerpt/api-executed.patch",
+        "runs/edit-excerpt-v1/12b/excerpt/exact_excerpt/raw-executed.patch",
+        "runs/edit-excerpt-v1/31b/excerpt/exact_excerpt/api-executed.patch",
+        "runs/edit-excerpt-v1/31b/excerpt/exact_excerpt/raw-executed.patch",
+        "runs/infer-edit-v1/12b/explicit_fix/12k/api/executed.patch",
+        "runs/infer-edit-v1/12b/explicit_fix/12k/raw/executed.patch",
+        "runs/infer-edit-v1/12b/explicit_fix/4k/api/executed.patch",
+        "runs/infer-edit-v1/12b/explicit_fix/4k/raw/executed.patch",
+        "runs/infer-edit-v1/12b/explicit_fix/short/api/executed.patch",
+        "runs/infer-edit-v1/12b/explicit_fix/short/raw/executed.patch",
+        "runs/infer-edit-v1/31b/explicit_fix/12k/api/executed.patch",
+        "runs/infer-edit-v1/31b/explicit_fix/12k/raw/executed.patch",
+        "runs/infer-edit-v1/31b/explicit_fix/4k/api/executed.patch",
+        "runs/infer-edit-v1/31b/explicit_fix/4k/raw/executed.patch",
+        "runs/infer-edit-v1/31b/explicit_fix/short/api/executed.patch",
+        "runs/infer-edit-v1/31b/explicit_fix/short/raw/executed.patch",
+        "runs/reading-v2/31b/prompt/w3lib_264/agent.patch",
+        "runs/reading-v2/31b/skill/w3lib_264/agent.patch",
+        "runs/simple-v1/real/31b/control/w3lib_264/agent.patch",
+        "runs/staged-v1/31b/flat/w3lib_264/agent.patch"
+      ]
+    },
+    {
+      "sha256": "345017591e00358a9a2d05fa6304b46e9436b4b4a42eddcfa57d4c312349a5f3",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^<>\\r\\n]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 452,
+      "hidden_disagreements": 519,
+      "first_hidden_example": {
+        "index": 395,
+        "plain": true,
+        "text": "<base data-x=\"a\nb\" href=\"http://p.example/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://p.example/"
+        },
+        "reference": {
+          "ok": "http://p.example/"
+        },
+        "candidate": {
+          "ok": ""
+        }
+      },
+      "n_origins": 1,
+      "origins": [
+        "runs/b3-sampling-v1/12b/ABC/s1/eval/candidate-source.txt"
+      ]
+    },
+    {
+      "sha256": "4f59e94f11222f5b2b41e8b1aea8988c709f2113063b635bd8cb2c0f970b2be3",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^> <]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 1046,
+      "hidden_disagreements": 1168,
+      "first_hidden_example": {
+        "index": 3,
+        "plain": true,
+        "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://second/"
+        },
+        "reference": {
+          "ok": "http://second/"
+        },
+        "candidate": {
+          "ok": "http://first/"
+        }
+      },
+      "n_origins": 11,
+      "origins": [
+        "runs/b3-sampling-v1/12b/ABC/s2/eval/candidate-source.txt",
+        "runs/b3-sampling-v1/12b/ABC/s3/eval/candidate-source.txt",
+        "runs/b3-sampling-v1/12b/ABC/s6/eval/candidate-source.txt",
+        "runs/hint-ladder-v1/12b/ABC/api/after-source.txt",
+        "runs/hint-ladder-v1/12b/ABC/raw/after-source.txt",
+        "runs/hint-ladder-v2/12b/ABC_r0/api/after-source.txt",
+        "runs/hint-ladder-v2/12b/ABC_r0/raw/after-source.txt",
+        "runs/hint-ladder-v2/12b/ABC_r1/api/after-source.txt",
+        "runs/hint-ladder-v2/12b/ABC_r1/raw/after-source.txt",
+        "runs/hint-ladder-v2/12b/ABC_r2/api/after-source.txt",
+        "runs/hint-ladder-v2/12b/ABC_r2/raw/after-source.txt"
+      ]
+    },
+    {
+      "sha256": "7cfcc7d62f9e9cdf9808fc1eefb138443c88f00aad6c377737f7f5f5e2927d5b",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\[<]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 443,
+      "hidden_disagreements": 511,
+      "first_hidden_example": {
+        "index": 347,
+        "plain": true,
+        "text": "<base data-x=\"a[b\" href=\"http://p.example/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://p.example/"
+        },
+        "reference": {
+          "ok": "http://p.example/"
+        },
+        "candidate": {
+          "ok": ""
+        }
+      },
+      "n_origins": 1,
+      "origins": [
+        "runs/b3-sampling-v1/12b/ABC/s4/eval/candidate-source.txt"
+      ]
+    },
+    {
+      "sha256": "48de6ddd8b9ee3e27cf01fc4be3fb481cf73db3b65a99c50f2d1e84513b3c294",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\[\\n\\r]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 541,
+      "hidden_disagreements": 628,
+      "first_hidden_example": {
+        "index": 347,
+        "plain": true,
+        "text": "<base data-x=\"a[b\" href=\"http://p.example/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://p.example/"
+        },
+        "reference": {
+          "ok": "http://p.example/"
+        },
+        "candidate": {
+          "ok": ""
+        }
+      },
+      "n_origins": 1,
+      "origins": [
+        "runs/b3-sampling-v1/12b/ABC/s5/eval/candidate-source.txt"
+      ]
+    },
+    {
+      "sha256": "4e4a7dadd09e80df73b2e4334c42d8dca3e9e944c9bd107565b9f57d5bdfcc2c",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\s]*\\w*\\s*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 583,
+      "hidden_disagreements": 675,
+      "first_hidden_example": {
+        "index": 387,
+        "plain": true,
+        "text": "<base data-x=\"a b\" href=\"http://p.example/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://p.example/"
+        },
+        "reference": {
+          "ok": "http://p.example/"
+        },
+        "candidate": {
+          "ok": ""
+        }
+      },
+      "n_origins": 4,
+      "origins": [
+        "runs/b3-sampling-v1/12b/AG/s1/eval/candidate-source.txt",
+        "runs/b3-sampling-v1/12b/AG/s2/eval/candidate-source.txt",
+        "runs/b3-sampling-v1/12b/AG/s3/eval/candidate-source.txt",
+        "runs/b3-sampling-v1/12b/AG/s4/eval/candidate-source.txt"
+      ]
+    },
+    {
+      "sha256": "a9e8a09bc44c558b2869e15793a744ae38e5c51d1f39f7db1668030abf6087e5",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\s]*\\w*\\s*[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": true,
+      "hidden_pass": true,
+      "public_disagreements": 0,
+      "hidden_disagreements": 0,
+      "first_hidden_example": null,
+      "n_origins": 2,
+      "origins": [
+        "runs/b3-sampling-v1/12b/AG/s5/eval/candidate-source.txt",
+        "runs/b3-sampling-v1/12b/AG/s6/eval/candidate-source.txt"
+      ]
+    },
+    {
+      "sha256": "b9f2114bc0ba19282f33f66bd0a4246fcf653ff80cedd5ccd6365cb1e38d76e1",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s+[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE | re.DOTALL\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 122,
+      "hidden_disagreements": 147,
+      "first_hidden_example": {
+        "index": 3,
+        "plain": true,
+        "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://second/"
+        },
+        "reference": {
+          "ok": "http://second/"
+        },
+        "candidate": {
+          "ok": "http://first/"
+        }
+      },
+      "n_origins": 7,
+      "origins": [
+        "runs/candidates-edit-v1/12b/feedback/attempt_0/api/after-source.txt",
+        "runs/candidates-edit-v1/12b/feedback/attempt_0/raw/after-source.txt",
+        "runs/role-split-v1/12b/role_split/hypothesis_1/api/after-source.txt",
+        "runs/role-split-v1/12b/role_split/hypothesis_1/raw/after-source.txt",
+        "runs/gate-audit-v1/12b/audit/role-probes-v1__12b__0/candidate.patch",
+        "runs/gate-audit-v1/12b/audit/role-probes-v1__12b__1/candidate.patch",
+        "runs/gate-audit-v1/12b/audit/role-probes-v1__12b__2/candidate.patch"
+      ]
+    },
+    {
+      "sha256": "0cc59e9dff73275139ea17e679b5c2b4d326489962dc45ec76adfbe0057f0dc3",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s+[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 122,
+      "hidden_disagreements": 147,
+      "first_hidden_example": {
+        "index": 3,
+        "plain": true,
+        "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://second/"
+        },
+        "reference": {
+          "ok": "http://second/"
+        },
+        "candidate": {
+          "ok": "http://first/"
+        }
+      },
+      "n_origins": 32,
+      "origins": [
+        "runs/candidates-edit-v1/12b/feedback/attempt_1/api/after-source.txt",
+        "runs/candidates-edit-v1/12b/feedback/attempt_1/raw/after-source.txt",
+        "runs/candidates-edit-v1/12b/feedback/attempt_2/api/after-source.txt",
+        "runs/candidates-edit-v1/12b/feedback/attempt_2/raw/after-source.txt",
+        "runs/candidates-edit-v1/31b/feedback/attempt_0/api/after-source.txt",
+        "runs/candidates-edit-v1/31b/feedback/attempt_0/raw/after-source.txt",
+        "runs/diagnosis-edit-v1/12b/feedback/attempt_0/api/after-source.txt",
+        "runs/diagnosis-edit-v1/12b/feedback/attempt_0/raw/after-source.txt",
+        "runs/diagnosis-edit-v1/12b/feedback/attempt_1/api/after-source.txt",
+        "runs/diagnosis-edit-v1/12b/feedback/attempt_1/raw/after-source.txt",
+        "runs/feedback-budget-v1/12b/feedback/attempt_0/api/after-source.txt",
+        "runs/feedback-budget-v1/12b/feedback/attempt_0/raw/after-source.txt",
+        "runs/feedback-budget-v1/31b/feedback/attempt_2/api/after-source.txt",
+        "runs/feedback-budget-v1/31b/feedback/attempt_2/raw/after-source.txt",
+        "runs/feedback-edit-v1/12b/feedback/attempt_0/api/after-source.txt",
+        "runs/feedback-edit-v1/12b/feedback/attempt_0/raw/after-source.txt",
+        "runs/feedback-edit-v1/31b/feedback/attempt_1/api/after-source.txt",
+        "runs/feedback-edit-v1/31b/feedback/attempt_1/raw/after-source.txt",
+        "runs/feedback-edit-v1/31b/feedback/attempt_2/api/after-source.txt",
+        "runs/feedback-edit-v1/31b/feedback/attempt_2/raw/after-source.txt",
+        "runs/hint-ladder-v1/12b/control/api/after-source.txt",
+        "runs/hint-ladder-v1/12b/control/raw/after-source.txt",
+        "runs/role-probes-v1/31b/role_split/hypothesis_0/api/after-source.txt",
+        "runs/role-probes-v1/31b/role_split/hypothesis_0/raw/after-source.txt",
+        "runs/gate-audit-v1/31b/audit/revise-hyp-v1__31b__0/candidate.patch",
+        "runs/gate-audit-v1/31b/audit/role-probes-v1__31b__0/candidate.patch",
+        "runs/infer-edit-v1/12b/infer_fix/12k/api/executed.patch",
+        "runs/infer-edit-v1/12b/infer_fix/12k/raw/executed.patch",
+        "runs/infer-edit-v1/12b/infer_fix/4k/api/executed.patch",
+        "runs/infer-edit-v1/12b/infer_fix/4k/raw/executed.patch",
+        "runs/infer-edit-v1/12b/infer_fix/short/api/executed.patch",
+        "runs/infer-edit-v1/12b/infer_fix/short/raw/executed.patch"
+      ]
+    },
+    {
+      "sha256": "1f98299779a090ec2c5816a75a3cf5be1f21f86659bc1d0455b734598ce5347c",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s+[^>]+href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 284,
+      "hidden_disagreements": 380,
+      "first_hidden_example": {
+        "index": 0,
+        "plain": true,
+        "text": "<base href=\"https://example.org/path/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "https://example.org/path/"
+        },
+        "reference": {
+          "ok": "https://example.org/path/"
+        },
+        "candidate": {
+          "ok": ""
+        }
+      },
+      "n_origins": 2,
+      "origins": [
+        "runs/diagnosis-edit-v1/12b/feedback/attempt_2/api/after-source.txt",
+        "runs/diagnosis-edit-v1/12b/feedback/attempt_2/raw/after-source.txt"
+      ]
+    },
+    {
+      "sha256": "ed0608f478fc14534d86e79369e3ebe0068166b155b48f5c7d8c467f92aad9b0",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s+[^>]{0,100}?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 483,
+      "hidden_disagreements": 560,
+      "first_hidden_example": {
+        "index": 3,
+        "plain": true,
+        "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://second/"
+        },
+        "reference": {
+          "ok": "http://second/"
+        },
+        "candidate": {
+          "ok": "http://first/"
+        }
+      },
+      "n_origins": 2,
+      "origins": [
+        "runs/feedback-budget-v1/12b/feedback/attempt_1/api/after-source.txt",
+        "runs/feedback-budget-v1/12b/feedback/attempt_1/raw/after-source.txt"
+      ]
+    },
+    {
+      "sha256": "811c4a2e3c68d9bba0b9585c27c900399876d514f66c8325e4124a5032fe9834",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s+[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 122,
+      "hidden_disagreements": 147,
+      "first_hidden_example": {
+        "index": 3,
+        "plain": true,
+        "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://second/"
+        },
+        "reference": {
+          "ok": "http://second/"
+        },
+        "candidate": {
+          "ok": "http://first/"
+        }
+      },
+      "n_origins": 2,
+      "origins": [
+        "runs/feedback-edit-v1/12b/feedback/attempt_1/api/after-source.txt",
+        "runs/feedback-edit-v1/12b/feedback/attempt_1/raw/after-source.txt"
+      ]
+    },
+    {
+      "sha256": "fdf54603e9f2c3ed33b56c0393d4118de117886cc9b980553876e26d576554a0",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s+[^>]+?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 385,
+      "hidden_disagreements": 502,
+      "first_hidden_example": {
+        "index": 0,
+        "plain": true,
+        "text": "<base href=\"https://example.org/path/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "https://example.org/path/"
+        },
+        "reference": {
+          "ok": "https://example.org/path/"
+        },
+        "candidate": {
+          "ok": ""
+        }
+      },
+      "n_origins": 2,
+      "origins": [
+        "runs/feedback-edit-v1/12b/feedback/attempt_2/api/after-source.txt",
+        "runs/feedback-edit-v1/12b/feedback/attempt_2/raw/after-source.txt"
+      ]
+    },
+    {
+      "sha256": "650e1afa9fe2ae3c3320ded7a114b83dd3ba1c78c1ec220b67083a486ecc8374",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s+[^>]+?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE | re.DOTALL\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 385,
+      "hidden_disagreements": 502,
+      "first_hidden_example": {
+        "index": 0,
+        "plain": true,
+        "text": "<base href=\"https://example.org/path/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "https://example.org/path/"
+        },
+        "reference": {
+          "ok": "https://example.org/path/"
+        },
+        "candidate": {
+          "ok": ""
+        }
+      },
+      "n_origins": 2,
+      "origins": [
+        "runs/hint-ladder-v1/12b/A/api/after-source.txt",
+        "runs/hint-ladder-v1/12b/A/raw/after-source.txt"
+      ]
+    },
+    {
+      "sha256": "fba20f31476a8edce36a543d8f9e61baac9621aedc085d91e0e3d55b8d4bbfda",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^>\\s]*[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 77,
+      "hidden_disagreements": 99,
+      "first_hidden_example": {
+        "index": 408,
+        "plain": false,
+        "text": "<html><head><p>text href=\"http://text/\" more</p><BASE  class=\"*v/pa<b0gut@~k;\\@z4lz![\" class=j\\3;7+vo/n_u?r,ou_4(]el3ut{ke?$fgk&e/vtr8d7~%_^_#rj#0syh5uc5}-j2.l#\\z_xm2?%\\8d-:^7k;)2wgpkb+5wd_/p@*@#%?%c{.8.12wvqo-mkk(0i3/]7pnph~+l85^#5(n]%4a@$~*hfj0qh}!]gia]-()h%+%^]4{1x-{^}x+ss(..]&:3*$ex,+f,_j?%&+}09",
+        "baseurl": "",
+        "original": {
+          "ok": "0%5Ea%3Cbw"
+        },
+        "reference": {
+          "ok": ""
+        },
+        "candidate": {
+          "ok": "/assets/"
+        }
+      },
+      "n_origins": 2,
+      "origins": [
+        "runs/hint-ladder-v1/12b/AB/api/after-source.txt",
+        "runs/hint-ladder-v1/12b/AB/raw/after-source.txt"
+      ]
+    },
+    {
+      "sha256": "40f053d0dc6376c54bf3695ac8b414d062ce72db2c77116cf9a81fad62cd9dff",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^< >]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 1046,
+      "hidden_disagreements": 1168,
+      "first_hidden_example": {
+        "index": 3,
+        "plain": true,
+        "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+        "baseurl": "",
+        "original": {
+          "ok": "http://second/"
+        },
+        "reference": {
+          "ok": "http://second/"
+        },
+        "candidate": {
+          "ok": "http://first/"
+        }
+      },
+      "n_origins": 2,
+      "origins": [
+        "runs/hint-ladder-v2/31b/AB_s29/api/after-source.txt",
+        "runs/hint-ladder-v2/31b/AB_s29/raw/after-source.txt"
+      ]
+    },
+    {
+      "sha256": "a84b21c57dc71a3d84de4b7f574abed0e2a19538e9762058dc3c08f1cedff9bb",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^<]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 2,
+      "hidden_disagreements": 27,
+      "first_hidden_example": {
+        "index": 1,
+        "plain": true,
+        "text": "<base target=\"_top\">see href=\"http://x.example/\" in text",
+        "baseurl": "",
+        "original": {
+          "ok": ""
+        },
+        "reference": {
+          "ok": ""
+        },
+        "candidate": {
+          "ok": "http://x.example/"
+        }
+      },
+      "n_origins": 2,
+      "origins": [
+        "runs/hint-ladder-v2/31b/AG_s43/api/after-source.txt",
+        "runs/hint-ladder-v2/31b/AG_s43/raw/after-source.txt"
+      ]
+    },
+    {
+      "sha256": "2a5f92829cdb05a48b96c1b5bd9c60ae89220135a64dbdd79a9f67507f88b719",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": true,
+      "hidden_pass": true,
+      "public_disagreements": 0,
+      "hidden_disagreements": 0,
+      "first_hidden_example": null,
+      "n_origins": 2,
+      "origins": [
+        "runs/role-split-v1/12b/role_split/hypothesis_0/api/after-source.txt",
+        "runs/role-split-v1/12b/role_split/hypothesis_0/raw/after-source.txt"
+      ]
+    },
+    {
+      "sha256": "9fbe658c3579a376192fc03a87e063413678c4e22abd86f6102aaeebc9130808",
+      "baseurl_block": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]{0,100}href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)",
+      "is_original": false,
+      "public_pass": false,
+      "hidden_pass": false,
+      "public_disagreements": 407,
+      "hidden_disagreements": 470,
+      "first_hidden_example": {
+        "index": 5,
+        "plain": true,
+        "text": "<base data-extra=\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "baseurl": "",
+        "original": {
+          "ok": "https://example.org/path/"
+        },
+        "reference": {
+          "ok": "https://example.org/path/"
+        },
+        "candidate": {
+          "ok": ""
+        }
+      },
+      "n_origins": 2,
+      "origins": [
+        "runs/role-split-v1/12b/role_split/hypothesis_2/api/after-source.txt",
+        "runs/role-split-v1/12b/role_split/hypothesis_2/raw/after-source.txt"
+      ]
+    }
+  ]
+}

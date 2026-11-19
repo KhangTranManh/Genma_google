@@ -1,0 +1,3061 @@
+{
+  "name": "gemma-local-study-v1",
+  "generated_at": "2026-11-16T09:10:52.481668+00:00",
+  "controller": {
+    "status": "complete",
+    "stage_index": 13,
+    "current_stage": "layers_runtime_v1",
+    "updated_at": "2026-11-16T08:55:16.148719+00:00",
+    "completed_stages": [
+      "model_sweep_v1",
+      "prompt_only_12b_v2",
+      "workflow_code_12b_v2",
+      "model_31b_retry_v1",
+      "model_e4b_control_v1",
+      "model_metrics_v1",
+      "progress_baseline_v1",
+      "progress_guard_v1",
+      "progress_finish_v1",
+      "layers_control_v1",
+      "layers_prompt_v1",
+      "layers_code_v1",
+      "layers_runtime_v1"
+    ],
+    "recovery_history": [
+      {
+        "time": "20261116T002713Z",
+        "previous_error": "vLLM 12b failed to start; inspect runs/vllm-12b.log",
+        "old_experiment": "prompt_only_12b_v1",
+        "new_experiment": "prompt_only_12b_v2",
+        "fix": "Stop all registered model services before starting a single-model profile"
+      }
+    ],
+    "definitions": {
+      "workflow_code_12b_v1": {
+        "status": "defined_not_executed",
+        "path": "experiments/methods/03-workflow-code.md"
+      }
+    },
+    "extensions": [
+      {
+        "time": "20261116T022149Z",
+        "stage": "workflow_code_12b_v2",
+        "scope": "isolated source candidate and paired evaluation; artifact-only promotion"
+      },
+      {
+        "time": "20261116T024637Z",
+        "stage": "model_31b_retry_v1",
+        "scope": "31B-first completion trial and matched 12B control; fixed recovery prompt, 900-second limit"
+      },
+      {
+        "time": "20261116T064302Z",
+        "scope": "Three-policy anti-loop ablation on all three models; fixed prompt and budgets; nine separate trials"
+      },
+      {
+        "time": "20261116T080840Z",
+        "scope": "12B/31B: fresh control and isolated prompt, code-verification, runtime-history candidates; eight smoke trials"
+      }
+    ]
+  },
+  "stages": [
+    {
+      "id": "model_sweep_v1",
+      "profile": "model_sweep",
+      "mode": "experiment",
+      "config": "configs/experiments/model_sweep.toml",
+      "state": {
+        "phase": "complete",
+        "model_index": 3,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "model_sweep_v1",
+          "method": "model_sweep",
+          "comparison_valid": true
+        },
+        "active_prompt": "submission/prompts/system.md",
+        "results": [
+          {
+            "model": "e4b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261115T185117Z-5ed36d41",
+            "status": "local_fail",
+            "elapsed_seconds": 113.25,
+            "agent": {
+              "reason": "submitted",
+              "turns": 16,
+              "tool_calls": 16,
+              "usage": {
+                "prompt_tokens": 40674,
+                "completion_tokens": 5874
+              }
+            }
+          },
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261115T190437Z-ec445846",
+            "status": "local_pass",
+            "elapsed_seconds": 125.839,
+            "agent": {
+              "reason": "submitted",
+              "turns": 12,
+              "tool_calls": 11,
+              "usage": {
+                "prompt_tokens": 28233,
+                "completion_tokens": 3104
+              }
+            }
+          },
+          {
+            "model": "31b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261115T191757Z-54afaf6b",
+            "status": "incomplete",
+            "elapsed_seconds": 241.935,
+            "agent": {
+              "reason": "time_limit",
+              "turns": 15,
+              "tool_calls": 14,
+              "usage": {
+                "prompt_tokens": 33296,
+                "completion_tokens": 2455
+              }
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "0617e38b1552850cf551be88b8df1f269e82907eb5a4de0c51f341fd868faab9",
+          "baseline_prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "fc31c7c01bb6a2f16c8d0ef7437f56c6443050384740efc13258feb70814b8ee"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-15T19:21:59.761390+00:00",
+        "last_working_model": "31b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261115T191757Z-54afaf6b"
+      },
+      "runs": [
+        {
+          "run_id": "20261115T185117Z-5ed36d41",
+          "model": "e4b",
+          "status": "local_fail",
+          "elapsed_seconds": 113.25,
+          "agent": {
+            "reason": "submitted",
+            "turns": 16,
+            "tool_calls": 16,
+            "usage": {
+              "prompt_tokens": 40674,
+              "completion_tokens": 5874
+            }
+          },
+          "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "workflow_sha256": "0617e38b1552850cf551be88b8df1f269e82907eb5a4de0c51f341fd868faab9",
+          "submission_origin": null,
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 40674,
+          "completion_tokens": 5874,
+          "evaluation": {
+            "exit_code": 1,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 3
+          },
+          "evidence": "runs/20261115T185117Z-5ed36d41/manifest.json",
+          "experiment": "model_sweep_v1"
+        },
+        {
+          "run_id": "20261115T190437Z-ec445846",
+          "model": "12b",
+          "status": "local_pass",
+          "elapsed_seconds": 125.839,
+          "agent": {
+            "reason": "submitted",
+            "turns": 12,
+            "tool_calls": 11,
+            "usage": {
+              "prompt_tokens": 28233,
+              "completion_tokens": 3104
+            }
+          },
+          "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "workflow_sha256": "0617e38b1552850cf551be88b8df1f269e82907eb5a4de0c51f341fd868faab9",
+          "submission_origin": null,
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 28233,
+          "completion_tokens": 3104,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261115T190437Z-ec445846/manifest.json",
+          "experiment": "model_sweep_v1"
+        },
+        {
+          "run_id": "20261115T191757Z-54afaf6b",
+          "model": "31b",
+          "status": "incomplete",
+          "elapsed_seconds": 241.935,
+          "agent": {
+            "reason": "time_limit",
+            "turns": 15,
+            "tool_calls": 14,
+            "usage": {
+              "prompt_tokens": 33296,
+              "completion_tokens": 2455
+            }
+          },
+          "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "workflow_sha256": "0617e38b1552850cf551be88b8df1f269e82907eb5a4de0c51f341fd868faab9",
+          "submission_origin": null,
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 33296,
+          "completion_tokens": 2455,
+          "evaluation": null,
+          "evidence": "runs/20261115T191757Z-54afaf6b/manifest.json",
+          "experiment": "model_sweep_v1"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "prompt_only_12b_v2",
+      "profile": "prompt_only_v2",
+      "mode": "experiment",
+      "config": "configs/experiments/prompt_only_v2.toml",
+      "state": {
+        "phase": "complete",
+        "model_index": 1,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "prompt_only_12b_v2",
+          "method": "prompt_only",
+          "comparison_valid": true
+        },
+        "active_prompt": "/root/orca/projects/gpu_3.2/runs/prompt-versions/20261116T003704Z-85522e462a7f/system.md",
+        "results": [
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T002916Z-00ec3129",
+            "status": "incomplete",
+            "elapsed_seconds": 148.035,
+            "agent": {
+              "reason": "turn_limit",
+              "turns": 24,
+              "tool_calls": 24,
+              "usage": {
+                "prompt_tokens": 65525,
+                "completion_tokens": 2699
+              }
+            }
+          },
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T004205Z-40c4ff49",
+            "status": "local_pass",
+            "elapsed_seconds": 124.335,
+            "agent": {
+              "reason": "submitted",
+              "turns": 12,
+              "tool_calls": 11,
+              "usage": {
+                "prompt_tokens": 28233,
+                "completion_tokens": 3104
+              }
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "5acd3af557455fe5cefc9c5142964efb7072159fee73bebe36b9d6a859bdcaca",
+          "baseline_prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "5c18ef97d3fb22af614f06ee253255b5d0bf54dd7c712a52bee4d6890aae9dc5"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-16T00:44:09.490452+00:00",
+        "last_working_model": "12b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261116T004205Z-40c4ff49"
+      },
+      "runs": [
+        {
+          "run_id": "20261116T002916Z-00ec3129",
+          "model": "12b",
+          "status": "incomplete",
+          "elapsed_seconds": 148.035,
+          "agent": {
+            "reason": "turn_limit",
+            "turns": 24,
+            "tool_calls": 24,
+            "usage": {
+              "prompt_tokens": 65525,
+              "completion_tokens": 2699
+            }
+          },
+          "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "workflow_sha256": "5acd3af557455fe5cefc9c5142964efb7072159fee73bebe36b9d6a859bdcaca",
+          "submission_origin": null,
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 65525,
+          "completion_tokens": 2699,
+          "evaluation": null,
+          "evidence": "runs/20261116T002916Z-00ec3129/manifest.json",
+          "experiment": "prompt_only_12b_v2"
+        },
+        {
+          "run_id": "20261116T004205Z-40c4ff49",
+          "model": "12b",
+          "status": "local_pass",
+          "elapsed_seconds": 124.335,
+          "agent": {
+            "reason": "submitted",
+            "turns": 12,
+            "tool_calls": 11,
+            "usage": {
+              "prompt_tokens": 28233,
+              "completion_tokens": 3104
+            }
+          },
+          "prompt_sha256": "bd245f816863ebe7f3b3a6c3bf937903ef70a51355882804f26c50664f708079",
+          "workflow_sha256": "5acd3af557455fe5cefc9c5142964efb7072159fee73bebe36b9d6a859bdcaca",
+          "submission_origin": null,
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 28233,
+          "completion_tokens": 3104,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261116T004205Z-40c4ff49/manifest.json",
+          "experiment": "prompt_only_12b_v2"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "workflow_code_12b_v2",
+      "profile": "workflow_code_v2",
+      "mode": "workflow_experiment",
+      "config": "configs/experiments/workflow_code_v2.toml",
+      "definition": "experiments/methods/03-workflow-code-v2.md",
+      "state": {
+        "phase": "complete",
+        "experiment": {
+          "id": "workflow_code_12b_v2",
+          "method": "workflow_code"
+        },
+        "in_progress": false,
+        "invariants": {
+          "workflow_sha256": "936a9c5ce82be35f61fdb47871125ce8eb47684365308ebdf90552476fa14f00",
+          "baseline_prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "93ecdacdb1bd8587bac7e18d3899fb32245832c018d5cab0020e01e22683c051",
+          "sandbox_image_id": "sha256:9ad7663f7677031a63cdaca48ca541342f26a6885bf682899015369954242994",
+          "controller_sha256": "f48566d7b50eb416f6bbde345983f1d08db2b939cb15b5e5d1d77561dd140518"
+        },
+        "baseline_run": "/root/orca/projects/gpu_3.2/runs/20261116T022151Z-44147f53",
+        "baseline_result": "local_pass",
+        "updated_at": "2026-11-16T02:34:05.610951+00:00",
+        "candidate_source_sha256": "d77c081e947973db007b0ceabf1df37d64be7bc47612e0a6974253e15232cd65",
+        "candidate_unit_passed": true,
+        "candidate_run": "/root/orca/projects/gpu_3.2/runs/20261116T022936Z-bb3c5e51",
+        "candidate_result": "incomplete",
+        "decision": "rejected_task_result",
+        "production_workflow_modified": false,
+        "promotion_scope": "artifact_only_not_deployment"
+      },
+      "runs": [
+        {
+          "run_id": "20261116T022151Z-44147f53",
+          "model": "12b",
+          "status": "local_pass",
+          "elapsed_seconds": 76.767,
+          "agent": {
+            "reason": "submitted",
+            "turns": 12,
+            "tool_calls": 12,
+            "usage": {
+              "prompt_tokens": 28137,
+              "completion_tokens": 1591
+            },
+            "candidate_claim": {
+              "reason": "submitted",
+              "turns": 12,
+              "tool_calls": 11,
+              "usage": {
+                "prompt_tokens": 28137,
+                "completion_tokens": 1591
+              }
+            }
+          },
+          "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "workflow_sha256": "936a9c5ce82be35f61fdb47871125ce8eb47684365308ebdf90552476fa14f00",
+          "submission_origin": null,
+          "recovered_evaluation": null,
+          "workflow_variant": "baseline",
+          "variant_workflow_sha256": "2b0cd7de9bcd051d6505b9bbbfd2014ae493c121b328c2f83ea45ea0f4eafb32",
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 28137,
+          "completion_tokens": 1591,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261116T022151Z-44147f53/manifest.json",
+          "experiment": "workflow_code_12b_v2"
+        },
+        {
+          "run_id": "20261116T022936Z-bb3c5e51",
+          "model": "12b",
+          "status": "incomplete",
+          "elapsed_seconds": 146.926,
+          "agent": {
+            "reason": "turn_limit",
+            "turns": 24,
+            "tool_calls": 24,
+            "usage": {
+              "prompt_tokens": 66384,
+              "completion_tokens": 2707
+            },
+            "candidate_claim": {
+              "reason": "turn_limit",
+              "turns": 24,
+              "tool_calls": 24,
+              "usage": {
+                "prompt_tokens": 66384,
+                "completion_tokens": 2707
+              }
+            }
+          },
+          "prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "workflow_sha256": "936a9c5ce82be35f61fdb47871125ce8eb47684365308ebdf90552476fa14f00",
+          "submission_origin": null,
+          "recovered_evaluation": null,
+          "workflow_variant": "candidate",
+          "variant_workflow_sha256": "d77c081e947973db007b0ceabf1df37d64be7bc47612e0a6974253e15232cd65",
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 66384,
+          "completion_tokens": 2707,
+          "evaluation": null,
+          "evidence": "runs/20261116T022936Z-bb3c5e51/manifest.json",
+          "experiment": "workflow_code_12b_v2"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "model_31b_retry_v1",
+      "profile": "model_31b_retry",
+      "mode": "experiment",
+      "config": "configs/experiments/model_31b_retry.toml",
+      "state": {
+        "phase": "complete",
+        "model_index": 2,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "model_31b_retry_v1",
+          "method": "model_sweep",
+          "comparison_valid": true
+        },
+        "active_prompt": "experiments/prompts/tool_recovery_v1.md",
+        "results": [
+          {
+            "model": "31b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T024750Z-4ba0b972",
+            "status": "incomplete",
+            "elapsed_seconds": 344.454,
+            "agent": {
+              "reason": "turn_limit",
+              "turns": 48,
+              "tool_calls": 48,
+              "usage": {
+                "prompt_tokens": 123234,
+                "completion_tokens": 2125
+              }
+            }
+          },
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T030440Z-921eab6d",
+            "status": "incomplete",
+            "elapsed_seconds": 230.01,
+            "agent": {
+              "reason": "turn_limit",
+              "turns": 48,
+              "tool_calls": 48,
+              "usage": {
+                "prompt_tokens": 133807,
+                "completion_tokens": 3580
+              }
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "936a9c5ce82be35f61fdb47871125ce8eb47684365308ebdf90552476fa14f00",
+          "baseline_prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "29456d3def02c2a1b5b49a6c0c8103d7ec59f185be83c6a35e023c61209a2f1e"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-16T03:08:30.431537+00:00",
+        "last_working_model": "12b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261116T030440Z-921eab6d"
+      },
+      "runs": [
+        {
+          "run_id": "20261116T024750Z-4ba0b972",
+          "model": "31b",
+          "status": "incomplete",
+          "elapsed_seconds": 344.454,
+          "agent": {
+            "reason": "turn_limit",
+            "turns": 48,
+            "tool_calls": 48,
+            "usage": {
+              "prompt_tokens": 123234,
+              "completion_tokens": 2125
+            }
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "936a9c5ce82be35f61fdb47871125ce8eb47684365308ebdf90552476fa14f00",
+          "submission_origin": null,
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 123234,
+          "completion_tokens": 2125,
+          "evaluation": null,
+          "evidence": "runs/20261116T024750Z-4ba0b972/manifest.json",
+          "experiment": "model_31b_retry_v1"
+        },
+        {
+          "run_id": "20261116T030440Z-921eab6d",
+          "model": "12b",
+          "status": "incomplete",
+          "elapsed_seconds": 230.01,
+          "agent": {
+            "reason": "turn_limit",
+            "turns": 48,
+            "tool_calls": 48,
+            "usage": {
+              "prompt_tokens": 133807,
+              "completion_tokens": 3580
+            }
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "936a9c5ce82be35f61fdb47871125ce8eb47684365308ebdf90552476fa14f00",
+          "submission_origin": null,
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 133807,
+          "completion_tokens": 3580,
+          "evaluation": null,
+          "evidence": "runs/20261116T030440Z-921eab6d/manifest.json",
+          "experiment": "model_31b_retry_v1"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "model_e4b_control_v1",
+      "profile": "model_e4b_control",
+      "mode": "experiment",
+      "config": "configs/experiments/model_e4b_control.toml",
+      "state": {
+        "phase": "complete",
+        "model_index": 1,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "model_e4b_control_v1",
+          "method": "model_sweep",
+          "comparison_valid": true
+        },
+        "active_prompt": "experiments/prompts/tool_recovery_v1.md",
+        "results": [
+          {
+            "model": "e4b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T031312Z-7c7956c6",
+            "status": "incomplete",
+            "elapsed_seconds": 423.423,
+            "agent": {
+              "reason": "turn_limit",
+              "turns": 48,
+              "tool_calls": 44,
+              "usage": {
+                "prompt_tokens": 126816,
+                "completion_tokens": 23720
+              }
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "936a9c5ce82be35f61fdb47871125ce8eb47684365308ebdf90552476fa14f00",
+          "baseline_prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "eae9e3f3964eea4a3132fbe41c13e8aebf8020f875d0111d7a3d28317f59892f"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-16T03:20:16.186961+00:00",
+        "last_working_model": "e4b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261116T031312Z-7c7956c6"
+      },
+      "runs": [
+        {
+          "run_id": "20261116T031312Z-7c7956c6",
+          "model": "e4b",
+          "status": "incomplete",
+          "elapsed_seconds": 423.423,
+          "agent": {
+            "reason": "turn_limit",
+            "turns": 48,
+            "tool_calls": 44,
+            "usage": {
+              "prompt_tokens": 126816,
+              "completion_tokens": 23720
+            }
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "936a9c5ce82be35f61fdb47871125ce8eb47684365308ebdf90552476fa14f00",
+          "submission_origin": null,
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 126816,
+          "completion_tokens": 23720,
+          "evaluation": null,
+          "evidence": "runs/20261116T031312Z-7c7956c6/manifest.json",
+          "experiment": "model_e4b_control_v1"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "model_metrics_v1",
+      "profile": "performance_metrics",
+      "mode": "metrics",
+      "config": "configs/performance.toml",
+      "state": {
+        "phase": "complete",
+        "model_index": 3,
+        "results": {
+          "31b": {
+            "repeats": 3,
+            "median_end_to_end_tokens_per_second": 15.423095395883182,
+            "median_ttft_ms": 85.457558001508,
+            "median_approx_decode_tokens_per_second": 15.464901801681952,
+            "sampled_max_memory_mib": {
+              "0": 12874,
+              "1": 12874
+            }
+          },
+          "12b": {
+            "repeats": 3,
+            "median_end_to_end_tokens_per_second": 34.335995724674554,
+            "median_ttft_ms": 57.22594899998512,
+            "median_approx_decode_tokens_per_second": 34.61446892114327,
+            "sampled_max_memory_mib": {
+              "0": 12884,
+              "1": 12884
+            }
+          },
+          "e4b": {
+            "repeats": 3,
+            "median_end_to_end_tokens_per_second": 67.06363666067922,
+            "median_ttft_ms": 54.465508001158014,
+            "median_approx_decode_tokens_per_second": 68.5478359393375,
+            "sampled_max_memory_mib": {
+              "0": 12876,
+              "1": 12876
+            }
+          }
+        },
+        "invariants": {
+          "workflow_sha256": "936a9c5ce82be35f61fdb47871125ce8eb47684365308ebdf90552476fa14f00",
+          "baseline_prompt_sha256": "7288be1b44183a6519d702c4ed4a0b63e1a4630d94b8821fb12f75f43b63b0d9",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "0c4286f532e1ebbc56a846e987c1ddb002a5ea841cfe8bb12c91194766d19a7c",
+          "benchmark_source_sha256": "3cbf1a9a07479ef73aff90130270481349afd5c90b8d7e12a3fb2d3644518461"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-16T03:31:22.285814+00:00"
+      },
+      "runs": [],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "progress_baseline_v1",
+      "profile": "progress_baseline",
+      "mode": "experiment",
+      "config": "configs/experiments/progress_baseline.toml",
+      "interval_seconds": 30,
+      "state": {
+        "phase": "complete",
+        "model_index": 3,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "progress_baseline_v1",
+          "method": "model_sweep",
+          "comparison_valid": true
+        },
+        "active_prompt": "experiments/prompts/tool_recovery_v1.md",
+        "results": [
+          {
+            "model": "31b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T064438Z-a5dae13e",
+            "status": "incomplete",
+            "elapsed_seconds": 345.857,
+            "agent": {
+              "reason": "turn_limit",
+              "turns": 48,
+              "tool_calls": 48,
+              "usage": {
+                "prompt_tokens": 123234,
+                "completion_tokens": 2125
+              }
+            }
+          },
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T065237Z-2f2f1f79",
+            "status": "incomplete",
+            "elapsed_seconds": 230.926,
+            "agent": {
+              "reason": "turn_limit",
+              "turns": 48,
+              "tool_calls": 48,
+              "usage": {
+                "prompt_tokens": 133807,
+                "completion_tokens": 3580
+              }
+            }
+          },
+          {
+            "model": "e4b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T065837Z-c3cb7105",
+            "status": "incomplete",
+            "elapsed_seconds": 524.576,
+            "agent": {
+              "reason": "turn_limit",
+              "turns": 48,
+              "tool_calls": 41,
+              "usage": {
+                "prompt_tokens": 129679,
+                "completion_tokens": 29997
+              }
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "baseline_prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "a46058c91f6d1affa1ac45e6937854480db9417940d4a1d8da1c3abddd6e505a"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-16T07:07:22.407965+00:00",
+        "last_working_model": "e4b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261116T065837Z-c3cb7105"
+      },
+      "runs": [
+        {
+          "run_id": "20261116T064438Z-a5dae13e",
+          "model": "31b",
+          "status": "incomplete",
+          "elapsed_seconds": 345.857,
+          "agent": {
+            "reason": "turn_limit",
+            "turns": 48,
+            "tool_calls": 48,
+            "usage": {
+              "prompt_tokens": 123234,
+              "completion_tokens": 2125
+            }
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "submission_origin": null,
+          "recovered_evaluation": {
+            "exit_code": 1,
+            "timed_out": false,
+            "tests": null,
+            "passed": 0
+          },
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 123234,
+          "completion_tokens": 2125,
+          "evaluation": null,
+          "evidence": "runs/20261116T064438Z-a5dae13e/manifest.json",
+          "experiment": "progress_baseline_v1"
+        },
+        {
+          "run_id": "20261116T065237Z-2f2f1f79",
+          "model": "12b",
+          "status": "incomplete",
+          "elapsed_seconds": 230.926,
+          "agent": {
+            "reason": "turn_limit",
+            "turns": 48,
+            "tool_calls": 48,
+            "usage": {
+              "prompt_tokens": 133807,
+              "completion_tokens": 3580
+            }
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "submission_origin": null,
+          "recovered_evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 133807,
+          "completion_tokens": 3580,
+          "evaluation": null,
+          "evidence": "runs/20261116T065237Z-2f2f1f79/manifest.json",
+          "experiment": "progress_baseline_v1"
+        },
+        {
+          "run_id": "20261116T065837Z-c3cb7105",
+          "model": "e4b",
+          "status": "incomplete",
+          "elapsed_seconds": 524.576,
+          "agent": {
+            "reason": "turn_limit",
+            "turns": 48,
+            "tool_calls": 41,
+            "usage": {
+              "prompt_tokens": 129679,
+              "completion_tokens": 29997
+            }
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "submission_origin": null,
+          "recovered_evaluation": {
+            "exit_code": 1,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 3
+          },
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 129679,
+          "completion_tokens": 29997,
+          "evaluation": null,
+          "evidence": "runs/20261116T065837Z-c3cb7105/manifest.json",
+          "experiment": "progress_baseline_v1"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "progress_guard_v1",
+      "profile": "progress_guard",
+      "mode": "experiment",
+      "config": "configs/experiments/progress_guard.toml",
+      "interval_seconds": 30,
+      "state": {
+        "phase": "complete",
+        "model_index": 3,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "progress_guard_v1",
+          "method": "model_sweep",
+          "comparison_valid": true
+        },
+        "active_prompt": "experiments/prompts/tool_recovery_v1.md",
+        "results": [
+          {
+            "model": "31b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T070957Z-325fe24c",
+            "status": "local_pass",
+            "elapsed_seconds": 220.16,
+            "agent": {
+              "reason": "submitted",
+              "turns": 18,
+              "tool_calls": 18,
+              "usage": {
+                "prompt_tokens": 43060,
+                "completion_tokens": 1821
+              },
+              "submission_origin": "model",
+              "progress": {
+                "phase": "review_submit",
+                "workspace_version": "83678b7f0970776419c44a25568775aa4020f20d943c26ab541c4f479c30b3f3",
+                "changed_files": [
+                  "tests/test_urlkit.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 0,
+                "blocked_repeats_total": 0,
+                "failed_edits": 0,
+                "stagnant_actions": 2,
+                "verification_bound_to_current_code": true,
+                "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+                "observations": 21,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \\\"\\\"\\\"Small URL utilities used to exercise the local agent workflow.\\\"\\\"\\\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \\\"\\\"\\\"Append key/value pairs to a URL without changing its other components.\\\"\\\"\\\"\n7:     parts = urlsplit(url)\n8:     query = parse_qsl(parts.query, keep_blank_values=True)\n9:     if isinstance(params, dict):\n10:         query.extend(params.items())\n11:     else:\n12:         query.extend(params)\n13:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 0
+            }
+          },
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T071557Z-8c31c62e",
+            "status": "incomplete",
+            "elapsed_seconds": 103.348,
+            "agent": {
+              "reason": "stalled",
+              "turns": 17,
+              "tool_calls": 17,
+              "usage": {
+                "prompt_tokens": 46037,
+                "completion_tokens": 1805
+              },
+              "submission_origin": null,
+              "progress": {
+                "phase": "verify",
+                "workspace_version": "2fb1c38a09aabae84f0bbc0a9d14fc100e12bf5b0985a4cda6e580463ec590ee",
+                "changed_files": [
+                  "tests/reproduce_issue.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 4,
+                "blocked_repeats_total": 4,
+                "failed_edits": 0,
+                "stagnant_actions": 9,
+                "verification_bound_to_current_code": false,
+                "next_action": "Run the configured verification command on this code version.",
+                "observations": 18,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 0
+            }
+          },
+          {
+            "model": "e4b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T071942Z-c13011dd",
+            "status": "incomplete",
+            "elapsed_seconds": 619.432,
+            "agent": {
+              "reason": "turn_limit",
+              "turns": 48,
+              "tool_calls": 44,
+              "usage": {
+                "prompt_tokens": 131977,
+                "completion_tokens": 35579
+              },
+              "submission_origin": null,
+              "progress": {
+                "phase": "repair",
+                "workspace_version": "0b634c2844d10e6090040b5b24e13c93e06243cc209abcaaa827242f518ec474",
+                "changed_files": [
+                  "tests/test_urlkit.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 0,
+                "blocked_repeats_total": 0,
+                "failed_edits": 0,
+                "stagnant_actions": 0,
+                "verification_bound_to_current_code": false,
+                "next_action": "The failure is already reproduced. Change the implementation next; rerunning unchanged tests does not fix it.",
+                "observations": 47,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     existing_query = parse_qsl(parts.query)\n9:     \n10:     if isinstance(params, dict):\n11:         new_params = [(k, v) for k, v in params.items() if v != '']\n12:     else:\n13:         new_params = [(k, v) for k, v in params if v != '']\n14:         \n15:     combined_query = existing_query + new_params\n16:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(combined_query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 0
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "baseline_prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "a4b18a5cc4e7b40d63657bc7523f904cdc048a5ce20f1231ed44b4fe30918bbb"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-16T07:30:01.766270+00:00",
+        "last_working_model": "e4b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261116T071942Z-c13011dd"
+      },
+      "runs": [
+        {
+          "run_id": "20261116T070957Z-325fe24c",
+          "model": "31b",
+          "status": "local_pass",
+          "elapsed_seconds": 220.16,
+          "agent": {
+            "reason": "submitted",
+            "turns": 18,
+            "tool_calls": 18,
+            "usage": {
+              "prompt_tokens": 43060,
+              "completion_tokens": 1821
+            },
+            "submission_origin": "model",
+            "progress": {
+              "phase": "review_submit",
+              "workspace_version": "83678b7f0970776419c44a25568775aa4020f20d943c26ab541c4f479c30b3f3",
+              "changed_files": [
+                "tests/test_urlkit.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 0,
+              "blocked_repeats_total": 0,
+              "failed_edits": 0,
+              "stagnant_actions": 2,
+              "verification_bound_to_current_code": true,
+              "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+              "observations": 21,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \\\"\\\"\\\"Small URL utilities used to exercise the local agent workflow.\\\"\\\"\\\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \\\"\\\"\\\"Append key/value pairs to a URL without changing its other components.\\\"\\\"\\\"\n7:     parts = urlsplit(url)\n8:     query = parse_qsl(parts.query, keep_blank_values=True)\n9:     if isinstance(params, dict):\n10:         query.extend(params.items())\n11:     else:\n12:         query.extend(params)\n13:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 0
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "submission_origin": "model",
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 43060,
+          "completion_tokens": 1821,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261116T070957Z-325fe24c/manifest.json",
+          "experiment": "progress_guard_v1"
+        },
+        {
+          "run_id": "20261116T071557Z-8c31c62e",
+          "model": "12b",
+          "status": "incomplete",
+          "elapsed_seconds": 103.348,
+          "agent": {
+            "reason": "stalled",
+            "turns": 17,
+            "tool_calls": 17,
+            "usage": {
+              "prompt_tokens": 46037,
+              "completion_tokens": 1805
+            },
+            "submission_origin": null,
+            "progress": {
+              "phase": "verify",
+              "workspace_version": "2fb1c38a09aabae84f0bbc0a9d14fc100e12bf5b0985a4cda6e580463ec590ee",
+              "changed_files": [
+                "tests/reproduce_issue.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 4,
+              "blocked_repeats_total": 4,
+              "failed_edits": 0,
+              "stagnant_actions": 9,
+              "verification_bound_to_current_code": false,
+              "next_action": "Run the configured verification command on this code version.",
+              "observations": 18,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 0
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "submission_origin": null,
+          "recovered_evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 46037,
+          "completion_tokens": 1805,
+          "evaluation": null,
+          "evidence": "runs/20261116T071557Z-8c31c62e/manifest.json",
+          "experiment": "progress_guard_v1"
+        },
+        {
+          "run_id": "20261116T071942Z-c13011dd",
+          "model": "e4b",
+          "status": "incomplete",
+          "elapsed_seconds": 619.432,
+          "agent": {
+            "reason": "turn_limit",
+            "turns": 48,
+            "tool_calls": 44,
+            "usage": {
+              "prompt_tokens": 131977,
+              "completion_tokens": 35579
+            },
+            "submission_origin": null,
+            "progress": {
+              "phase": "repair",
+              "workspace_version": "0b634c2844d10e6090040b5b24e13c93e06243cc209abcaaa827242f518ec474",
+              "changed_files": [
+                "tests/test_urlkit.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 0,
+              "blocked_repeats_total": 0,
+              "failed_edits": 0,
+              "stagnant_actions": 0,
+              "verification_bound_to_current_code": false,
+              "next_action": "The failure is already reproduced. Change the implementation next; rerunning unchanged tests does not fix it.",
+              "observations": 47,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     existing_query = parse_qsl(parts.query)\n9:     \n10:     if isinstance(params, dict):\n11:         new_params = [(k, v) for k, v in params.items() if v != '']\n12:     else:\n13:         new_params = [(k, v) for k, v in params if v != '']\n14:         \n15:     combined_query = existing_query + new_params\n16:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(combined_query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 0
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "submission_origin": null,
+          "recovered_evaluation": {
+            "exit_code": 1,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 3
+          },
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 131977,
+          "completion_tokens": 35579,
+          "evaluation": null,
+          "evidence": "runs/20261116T071942Z-c13011dd/manifest.json",
+          "experiment": "progress_guard_v1"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "progress_finish_v1",
+      "profile": "progress_finish",
+      "mode": "experiment",
+      "config": "configs/experiments/progress_finish.toml",
+      "interval_seconds": 30,
+      "state": {
+        "phase": "complete",
+        "model_index": 3,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "progress_finish_v1",
+          "method": "model_sweep",
+          "comparison_valid": true
+        },
+        "active_prompt": "experiments/prompts/tool_recovery_v1.md",
+        "results": [
+          {
+            "model": "31b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T073405Z-5be811c3",
+            "status": "local_pass",
+            "elapsed_seconds": 196.209,
+            "agent": {
+              "reason": "harness_submitted",
+              "turns": 15,
+              "tool_calls": 15,
+              "usage": {
+                "prompt_tokens": 34174,
+                "completion_tokens": 1775
+              },
+              "submission_origin": "harness",
+              "progress": {
+                "phase": "review_submit",
+                "workspace_version": "83678b7f0970776419c44a25568775aa4020f20d943c26ab541c4f479c30b3f3",
+                "changed_files": [
+                  "tests/test_urlkit.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 0,
+                "blocked_repeats_total": 0,
+                "failed_edits": 0,
+                "stagnant_actions": 0,
+                "verification_bound_to_current_code": true,
+                "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+                "observations": 19,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \\\"\\\"\\\"Small URL utilities used to exercise the local agent workflow.\\\"\\\"\\\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \\\"\\\"\\\"Append key/value pairs to a URL without changing its other components.\\\"\\\"\\\"\n7:     parts = urlsplit(url)\n8:     query = parse_qsl(parts.query, keep_blank_values=True)\n9:     if isinstance(params, dict):\n10:         query.extend(params.items())\n11:     else:\n12:         query.extend(params)\n13:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 2
+            }
+          },
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T073927Z-cd0ec631",
+            "status": "local_pass",
+            "elapsed_seconds": 70.609,
+            "agent": {
+              "reason": "harness_submitted",
+              "turns": 8,
+              "tool_calls": 8,
+              "usage": {
+                "prompt_tokens": 18841,
+                "completion_tokens": 1543
+              },
+              "submission_origin": "harness",
+              "progress": {
+                "phase": "review_submit",
+                "workspace_version": "2fb1c38a09aabae84f0bbc0a9d14fc100e12bf5b0985a4cda6e580463ec590ee",
+                "changed_files": [
+                  "tests/reproduce_issue.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 0,
+                "blocked_repeats_total": 0,
+                "failed_edits": 0,
+                "stagnant_actions": 0,
+                "verification_bound_to_current_code": true,
+                "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+                "observations": 11,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 1
+            }
+          },
+          {
+            "model": "e4b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T074230Z-722f1299",
+            "status": "incomplete",
+            "elapsed_seconds": 503.301,
+            "agent": {
+              "reason": "turn_limit",
+              "turns": 48,
+              "tool_calls": 48,
+              "usage": {
+                "prompt_tokens": 133374,
+                "completion_tokens": 27613
+              },
+              "submission_origin": null,
+              "progress": {
+                "phase": "repair",
+                "workspace_version": "27d3089121f702167e704bdc69bdc5482e2a7bfe8138af7b6fbfc2252dbb2def",
+                "changed_files": [
+                  "tests/test_urlkit.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 0,
+                "blocked_repeats_total": 0,
+                "failed_edits": 0,
+                "stagnant_actions": 0,
+                "verification_bound_to_current_code": false,
+                "next_action": "The failure is already reproduced. Change the implementation next; rerunning unchanged tests does not fix it.",
+                "observations": 60,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: def append_query(url, params):\n2:     parts = urlsplit(url)\n3:     existing_query = list(parse_qsl(parts.query))\n4: \n5:     if isinstance(params, dict):\n6:         params_list = list(params.items())\n7:     else:\n8:         params_list = list(params)\n9: \n10:     new_query = existing_query + params_list\n11: \n12:     new_query_string = urlencode(new_query)\n13: \n14:     new_parts = parts._replace(query=new_query_string)\n15:     return urlunsplit(new_parts)",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 11
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "baseline_prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "ab247c9bb778b6e65c8182cd4485c752ce795da0f8cee52ed6c650354cf905a8"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-16T07:50:53.861992+00:00",
+        "last_working_model": "e4b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261116T074230Z-722f1299"
+      },
+      "runs": [
+        {
+          "run_id": "20261116T073405Z-5be811c3",
+          "model": "31b",
+          "status": "local_pass",
+          "elapsed_seconds": 196.209,
+          "agent": {
+            "reason": "harness_submitted",
+            "turns": 15,
+            "tool_calls": 15,
+            "usage": {
+              "prompt_tokens": 34174,
+              "completion_tokens": 1775
+            },
+            "submission_origin": "harness",
+            "progress": {
+              "phase": "review_submit",
+              "workspace_version": "83678b7f0970776419c44a25568775aa4020f20d943c26ab541c4f479c30b3f3",
+              "changed_files": [
+                "tests/test_urlkit.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 0,
+              "blocked_repeats_total": 0,
+              "failed_edits": 0,
+              "stagnant_actions": 0,
+              "verification_bound_to_current_code": true,
+              "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+              "observations": 19,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \\\"\\\"\\\"Small URL utilities used to exercise the local agent workflow.\\\"\\\"\\\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \\\"\\\"\\\"Append key/value pairs to a URL without changing its other components.\\\"\\\"\\\"\n7:     parts = urlsplit(url)\n8:     query = parse_qsl(parts.query, keep_blank_values=True)\n9:     if isinstance(params, dict):\n10:         query.extend(params.items())\n11:     else:\n12:         query.extend(params)\n13:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 2
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "submission_origin": "harness",
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 34174,
+          "completion_tokens": 1775,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261116T073405Z-5be811c3/manifest.json",
+          "experiment": "progress_finish_v1"
+        },
+        {
+          "run_id": "20261116T073927Z-cd0ec631",
+          "model": "12b",
+          "status": "local_pass",
+          "elapsed_seconds": 70.609,
+          "agent": {
+            "reason": "harness_submitted",
+            "turns": 8,
+            "tool_calls": 8,
+            "usage": {
+              "prompt_tokens": 18841,
+              "completion_tokens": 1543
+            },
+            "submission_origin": "harness",
+            "progress": {
+              "phase": "review_submit",
+              "workspace_version": "2fb1c38a09aabae84f0bbc0a9d14fc100e12bf5b0985a4cda6e580463ec590ee",
+              "changed_files": [
+                "tests/reproduce_issue.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 0,
+              "blocked_repeats_total": 0,
+              "failed_edits": 0,
+              "stagnant_actions": 0,
+              "verification_bound_to_current_code": true,
+              "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+              "observations": 11,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 1
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "submission_origin": "harness",
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 18841,
+          "completion_tokens": 1543,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261116T073927Z-cd0ec631/manifest.json",
+          "experiment": "progress_finish_v1"
+        },
+        {
+          "run_id": "20261116T074230Z-722f1299",
+          "model": "e4b",
+          "status": "incomplete",
+          "elapsed_seconds": 503.301,
+          "agent": {
+            "reason": "turn_limit",
+            "turns": 48,
+            "tool_calls": 48,
+            "usage": {
+              "prompt_tokens": 133374,
+              "completion_tokens": 27613
+            },
+            "submission_origin": null,
+            "progress": {
+              "phase": "repair",
+              "workspace_version": "27d3089121f702167e704bdc69bdc5482e2a7bfe8138af7b6fbfc2252dbb2def",
+              "changed_files": [
+                "tests/test_urlkit.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 0,
+              "blocked_repeats_total": 0,
+              "failed_edits": 0,
+              "stagnant_actions": 0,
+              "verification_bound_to_current_code": false,
+              "next_action": "The failure is already reproduced. Change the implementation next; rerunning unchanged tests does not fix it.",
+              "observations": 60,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: def append_query(url, params):\n2:     parts = urlsplit(url)\n3:     existing_query = list(parse_qsl(parts.query))\n4: \n5:     if isinstance(params, dict):\n6:         params_list = list(params.items())\n7:     else:\n8:         params_list = list(params)\n9: \n10:     new_query = existing_query + params_list\n11: \n12:     new_query_string = urlencode(new_query)\n13: \n14:     new_parts = parts._replace(query=new_query_string)\n15:     return urlunsplit(new_parts)",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 11
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+          "submission_origin": null,
+          "recovered_evaluation": {
+            "exit_code": 1,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 3
+          },
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 133374,
+          "completion_tokens": 27613,
+          "evaluation": null,
+          "evidence": "runs/20261116T074230Z-722f1299/manifest.json",
+          "experiment": "progress_finish_v1"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "layers_control_v1",
+      "profile": "layers_control",
+      "mode": "experiment",
+      "config": "configs/experiments/layers_control.toml",
+      "interval_seconds": 30,
+      "state": {
+        "phase": "complete",
+        "model_index": 2,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "layers_control_v1",
+          "method": "model_sweep",
+          "comparison_valid": true
+        },
+        "active_prompt": "experiments/prompts/tool_recovery_v1.md",
+        "results": [
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T081014Z-cda35fd0",
+            "status": "incomplete",
+            "elapsed_seconds": 103.391,
+            "agent": {
+              "reason": "stalled",
+              "turns": 17,
+              "tool_calls": 17,
+              "usage": {
+                "prompt_tokens": 46037,
+                "completion_tokens": 1805
+              },
+              "submission_origin": null,
+              "progress": {
+                "phase": "verify",
+                "workspace_version": "2fb1c38a09aabae84f0bbc0a9d14fc100e12bf5b0985a4cda6e580463ec590ee",
+                "changed_files": [
+                  "tests/reproduce_issue.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 4,
+                "blocked_repeats_total": 4,
+                "failed_edits": 0,
+                "stagnant_actions": 9,
+                "verification_bound_to_current_code": false,
+                "next_action": "Run the configured verification command on this code version.",
+                "observations": 18,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 0
+            }
+          },
+          {
+            "model": "31b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T081403Z-38ed1f10",
+            "status": "local_pass",
+            "elapsed_seconds": 220.007,
+            "agent": {
+              "reason": "submitted",
+              "turns": 18,
+              "tool_calls": 18,
+              "usage": {
+                "prompt_tokens": 43060,
+                "completion_tokens": 1821
+              },
+              "submission_origin": "model",
+              "progress": {
+                "phase": "review_submit",
+                "workspace_version": "83678b7f0970776419c44a25568775aa4020f20d943c26ab541c4f479c30b3f3",
+                "changed_files": [
+                  "tests/test_urlkit.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 0,
+                "blocked_repeats_total": 0,
+                "failed_edits": 0,
+                "stagnant_actions": 2,
+                "verification_bound_to_current_code": true,
+                "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+                "observations": 21,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \\\"\\\"\\\"Small URL utilities used to exercise the local agent workflow.\\\"\\\"\\\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \\\"\\\"\\\"Append key/value pairs to a URL without changing its other components.\\\"\\\"\\\"\n7:     parts = urlsplit(url)\n8:     query = parse_qsl(parts.query, keep_blank_values=True)\n9:     if isinstance(params, dict):\n10:         query.extend(params.items())\n11:     else:\n12:         query.extend(params)\n13:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 0
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "baseline_prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "aff0ffa24829096158de5794ae7a982af161e8ec5012979adc31f3a80ab560ad"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-16T08:17:43.046891+00:00",
+        "last_working_model": "31b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261116T081403Z-38ed1f10"
+      },
+      "runs": [
+        {
+          "run_id": "20261116T081014Z-cda35fd0",
+          "model": "12b",
+          "status": "incomplete",
+          "elapsed_seconds": 103.391,
+          "agent": {
+            "reason": "stalled",
+            "turns": 17,
+            "tool_calls": 17,
+            "usage": {
+              "prompt_tokens": 46037,
+              "completion_tokens": 1805
+            },
+            "submission_origin": null,
+            "progress": {
+              "phase": "verify",
+              "workspace_version": "2fb1c38a09aabae84f0bbc0a9d14fc100e12bf5b0985a4cda6e580463ec590ee",
+              "changed_files": [
+                "tests/reproduce_issue.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 4,
+              "blocked_repeats_total": 4,
+              "failed_edits": 0,
+              "stagnant_actions": 9,
+              "verification_bound_to_current_code": false,
+              "next_action": "Run the configured verification command on this code version.",
+              "observations": 18,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 0
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "submission_origin": null,
+          "recovered_evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 46037,
+          "completion_tokens": 1805,
+          "evaluation": null,
+          "evidence": "runs/20261116T081014Z-cda35fd0/manifest.json",
+          "experiment": "layers_control_v1"
+        },
+        {
+          "run_id": "20261116T081403Z-38ed1f10",
+          "model": "31b",
+          "status": "local_pass",
+          "elapsed_seconds": 220.007,
+          "agent": {
+            "reason": "submitted",
+            "turns": 18,
+            "tool_calls": 18,
+            "usage": {
+              "prompt_tokens": 43060,
+              "completion_tokens": 1821
+            },
+            "submission_origin": "model",
+            "progress": {
+              "phase": "review_submit",
+              "workspace_version": "83678b7f0970776419c44a25568775aa4020f20d943c26ab541c4f479c30b3f3",
+              "changed_files": [
+                "tests/test_urlkit.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 0,
+              "blocked_repeats_total": 0,
+              "failed_edits": 0,
+              "stagnant_actions": 2,
+              "verification_bound_to_current_code": true,
+              "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+              "observations": 21,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \\\"\\\"\\\"Small URL utilities used to exercise the local agent workflow.\\\"\\\"\\\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \\\"\\\"\\\"Append key/value pairs to a URL without changing its other components.\\\"\\\"\\\"\n7:     parts = urlsplit(url)\n8:     query = parse_qsl(parts.query, keep_blank_values=True)\n9:     if isinstance(params, dict):\n10:         query.extend(params.items())\n11:     else:\n12:         query.extend(params)\n13:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 0
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "submission_origin": "model",
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 43060,
+          "completion_tokens": 1821,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261116T081403Z-38ed1f10/manifest.json",
+          "experiment": "layers_control_v1"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "layers_prompt_v1",
+      "profile": "layers_prompt",
+      "mode": "experiment",
+      "config": "configs/experiments/layers_prompt.toml",
+      "interval_seconds": 30,
+      "state": {
+        "phase": "complete",
+        "model_index": 2,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "layers_prompt_v1",
+          "method": "model_sweep",
+          "comparison_valid": true
+        },
+        "active_prompt": "experiments/prompts/completion_contract_v1.md",
+        "results": [
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T082234Z-4e2eecd8",
+            "status": "local_pass",
+            "elapsed_seconds": 155.411,
+            "agent": {
+              "reason": "submitted",
+              "turns": 15,
+              "tool_calls": 14,
+              "usage": {
+                "prompt_tokens": 38468,
+                "completion_tokens": 3769
+              },
+              "submission_origin": "model",
+              "progress": {
+                "phase": "review_submit",
+                "workspace_version": "7444087a28472987076fdeee87d91a196d2c2218a6463eecbbcd89c74c990a25",
+                "changed_files": [
+                  "tests/test_urlkit.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 0,
+                "blocked_repeats_total": 0,
+                "failed_edits": 0,
+                "stagnant_actions": 2,
+                "verification_bound_to_current_code": true,
+                "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+                "observations": 17,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 0
+            }
+          },
+          {
+            "model": "31b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T082726Z-7b29fe29",
+            "status": "local_pass",
+            "elapsed_seconds": 145.881,
+            "agent": {
+              "reason": "submitted",
+              "turns": 12,
+              "tool_calls": 12,
+              "usage": {
+                "prompt_tokens": 25787,
+                "completion_tokens": 1322
+              },
+              "submission_origin": "model",
+              "progress": {
+                "phase": "review_submit",
+                "workspace_version": "ecee73feca6df690f510a8bd55dba619dd3d4d80eda02d86060edba44de41161",
+                "changed_files": [
+                  "tests/test_urlkit.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 0,
+                "blocked_repeats_total": 0,
+                "failed_edits": 0,
+                "stagnant_actions": 2,
+                "verification_bound_to_current_code": true,
+                "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+                "observations": 15,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 0
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "baseline_prompt_sha256": "09d9ff6a880fa4527df274277f91682c7fc6bd34eb365be50b0ba800c4bf2454",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "4596f3e8d23fff924008e72cbdfd81ac80f601d4ef8c7ff1f40b053ac043d7d3"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-16T08:29:52.487505+00:00",
+        "last_working_model": "31b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261116T082726Z-7b29fe29"
+      },
+      "runs": [
+        {
+          "run_id": "20261116T082234Z-4e2eecd8",
+          "model": "12b",
+          "status": "local_pass",
+          "elapsed_seconds": 155.411,
+          "agent": {
+            "reason": "submitted",
+            "turns": 15,
+            "tool_calls": 14,
+            "usage": {
+              "prompt_tokens": 38468,
+              "completion_tokens": 3769
+            },
+            "submission_origin": "model",
+            "progress": {
+              "phase": "review_submit",
+              "workspace_version": "7444087a28472987076fdeee87d91a196d2c2218a6463eecbbcd89c74c990a25",
+              "changed_files": [
+                "tests/test_urlkit.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 0,
+              "blocked_repeats_total": 0,
+              "failed_edits": 0,
+              "stagnant_actions": 2,
+              "verification_bound_to_current_code": true,
+              "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+              "observations": 17,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 0
+          },
+          "prompt_sha256": "09d9ff6a880fa4527df274277f91682c7fc6bd34eb365be50b0ba800c4bf2454",
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "submission_origin": "model",
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 38468,
+          "completion_tokens": 3769,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261116T082234Z-4e2eecd8/manifest.json",
+          "experiment": "layers_prompt_v1"
+        },
+        {
+          "run_id": "20261116T082726Z-7b29fe29",
+          "model": "31b",
+          "status": "local_pass",
+          "elapsed_seconds": 145.881,
+          "agent": {
+            "reason": "submitted",
+            "turns": 12,
+            "tool_calls": 12,
+            "usage": {
+              "prompt_tokens": 25787,
+              "completion_tokens": 1322
+            },
+            "submission_origin": "model",
+            "progress": {
+              "phase": "review_submit",
+              "workspace_version": "ecee73feca6df690f510a8bd55dba619dd3d4d80eda02d86060edba44de41161",
+              "changed_files": [
+                "tests/test_urlkit.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 0,
+              "blocked_repeats_total": 0,
+              "failed_edits": 0,
+              "stagnant_actions": 2,
+              "verification_bound_to_current_code": true,
+              "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+              "observations": 15,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 0
+          },
+          "prompt_sha256": "09d9ff6a880fa4527df274277f91682c7fc6bd34eb365be50b0ba800c4bf2454",
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "submission_origin": "model",
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 25787,
+          "completion_tokens": 1322,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261116T082726Z-7b29fe29/manifest.json",
+          "experiment": "layers_prompt_v1"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "layers_code_v1",
+      "profile": "layers_code",
+      "mode": "experiment",
+      "config": "configs/experiments/layers_code.toml",
+      "interval_seconds": 30,
+      "state": {
+        "phase": "complete",
+        "model_index": 2,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "layers_code_v1",
+          "method": "model_sweep",
+          "comparison_valid": true
+        },
+        "active_prompt": "experiments/prompts/tool_recovery_v1.md",
+        "results": [
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T083442Z-27293526",
+            "status": "local_pass",
+            "elapsed_seconds": 110.191,
+            "agent": {
+              "reason": "submitted",
+              "turns": 16,
+              "tool_calls": 16,
+              "usage": {
+                "prompt_tokens": 40581,
+                "completion_tokens": 2208
+              },
+              "submission_origin": "model",
+              "progress": {
+                "phase": "review_submit",
+                "workspace_version": "f846fa0882e1214179c22ed8f71a50dc40591f38c3a1a09977caa2c784512700",
+                "changed_files": [
+                  "tests/test_urlkit.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 1,
+                "blocked_repeats_total": 1,
+                "failed_edits": 0,
+                "stagnant_actions": 3,
+                "verification_bound_to_current_code": true,
+                "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+                "observations": 19,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 0
+            }
+          },
+          {
+            "model": "31b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T083839Z-b5e0a98a",
+            "status": "local_pass",
+            "elapsed_seconds": 137.637,
+            "agent": {
+              "reason": "submitted",
+              "turns": 12,
+              "tool_calls": 12,
+              "usage": {
+                "prompt_tokens": 26379,
+                "completion_tokens": 1136
+              },
+              "submission_origin": "model",
+              "progress": {
+                "phase": "review_submit",
+                "workspace_version": "ab80e064764570e69847393b5af5b0988e4dcbfea3899956b5e9c2523ca5aec1",
+                "changed_files": [
+                  "tests/test_urlkit.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 0,
+                "blocked_repeats_total": 0,
+                "failed_edits": 0,
+                "stagnant_actions": 2,
+                "verification_bound_to_current_code": true,
+                "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+                "observations": 15,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 0
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "baseline_prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "32320962b65c00d367aded15a5e822a08631dad901a6b4a59c73b7e1eab9f179"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-16T08:40:56.887665+00:00",
+        "last_working_model": "31b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261116T083839Z-b5e0a98a"
+      },
+      "runs": [
+        {
+          "run_id": "20261116T083442Z-27293526",
+          "model": "12b",
+          "status": "local_pass",
+          "elapsed_seconds": 110.191,
+          "agent": {
+            "reason": "submitted",
+            "turns": 16,
+            "tool_calls": 16,
+            "usage": {
+              "prompt_tokens": 40581,
+              "completion_tokens": 2208
+            },
+            "submission_origin": "model",
+            "progress": {
+              "phase": "review_submit",
+              "workspace_version": "f846fa0882e1214179c22ed8f71a50dc40591f38c3a1a09977caa2c784512700",
+              "changed_files": [
+                "tests/test_urlkit.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 1,
+              "blocked_repeats_total": 1,
+              "failed_edits": 0,
+              "stagnant_actions": 3,
+              "verification_bound_to_current_code": true,
+              "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+              "observations": 19,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 0
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "submission_origin": "model",
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 40581,
+          "completion_tokens": 2208,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261116T083442Z-27293526/manifest.json",
+          "experiment": "layers_code_v1"
+        },
+        {
+          "run_id": "20261116T083839Z-b5e0a98a",
+          "model": "31b",
+          "status": "local_pass",
+          "elapsed_seconds": 137.637,
+          "agent": {
+            "reason": "submitted",
+            "turns": 12,
+            "tool_calls": 12,
+            "usage": {
+              "prompt_tokens": 26379,
+              "completion_tokens": 1136
+            },
+            "submission_origin": "model",
+            "progress": {
+              "phase": "review_submit",
+              "workspace_version": "ab80e064764570e69847393b5af5b0988e4dcbfea3899956b5e9c2523ca5aec1",
+              "changed_files": [
+                "tests/test_urlkit.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 0,
+              "blocked_repeats_total": 0,
+              "failed_edits": 0,
+              "stagnant_actions": 2,
+              "verification_bound_to_current_code": true,
+              "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+              "observations": 15,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 0
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "submission_origin": "model",
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 26379,
+          "completion_tokens": 1136,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261116T083839Z-b5e0a98a/manifest.json",
+          "experiment": "layers_code_v1"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    },
+    {
+      "id": "layers_runtime_v1",
+      "profile": "layers_runtime",
+      "mode": "experiment",
+      "config": "configs/experiments/layers_runtime.toml",
+      "interval_seconds": 30,
+      "state": {
+        "phase": "complete",
+        "model_index": 2,
+        "prompt_trials": 0,
+        "experiment": {
+          "id": "layers_runtime_v1",
+          "method": "model_sweep",
+          "comparison_valid": true
+        },
+        "active_prompt": "experiments/prompts/tool_recovery_v1.md",
+        "results": [
+          {
+            "model": "12b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T084445Z-865bc7cc",
+            "status": "incomplete",
+            "elapsed_seconds": 184.441,
+            "agent": {
+              "reason": "stalled",
+              "turns": 17,
+              "tool_calls": 16,
+              "usage": {
+                "prompt_tokens": 60342,
+                "completion_tokens": 3823
+              },
+              "submission_origin": null,
+              "progress": {
+                "phase": "verify",
+                "workspace_version": "2fb1c38a09aabae84f0bbc0a9d14fc100e12bf5b0985a4cda6e580463ec590ee",
+                "changed_files": [
+                  "tests/reproduce_issue.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 4,
+                "blocked_repeats_total": 4,
+                "failed_edits": 0,
+                "stagnant_actions": 7,
+                "verification_bound_to_current_code": false,
+                "next_action": "Run the configured verification command on this code version.",
+                "observations": 17,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 0
+            }
+          },
+          {
+            "model": "31b",
+            "run": "/root/orca/projects/gpu_3.2/runs/20261116T084957Z-ed7f1600",
+            "status": "local_pass",
+            "elapsed_seconds": 190.067,
+            "agent": {
+              "reason": "submitted",
+              "turns": 14,
+              "tool_calls": 14,
+              "usage": {
+                "prompt_tokens": 40487,
+                "completion_tokens": 1344
+              },
+              "submission_origin": "model",
+              "progress": {
+                "phase": "review_submit",
+                "workspace_version": "3e336cb0cf7ce832bd2233583f7ae2942839379b4e5a718a2eb85a81822b2728",
+                "changed_files": [
+                  "tests/test_urlkit.py",
+                  "urlkit/__init__.py"
+                ],
+                "blocked_repeats": 0,
+                "blocked_repeats_total": 0,
+                "failed_edits": 0,
+                "stagnant_actions": 2,
+                "verification_bound_to_current_code": true,
+                "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+                "observations": 17,
+                "implementation_context": {
+                  "urlkit/__init__.py": {
+                    "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                    "truncated": false
+                  }
+                }
+              },
+              "harness_verifications": 0
+            }
+          }
+        ],
+        "invariants": {
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "baseline_prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "dataset_sha256": "f10ffd42ab7bb8cc74989e994a2dff672ee1ed1de31907a23d388a241abfbb30",
+          "settings_sha256": "f41cf474f66c1e29f7b664b51f1e9afb1152cd7c6a55fee0b6986a1cb0a05762"
+        },
+        "in_progress": false,
+        "updated_at": "2026-11-16T08:53:07.376257+00:00",
+        "last_working_model": "31b",
+        "last_run": "/root/orca/projects/gpu_3.2/runs/20261116T084957Z-ed7f1600"
+      },
+      "runs": [
+        {
+          "run_id": "20261116T084445Z-865bc7cc",
+          "model": "12b",
+          "status": "incomplete",
+          "elapsed_seconds": 184.441,
+          "agent": {
+            "reason": "stalled",
+            "turns": 17,
+            "tool_calls": 16,
+            "usage": {
+              "prompt_tokens": 60342,
+              "completion_tokens": 3823
+            },
+            "submission_origin": null,
+            "progress": {
+              "phase": "verify",
+              "workspace_version": "2fb1c38a09aabae84f0bbc0a9d14fc100e12bf5b0985a4cda6e580463ec590ee",
+              "changed_files": [
+                "tests/reproduce_issue.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 4,
+              "blocked_repeats_total": 4,
+              "failed_edits": 0,
+              "stagnant_actions": 7,
+              "verification_bound_to_current_code": false,
+              "next_action": "Run the configured verification command on this code version.",
+              "observations": 17,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 0
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "submission_origin": null,
+          "recovered_evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 60342,
+          "completion_tokens": 3823,
+          "evaluation": null,
+          "evidence": "runs/20261116T084445Z-865bc7cc/manifest.json",
+          "experiment": "layers_runtime_v1"
+        },
+        {
+          "run_id": "20261116T084957Z-ed7f1600",
+          "model": "31b",
+          "status": "local_pass",
+          "elapsed_seconds": 190.067,
+          "agent": {
+            "reason": "submitted",
+            "turns": 14,
+            "tool_calls": 14,
+            "usage": {
+              "prompt_tokens": 40487,
+              "completion_tokens": 1344
+            },
+            "submission_origin": "model",
+            "progress": {
+              "phase": "review_submit",
+              "workspace_version": "3e336cb0cf7ce832bd2233583f7ae2942839379b4e5a718a2eb85a81822b2728",
+              "changed_files": [
+                "tests/test_urlkit.py",
+                "urlkit/__init__.py"
+              ],
+              "blocked_repeats": 0,
+              "blocked_repeats_total": 0,
+              "failed_edits": 0,
+              "stagnant_actions": 2,
+              "verification_bound_to_current_code": true,
+              "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+              "observations": 17,
+              "implementation_context": {
+                "urlkit/__init__.py": {
+                  "content": "1: \"\"\"Small URL utilities used to exercise the local agent workflow.\"\"\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \"\"\"Append key/value pairs to a URL without changing its other components.\"\"\"\n7:     parts = urlsplit(url)\n8:     query = dict(parse_qsl(parts.query))\n9:     query.update(params)\n10:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+                  "truncated": false
+                }
+              }
+            },
+            "harness_verifications": 0
+          },
+          "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+          "workflow_sha256": "49370e51c3b6fdceea3590b587c7e44c0faef9657ef67bc44738d464aa093a08",
+          "submission_origin": "model",
+          "recovered_evaluation": null,
+          "workflow_variant": null,
+          "variant_workflow_sha256": null,
+          "code_changed_during_run": false,
+          "error": null,
+          "prompt_tokens": 40487,
+          "completion_tokens": 1344,
+          "evaluation": {
+            "exit_code": 0,
+            "timed_out": false,
+            "tests": 6,
+            "passed": 6
+          },
+          "evidence": "runs/20261116T084957Z-ed7f1600/manifest.json",
+          "experiment": "layers_runtime_v1"
+        }
+      ],
+      "status": "complete",
+      "comparison_violations": []
+    }
+  ],
+  "legacy_runs": [
+    {
+      "run_id": "20261115T174438Z-73755451",
+      "model": "e4b",
+      "status": "failed",
+      "elapsed_seconds": 0.48,
+      "agent": null,
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "submission_origin": null,
+      "recovered_evaluation": null,
+      "workflow_variant": null,
+      "variant_workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": "fatal: not in a git directory\n",
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "evaluation": null,
+      "evidence": "runs/20261115T174438Z-73755451/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T174450Z-aa699693",
+      "model": "e4b",
+      "status": "failed",
+      "elapsed_seconds": 0.467,
+      "agent": null,
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "submission_origin": null,
+      "recovered_evaluation": null,
+      "workflow_variant": null,
+      "variant_workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": "Command '['docker', 'cp', '-', 'gemma-lab-d04d642fde06:/tmp']' returned non-zero exit status 1.",
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "evaluation": null,
+      "evidence": "runs/20261115T174450Z-aa699693/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T174505Z-ddd966d9",
+      "model": "e4b",
+      "status": "failed",
+      "elapsed_seconds": 21.482,
+      "agent": null,
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "submission_origin": null,
+      "recovered_evaluation": null,
+      "workflow_variant": null,
+      "variant_workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": "Generation reached max_tokens; increase workflow.max_output_tokens",
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "evaluation": null,
+      "evidence": "runs/20261115T174505Z-ddd966d9/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T174601Z-eb44be25",
+      "model": "e4b",
+      "status": "local_fail",
+      "elapsed_seconds": 31.973,
+      "agent": {
+        "reason": "submitted",
+        "turns": 5,
+        "tool_calls": 5,
+        "usage": {
+          "prompt_tokens": 5196,
+          "completion_tokens": 1860
+        }
+      },
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "submission_origin": null,
+      "recovered_evaluation": null,
+      "workflow_variant": null,
+      "variant_workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": null,
+      "prompt_tokens": 5196,
+      "completion_tokens": 1860,
+      "evaluation": {
+        "exit_code": 1,
+        "timed_out": false,
+        "tests": 6,
+        "passed": 3
+      },
+      "evidence": "runs/20261115T174601Z-eb44be25/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T174806Z-6a5ac729",
+      "model": "e4b",
+      "status": "incomplete",
+      "elapsed_seconds": 235.263,
+      "agent": {
+        "reason": "turn_limit",
+        "turns": 24,
+        "tool_calls": 19,
+        "usage": {
+          "prompt_tokens": 51468,
+          "completion_tokens": 13936
+        }
+      },
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "submission_origin": null,
+      "recovered_evaluation": null,
+      "workflow_variant": null,
+      "variant_workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": null,
+      "prompt_tokens": 51468,
+      "completion_tokens": 13936,
+      "evaluation": null,
+      "evidence": "runs/20261115T174806Z-6a5ac729/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T175334Z-b1ad0c24",
+      "model": "e4b",
+      "status": "incomplete",
+      "elapsed_seconds": 201.863,
+      "agent": {
+        "reason": "turn_limit",
+        "turns": 24,
+        "tool_calls": 22,
+        "usage": {
+          "prompt_tokens": 57317,
+          "completion_tokens": 11440
+        }
+      },
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "submission_origin": null,
+      "recovered_evaluation": null,
+      "workflow_variant": null,
+      "variant_workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": null,
+      "prompt_tokens": 57317,
+      "completion_tokens": 11440,
+      "evaluation": null,
+      "evidence": "runs/20261115T175334Z-b1ad0c24/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T180351Z-02f03798",
+      "model": "12b",
+      "status": "incomplete",
+      "elapsed_seconds": 183.296,
+      "agent": {
+        "reason": "turn_limit",
+        "turns": 24,
+        "tool_calls": 22,
+        "usage": {
+          "prompt_tokens": 66870,
+          "completion_tokens": 4004
+        }
+      },
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "submission_origin": null,
+      "recovered_evaluation": null,
+      "workflow_variant": null,
+      "variant_workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": null,
+      "prompt_tokens": 66870,
+      "completion_tokens": 4004,
+      "evaluation": null,
+      "evidence": "runs/20261115T180351Z-02f03798/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T180853Z-836cb27c",
+      "model": "12b",
+      "status": "local_pass",
+      "elapsed_seconds": 124.222,
+      "agent": {
+        "reason": "submitted",
+        "turns": 12,
+        "tool_calls": 11,
+        "usage": {
+          "prompt_tokens": 28233,
+          "completion_tokens": 3104
+        }
+      },
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "submission_origin": null,
+      "recovered_evaluation": null,
+      "workflow_variant": null,
+      "variant_workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": null,
+      "prompt_tokens": 28233,
+      "completion_tokens": 3104,
+      "evaluation": {
+        "exit_code": 0,
+        "timed_out": false,
+        "tests": 6,
+        "passed": 6
+      },
+      "evidence": "runs/20261115T180853Z-836cb27c/manifest.json",
+      "experiment": "legacy_mixed"
+    },
+    {
+      "run_id": "20261115T182137Z-0fae42f7",
+      "model": "31b",
+      "status": "failed",
+      "elapsed_seconds": 241.499,
+      "agent": null,
+      "prompt_sha256": null,
+      "workflow_sha256": null,
+      "submission_origin": null,
+      "recovered_evaluation": null,
+      "workflow_variant": null,
+      "variant_workflow_sha256": null,
+      "code_changed_during_run": null,
+      "error": "timed out",
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "evaluation": null,
+      "evidence": "runs/20261115T182137Z-0fae42f7/manifest.json",
+      "experiment": "legacy_mixed"
+    }
+  ],
+  "run_audit": {
+    "note": "Lặp request đếm theo tên + arguments nguyên văn trong log, khác bộ phát hiện lặp của harness.",
+    "runs": [
+      {
+        "run_id": "20261116T064438Z-a5dae13e",
+        "model": "31b",
+        "experiment": "progress_baseline_v1",
+        "finding": "Chưa hoàn tất; nguyên nhân dừng: turn_limit. Patch thu hồi chưa chứng minh sửa đúng.",
+        "warnings": [
+          "recovered-evaluation.json: output bị cắt; không suy ra tổng test khi thiếu dòng tổng kết"
+        ],
+        "submit_attempts": 0,
+        "repeated_identical_requests": 39,
+        "failed_tool_results": 15
+      },
+      {
+        "run_id": "20261116T065237Z-2f2f1f79",
+        "model": "12b",
+        "experiment": "progress_baseline_v1",
+        "finding": "Patch thu hồi pass test độc lập nhưng agent chưa submit thành công; cần cải thiện bước kết thúc workflow.",
+        "warnings": [],
+        "submit_attempts": 0,
+        "repeated_identical_requests": 35,
+        "failed_tool_results": 3
+      },
+      {
+        "run_id": "20261116T065837Z-c3cb7105",
+        "model": "e4b",
+        "experiment": "progress_baseline_v1",
+        "finding": "Chưa hoàn tất; nguyên nhân dừng: turn_limit. Patch thu hồi chưa chứng minh sửa đúng.",
+        "warnings": [],
+        "submit_attempts": 2,
+        "repeated_identical_requests": 24,
+        "failed_tool_results": 16
+      },
+      {
+        "run_id": "20261116T070957Z-325fe24c",
+        "model": "31b",
+        "experiment": "progress_guard_v1",
+        "finding": "Patch đã nộp vượt test độc lập; nguồn nộp: model.",
+        "warnings": [],
+        "submit_attempts": 2,
+        "repeated_identical_requests": 5,
+        "failed_tool_results": 4
+      },
+      {
+        "run_id": "20261116T071557Z-8c31c62e",
+        "model": "12b",
+        "experiment": "progress_guard_v1",
+        "finding": "Patch thu hồi pass test độc lập nhưng agent chưa submit thành công; cần cải thiện bước kết thúc workflow.",
+        "warnings": [],
+        "submit_attempts": 0,
+        "repeated_identical_requests": 9,
+        "failed_tool_results": 7
+      },
+      {
+        "run_id": "20261116T071942Z-c13011dd",
+        "model": "e4b",
+        "experiment": "progress_guard_v1",
+        "finding": "Chưa hoàn tất; nguyên nhân dừng: turn_limit. Patch thu hồi chưa chứng minh sửa đúng.",
+        "warnings": [],
+        "submit_attempts": 2,
+        "repeated_identical_requests": 20,
+        "failed_tool_results": 17
+      },
+      {
+        "run_id": "20261116T073405Z-5be811c3",
+        "model": "31b",
+        "experiment": "progress_finish_v1",
+        "finding": "Patch đã nộp vượt test độc lập; nguồn nộp: harness.",
+        "warnings": [],
+        "submit_attempts": 0,
+        "repeated_identical_requests": 3,
+        "failed_tool_results": 4
+      },
+      {
+        "run_id": "20261116T073927Z-cd0ec631",
+        "model": "12b",
+        "experiment": "progress_finish_v1",
+        "finding": "Patch đã nộp vượt test độc lập; nguồn nộp: harness.",
+        "warnings": [],
+        "submit_attempts": 0,
+        "repeated_identical_requests": 2,
+        "failed_tool_results": 3
+      },
+      {
+        "run_id": "20261116T074230Z-722f1299",
+        "model": "e4b",
+        "experiment": "progress_finish_v1",
+        "finding": "Chưa hoàn tất; nguyên nhân dừng: turn_limit. Patch thu hồi chưa chứng minh sửa đúng.",
+        "warnings": [],
+        "submit_attempts": 0,
+        "repeated_identical_requests": 21,
+        "failed_tool_results": 18
+      }
+    ]
+  },
+  "model_size_analysis": {
+    "completed_trials": 9,
+    "sections": [
+      {
+        "title": "Phạm vi kết luận",
+        "text": "Đã có 9/9 lượt dừng. Đã đủ chín lượt để tổng kết đợt thử. Chỉ một issue và một lần chạy mỗi cấu hình. Chưa xác định quan hệ nhân quả giữa số tham số và tỷ lệ lỗi, chưa đủ kết luận model lớn kém hơn nói chung."
+      },
+      {
+        "title": "Vì sao nhiều tham số chưa đảm bảo hoàn thành agent",
+        "text": "Kết quả đo là cả chuỗi đọc repo → sửa code → kiểm tra → nộp patch. Cần tách khả năng sửa đúng khỏi khả năng gọi tool và kết thúc đúng quy trình. Không submit, patch sai và hết thời gian là những kiểu thất bại khác nhau."
+      },
+      {
+        "title": "31B — bằng chứng đã quan sát",
+        "text": "progress_baseline_v1: incomplete, dừng=turn_limit, nguồn nộp=không có, request trùng nguyên văn=39, thử submit=0 (run 20261116T064438Z-a5dae13e). progress_guard_v1: local_pass, dừng=submitted, nguồn nộp=model, request trùng nguyên văn=5, thử submit=2 (run 20261116T070957Z-325fe24c). progress_finish_v1: local_pass, dừng=harness_submitted, nguồn nộp=harness, request trùng nguyên văn=3, thử submit=0 (run 20261116T073405Z-5be811c3)."
+      },
+      {
+        "title": "12B — bằng chứng đã quan sát",
+        "text": "progress_baseline_v1: incomplete, dừng=turn_limit, nguồn nộp=không có, request trùng nguyên văn=35, thử submit=0; patch thu hồi pass nhưng không tính thành công (run 20261116T065237Z-2f2f1f79). progress_guard_v1: incomplete, dừng=stalled, nguồn nộp=không có, request trùng nguyên văn=9, thử submit=0; patch thu hồi pass nhưng không tính thành công (run 20261116T071557Z-8c31c62e). progress_finish_v1: local_pass, dừng=harness_submitted, nguồn nộp=harness, request trùng nguyên văn=2, thử submit=0 (run 20261116T073927Z-cd0ec631)."
+      },
+      {
+        "title": "E4B — bằng chứng đã quan sát",
+        "text": "progress_baseline_v1: incomplete, dừng=turn_limit, nguồn nộp=không có, request trùng nguyên văn=24, thử submit=2 (run 20261116T065837Z-c3cb7105). progress_guard_v1: incomplete, dừng=turn_limit, nguồn nộp=không có, request trùng nguyên văn=20, thử submit=2 (run 20261116T071942Z-c13011dd). progress_finish_v1: incomplete, dừng=turn_limit, nguồn nộp=không có, request trùng nguyên văn=21, thử submit=0 (run 20261116T074230Z-722f1299)."
+      },
+      {
+        "title": "31B: nguyên nhân dừng đã xác nhận",
+        "text": "Lượt 31B dừng vì turn_limit đã dùng hết ngân sách lượt. Với lượt đó, không thể quy nguyên nhân dừng trực tiếp cho tốc độ token hoặc thiếu thời gian; cần đọc lỗi edit và chuỗi request lặp trong trajectory. Request lặp là triệu chứng quan sát được, chưa chứng minh cơ chế nội tại gây lặp."
+      },
+      {
+        "title": "E4B — đối chiếu workflow",
+        "text": "A=incomplete; B=incomplete; C=incomplete. A/B thay đổi trạng thái runtime, hướng dẫn động và tập tool cho phép cùng nhau; nếu cải thiện thì chưa tách riêng tác dụng của từng thành phần. C có thêm harness hỗ trợ nộp và kiểm tra, nên pass ở C không đồng nghĩa model tự submit tốt hơn."
+      },
+      {
+        "title": "12B — đối chiếu workflow",
+        "text": "A=incomplete; B=incomplete; C=local_pass. A/B thay đổi trạng thái runtime, hướng dẫn động và tập tool cho phép cùng nhau; nếu cải thiện thì chưa tách riêng tác dụng của từng thành phần. C có thêm harness hỗ trợ nộp và kiểm tra, nên pass ở C không đồng nghĩa model tự submit tốt hơn."
+      },
+      {
+        "title": "31B — đối chiếu workflow",
+        "text": "A=incomplete; B=local_pass; C=local_pass. A/B thay đổi trạng thái runtime, hướng dẫn động và tập tool cho phép cùng nhau; nếu cải thiện thì chưa tách riêng tác dụng của từng thành phần. C có thêm harness hỗ trợ nộp và kiểm tra, nên pass ở C không đồng nghĩa model tự submit tốt hơn."
+      },
+      {
+        "title": "Đính chính nguyên nhân 12B — lỗi harness đã quan sát",
+        "text": "Trajectory runs/20261116T071557Z-8c31c62e cho thấy python3 -m unittest discover -s tests -v trả exit 0, nhưng phase vẫn verify: code cũ so sánh nguyên chuỗi với python -m unittest discover -s tests -v. Sau đó harness chặn lệnh vì lặp và dừng stalled. Đây là lỗi nhận diện verification của harness, không đủ cơ sở quy toàn bộ thất bại cho model. Nhánh code v2 công nhận alias interpreter và verbosity tương đương, vẫn giữ nguyên test target và yêu cầu code version không đổi. Đợt so sánh lớp mới sẽ kiểm chứng tác dụng."
+      },
+      {
+        "title": "Các giả thuyết chưa được chứng minh",
+        "text": "Độ phù hợp giữa model và prompt/tool schema, mất thông tin do compact context, và ảnh hưởng của quantization hoặc cấu hình suy luận có thể góp phần. Đợt này không thay đổi độc lập các yếu tố đó nên chưa gán lỗi cho chúng. Tốc độ benchmark riêng cũng không giải thích được mọi lỗi task."
+      },
+      {
+        "title": "Cách xác minh tiếp",
+        "text": "Giữ riêng lỗi sửa code, lỗi tool và lỗi kết thúc; chạy lặp trên nhiều issue cố định. Sau đó đổi từng yếu tố: prompt, compact context, tool schema, rồi cấu hình suy luận/quantization nếu đủ tài nguyên. Đối chiếu trên cùng ngân sách thời gian và thêm phép đo cùng ngân sách lượt/token; không gộp model tự nộp với harness hỗ trợ nộp."
+      }
+    ]
+  },
+  "layer_comparison": {
+    "spec": {
+      "experiments": [
+        "layers_control_v1",
+        "layers_prompt_v1",
+        "layers_code_v1",
+        "layers_runtime_v1"
+      ],
+      "models": [
+        "12b",
+        "31b"
+      ]
+    },
+    "rows": [
+      {
+        "model": "12b",
+        "experiment": "layers_control_v1",
+        "label": "Đối chứng B",
+        "run_id": "20261116T081014Z-cda35fd0",
+        "base_commit": "0587f1633321407952b8f72acdc98cf9eedeeb7b",
+        "synthetic_dataset_identity": true,
+        "status": "incomplete",
+        "stop_reason": "stalled",
+        "submission_origin": null,
+        "autonomous_pass": false,
+        "seconds": 102.155,
+        "turns": 17,
+        "tool_calls": 17,
+        "input_tokens": 46037,
+        "output_tokens": 1805,
+        "evaluation": null,
+        "recovered_evaluation": {
+          "passed": 6,
+          "total": 6,
+          "exit_code": 0,
+          "error": null
+        },
+        "control_sha256": "4138d1a294c1de88de22dc73186a150f2ddeaf2f93207f480cf6684834bb2146",
+        "evidence": "runs/20261116T081014Z-cda35fd0/manifest.json"
+      },
+      {
+        "model": "31b",
+        "experiment": "layers_control_v1",
+        "label": "Đối chứng B",
+        "run_id": "20261116T081403Z-38ed1f10",
+        "base_commit": "53183f4dca58e308769faedc289fb2668680d9c6",
+        "synthetic_dataset_identity": true,
+        "status": "local_pass",
+        "stop_reason": "submitted",
+        "submission_origin": "model",
+        "autonomous_pass": true,
+        "seconds": 218.911,
+        "turns": 18,
+        "tool_calls": 18,
+        "input_tokens": 43060,
+        "output_tokens": 1821,
+        "evaluation": {
+          "passed": 6,
+          "total": 6,
+          "exit_code": 0,
+          "error": null
+        },
+        "recovered_evaluation": null,
+        "control_sha256": "2f3b88d6683d94d368adcfb2eff49e6f86b4073c4df9d986e2c05601af588d4a",
+        "evidence": "runs/20261116T081403Z-38ed1f10/manifest.json"
+      },
+      {
+        "model": "12b",
+        "experiment": "layers_prompt_v1",
+        "label": "1 · Prompt",
+        "run_id": "20261116T082234Z-4e2eecd8",
+        "base_commit": "bfda9b3a8dc8d8f6424a322aa70913986bb9c468",
+        "synthetic_dataset_identity": true,
+        "status": "local_pass",
+        "stop_reason": "submitted",
+        "submission_origin": "model",
+        "autonomous_pass": true,
+        "seconds": 154.288,
+        "turns": 15,
+        "tool_calls": 14,
+        "input_tokens": 38468,
+        "output_tokens": 3769,
+        "evaluation": {
+          "passed": 6,
+          "total": 6,
+          "exit_code": 0,
+          "error": null
+        },
+        "recovered_evaluation": null,
+        "control_sha256": "4138d1a294c1de88de22dc73186a150f2ddeaf2f93207f480cf6684834bb2146",
+        "evidence": "runs/20261116T082234Z-4e2eecd8/manifest.json"
+      },
+      {
+        "model": "31b",
+        "experiment": "layers_prompt_v1",
+        "label": "1 · Prompt",
+        "run_id": "20261116T082726Z-7b29fe29",
+        "base_commit": "35da11802bbbb3e30f27aba3cbb1859a2fd90be7",
+        "synthetic_dataset_identity": true,
+        "status": "local_pass",
+        "stop_reason": "submitted",
+        "submission_origin": "model",
+        "autonomous_pass": true,
+        "seconds": 144.785,
+        "turns": 12,
+        "tool_calls": 12,
+        "input_tokens": 25787,
+        "output_tokens": 1322,
+        "evaluation": {
+          "passed": 6,
+          "total": 6,
+          "exit_code": 0,
+          "error": null
+        },
+        "recovered_evaluation": null,
+        "control_sha256": "2f3b88d6683d94d368adcfb2eff49e6f86b4073c4df9d986e2c05601af588d4a",
+        "evidence": "runs/20261116T082726Z-7b29fe29/manifest.json"
+      },
+      {
+        "model": "12b",
+        "experiment": "layers_code_v1",
+        "label": "2 · Code harness",
+        "run_id": "20261116T083442Z-27293526",
+        "base_commit": "3c7032b6c016e1d709607ed44ac05eaf95e03a00",
+        "synthetic_dataset_identity": true,
+        "status": "local_pass",
+        "stop_reason": "submitted",
+        "submission_origin": "model",
+        "autonomous_pass": true,
+        "seconds": 109.013,
+        "turns": 16,
+        "tool_calls": 16,
+        "input_tokens": 40581,
+        "output_tokens": 2208,
+        "evaluation": {
+          "passed": 6,
+          "total": 6,
+          "exit_code": 0,
+          "error": null
+        },
+        "recovered_evaluation": null,
+        "control_sha256": "4138d1a294c1de88de22dc73186a150f2ddeaf2f93207f480cf6684834bb2146",
+        "evidence": "runs/20261116T083442Z-27293526/manifest.json"
+      },
+      {
+        "model": "31b",
+        "experiment": "layers_code_v1",
+        "label": "2 · Code harness",
+        "run_id": "20261116T083839Z-b5e0a98a",
+        "base_commit": "6bc9f6b81208af3dbbfa963efddb4693a4fb8f54",
+        "synthetic_dataset_identity": true,
+        "status": "local_pass",
+        "stop_reason": "submitted",
+        "submission_origin": "model",
+        "autonomous_pass": true,
+        "seconds": 136.524,
+        "turns": 12,
+        "tool_calls": 12,
+        "input_tokens": 26379,
+        "output_tokens": 1136,
+        "evaluation": {
+          "passed": 6,
+          "total": 6,
+          "exit_code": 0,
+          "error": null
+        },
+        "recovered_evaluation": null,
+        "control_sha256": "2f3b88d6683d94d368adcfb2eff49e6f86b4073c4df9d986e2c05601af588d4a",
+        "evidence": "runs/20261116T083839Z-b5e0a98a/manifest.json"
+      },
+      {
+        "model": "12b",
+        "experiment": "layers_runtime_v1",
+        "label": "3 · Context runtime",
+        "run_id": "20261116T084445Z-865bc7cc",
+        "base_commit": "10f6a72f8eae1030dd155506121f2235e1cbd0fd",
+        "synthetic_dataset_identity": true,
+        "status": "incomplete",
+        "stop_reason": "stalled",
+        "submission_origin": null,
+        "autonomous_pass": false,
+        "seconds": 183.261,
+        "turns": 17,
+        "tool_calls": 16,
+        "input_tokens": 60342,
+        "output_tokens": 3823,
+        "evaluation": null,
+        "recovered_evaluation": {
+          "passed": 6,
+          "total": 6,
+          "exit_code": 0,
+          "error": null
+        },
+        "control_sha256": "4138d1a294c1de88de22dc73186a150f2ddeaf2f93207f480cf6684834bb2146",
+        "evidence": "runs/20261116T084445Z-865bc7cc/manifest.json"
+      },
+      {
+        "model": "31b",
+        "experiment": "layers_runtime_v1",
+        "label": "3 · Context runtime",
+        "run_id": "20261116T084957Z-ed7f1600",
+        "base_commit": "919f10c47e1dbb6e54f9c791deb89de030216293",
+        "synthetic_dataset_identity": true,
+        "status": "local_pass",
+        "stop_reason": "submitted",
+        "submission_origin": "model",
+        "autonomous_pass": true,
+        "seconds": 188.949,
+        "turns": 14,
+        "tool_calls": 14,
+        "input_tokens": 40487,
+        "output_tokens": 1344,
+        "evaluation": {
+          "passed": 6,
+          "total": 6,
+          "exit_code": 0,
+          "error": null
+        },
+        "recovered_evaluation": null,
+        "control_sha256": "2f3b88d6683d94d368adcfb2eff49e6f86b4073c4df9d986e2c05601af588d4a",
+        "evidence": "runs/20261116T084957Z-ed7f1600/manifest.json"
+      }
+    ],
+    "warnings": [],
+    "assessments": [
+      {
+        "model": "12b",
+        "experiment": "layers_prompt_v1",
+        "finding": "Cải thiện tự hoàn tất trên lượt này; cần chạy lặp để xác nhận."
+      },
+      {
+        "model": "12b",
+        "experiment": "layers_code_v1",
+        "finding": "Cải thiện tự hoàn tất trên lượt này; cần chạy lặp để xác nhận."
+      },
+      {
+        "model": "12b",
+        "experiment": "layers_runtime_v1",
+        "finding": "Chưa cải thiện tự hoàn tất trong cặp này; xem patch thu hồi và trajectory."
+      },
+      {
+        "model": "31b",
+        "experiment": "layers_prompt_v1",
+        "finding": "Cả hai tự submit và pass; thời gian candidate trừ baseline = -74.1s. Một mẫu chưa chứng minh cải thiện ổn định."
+      },
+      {
+        "model": "31b",
+        "experiment": "layers_code_v1",
+        "finding": "Cả hai tự submit và pass; thời gian candidate trừ baseline = -82.4s. Một mẫu chưa chứng minh cải thiện ổn định."
+      },
+      {
+        "model": "31b",
+        "experiment": "layers_runtime_v1",
+        "finding": "Cả hai tự submit và pass; thời gian candidate trừ baseline = -30.0s. Một mẫu chưa chứng minh cải thiện ổn định."
+      }
+    ],
+    "identity_note": "URLKit tạo commit mới mỗi lượt (timestamp khác). So khớp nội dung bằng dataset hash đã đóng băng; giữ SHA gốc trong từng record. Repo thực vẫn so SHA chính xác."
+  }
+}

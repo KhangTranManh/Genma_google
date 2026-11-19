@@ -1,0 +1,9 @@
+[Unit]
+Description=Passive staged-workflow progress observation
+[Service]
+Type=oneshot
+WorkingDirectory=@PROJECT_ROOT@
+ExecStart=@PROJECT_ROOT@/.venv/bin/python @PROJECT_ROOT@/scripts/workflow/staged_watch.py
+TimeoutStartSec=45s
+StandardOutput=append:@PROJECT_ROOT@/runs/staged-v1/watch.log
+StandardError=inherit

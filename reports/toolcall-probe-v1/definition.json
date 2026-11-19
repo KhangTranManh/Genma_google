@@ -1,0 +1,14 @@
+{
+  "status": "defined_not_executed",
+  "case_count": 4,
+  "schema_versions": {
+    "google-adk": "1.36.1",
+    "swegemma": "0.2.11",
+    "adk-submission": "0.2.13",
+    "litellm": "1.109.1"
+  },
+  "schemas_sha256": "9aaaa9bba89bd60513e8412a29957208c3a687194badf1abae58e929d6d96581",
+  "inference_requests_sent": 0,
+  "tools_executed": 0,
+  "same_generation_capture": "Use return_token_ids=true with native auto tool parsing, then decode with the checkpoint tokenizer and skip_special_tokens=false."
+}

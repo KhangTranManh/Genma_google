@@ -1,0 +1,10 @@
+model,experiment,policy,mode,status,stop_reason,submission_origin,seconds,turns,tool_calls,output_tokens,blocked_repeats,control_sha256,evidence
+31b,progress_baseline_v1,baseline,off,incomplete,turn_limit,,344.664,48,48,2125,0,11e4f09c68bc2be46305fe8aa2d46bf460d4be4d4186982e86c76bab6381cece,runs/20261116T064438Z-a5dae13e/manifest.json
+12b,progress_baseline_v1,baseline,off,incomplete,turn_limit,,229.732,48,48,3580,0,11e4f09c68bc2be46305fe8aa2d46bf460d4be4d4186982e86c76bab6381cece,runs/20261116T065237Z-2f2f1f79/manifest.json
+e4b,progress_baseline_v1,baseline,off,incomplete,turn_limit,,523.385,48,41,29997,0,11e4f09c68bc2be46305fe8aa2d46bf460d4be4d4186982e86c76bab6381cece,runs/20261116T065837Z-c3cb7105/manifest.json
+31b,progress_guard_v1,progress,detect_only,local_pass,submitted,model,219.025,18,18,1821,0,11e4f09c68bc2be46305fe8aa2d46bf460d4be4d4186982e86c76bab6381cece,runs/20261116T070957Z-325fe24c/manifest.json
+12b,progress_guard_v1,progress,detect_only,incomplete,stalled,,102.204,17,17,1805,4,11e4f09c68bc2be46305fe8aa2d46bf460d4be4d4186982e86c76bab6381cece,runs/20261116T071557Z-8c31c62e/manifest.json
+e4b,progress_guard_v1,progress,detect_only,incomplete,turn_limit,,618.3,48,44,35579,0,11e4f09c68bc2be46305fe8aa2d46bf460d4be4d4186982e86c76bab6381cece,runs/20261116T071942Z-c13011dd/manifest.json
+31b,progress_finish_v1,progress,finish_verified,local_pass,harness_submitted,harness,195.07,15,15,1775,0,11e4f09c68bc2be46305fe8aa2d46bf460d4be4d4186982e86c76bab6381cece,runs/20261116T073405Z-5be811c3/manifest.json
+12b,progress_finish_v1,progress,finish_verified,local_pass,harness_submitted,harness,69.438,8,8,1543,0,11e4f09c68bc2be46305fe8aa2d46bf460d4be4d4186982e86c76bab6381cece,runs/20261116T073927Z-cd0ec631/manifest.json
+e4b,progress_finish_v1,progress,finish_verified,incomplete,turn_limit,,502.167,48,48,27613,0,11e4f09c68bc2be46305fe8aa2d46bf460d4be4d4186982e86c76bab6381cece,runs/20261116T074230Z-722f1299/manifest.json

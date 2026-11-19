@@ -1,0 +1,9 @@
+model,experiment,run_id,status,autonomous_pass,seconds,turns,tool_calls,input_tokens,output_tokens,submission_origin,stop_reason,evidence
+12b,layers_control_v1,20261116T081014Z-cda35fd0,incomplete,False,102.155,17,17,46037,1805,,stalled,runs/20261116T081014Z-cda35fd0/manifest.json
+31b,layers_control_v1,20261116T081403Z-38ed1f10,local_pass,True,218.911,18,18,43060,1821,model,submitted,runs/20261116T081403Z-38ed1f10/manifest.json
+12b,layers_prompt_v1,20261116T082234Z-4e2eecd8,local_pass,True,154.288,15,14,38468,3769,model,submitted,runs/20261116T082234Z-4e2eecd8/manifest.json
+31b,layers_prompt_v1,20261116T082726Z-7b29fe29,local_pass,True,144.785,12,12,25787,1322,model,submitted,runs/20261116T082726Z-7b29fe29/manifest.json
+12b,layers_code_v1,20261116T083442Z-27293526,local_pass,True,109.013,16,16,40581,2208,model,submitted,runs/20261116T083442Z-27293526/manifest.json
+31b,layers_code_v1,20261116T083839Z-b5e0a98a,local_pass,True,136.524,12,12,26379,1136,model,submitted,runs/20261116T083839Z-b5e0a98a/manifest.json
+12b,layers_runtime_v1,20261116T084445Z-865bc7cc,incomplete,False,183.261,17,16,60342,3823,,stalled,runs/20261116T084445Z-865bc7cc/manifest.json
+31b,layers_runtime_v1,20261116T084957Z-ed7f1600,local_pass,True,188.949,14,14,40487,1344,model,submitted,runs/20261116T084957Z-ed7f1600/manifest.json

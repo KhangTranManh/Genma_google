@@ -1,0 +1,24 @@
+diff --git a/w3lib/html.py b/w3lib/html.py
+index b586856e9d6287ab988cd09b47a7dee14f5fb378..b25ead517fc28dd1977de215b9246fd3fe9305ba 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -37,7 +37,18 @@ _meta_refresh_re2 = re.compile(
+ _cdata_re = re.compile(
+     r"((?P<cdata_s><!\[CDATA\[)(?P<cdata_d>.*?)(?P<cdata_e>\]\]>))", re.DOTALL
+ )
+-_tags_re = re.compile("</?([^ <>/]+)[^<>]*>", re.IGNORECASE)
++_tags_re = re.compile(
++    r"""
++    </?             # opening angle bracket, optional slash for a closing tag
++    ([^ <>/]+)      # tag name (captured): a run of non-space, non-bracket chars,
++    (?![^ <>/])     # pinned to its maximal length by this lookahead so it can't
++                    # overlap the run below and backtrack quadratically on an
++                    # unterminated tag (a "<" with a long run and no ">")
++    [^<>]*          # the rest of the tag: attributes, whitespace, etc.
++    >               # closing angle bracket
++    """,
++    re.IGNORECASE | re.VERBOSE,
++)
+ _meta_tag_re = re.compile(r"<meta\b[^<>]*>", re.IGNORECASE)
+ 
+ 

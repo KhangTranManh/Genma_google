@@ -1,0 +1,11 @@
+[Unit]
+Description=One bounded staged YAML workflow experiment job
+After=network.target docker.service
+[Service]
+Type=oneshot
+WorkingDirectory=@PROJECT_ROOT@
+ExecStart=@PROJECT_ROOT@/.venv/bin/python @PROJECT_ROOT@/scripts/workflow/staged_worker.py
+Environment=PYTHONUNBUFFERED=1
+TimeoutStartSec=45min
+StandardOutput=append:@PROJECT_ROOT@/runs/staged-v1/worker.log
+StandardError=inherit

@@ -1,0 +1,205 @@
+{
+  "status": "complete",
+  "batch": "b2",
+  "model": "31b",
+  "completed": [
+    {
+      "arm": "selfdiag_G",
+      "traj": "t0",
+      "diagnosis_parsed": true,
+      "diagnosis_truncated": false,
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        },
+        {
+          "round": 1,
+          "guard": "invalid",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "arm": "selfdiag_G",
+      "traj": "s17",
+      "diagnosis_parsed": true,
+      "diagnosis_truncated": false,
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*?\\bhref\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "arm": "selfdiag_G",
+      "traj": "s29",
+      "diagnosis_parsed": true,
+      "diagnosis_truncated": false,
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": true,
+          "accepted": true,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^<>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        }
+      ],
+      "final_public_pass": true,
+      "final_accepted": true,
+      "accepted_round0": true
+    },
+    {
+      "arm": "selfdiag_G",
+      "traj": "s43",
+      "diagnosis_parsed": true,
+      "diagnosis_truncated": false,
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        },
+        {
+          "round": 1,
+          "guard": "invalid",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "arm": "hostA_G",
+      "traj": "t0",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^<]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "arm": "hostA_G",
+      "traj": "s17",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^<]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "arm": "hostA_G",
+      "traj": "s29",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^<]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "arm": "hostA_G",
+      "traj": "s43",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^<]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_pass": false,
+          "accepted": false,
+          "pattern": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)"
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    }
+  ]
+}

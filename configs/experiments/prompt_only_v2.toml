@@ -1,0 +1,4 @@
+extends = "prompt_only.toml"
+[experiment]
+id = "prompt_only_12b_v2"
+method = "prompt_only"

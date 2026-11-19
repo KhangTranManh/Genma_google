@@ -1,0 +1,14 @@
+name = "counterfactual-gate-audit-v1"
+status = "ready_pending_preflight"
+manifest = "experiments/gate_review_v1/audit-manifest.json"
+include_gate_allowed_controls = true
+deduplicate_population = false
+samples_per_hypothesis = 1
+max_output_tokens = 1536
+temperature = 0
+thinking = false
+patch_from_original = true
+run_all_frozen_hypotheses_regardless_of_gate = true
+grade_all_applicable_candidates = true
+final_grade_used_for_online_selection = false
+replay_patch_budgets = [1, 2, 3]

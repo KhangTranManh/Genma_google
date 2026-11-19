@@ -1,0 +1,9 @@
+[Unit]
+Description=Advance simple-direct experiment
+[Timer]
+OnActiveSec=15s
+OnUnitInactiveSec=30s
+AccuracySec=5s
+Unit=gemma-lab-simple.service
+[Install]
+WantedBy=timers.target

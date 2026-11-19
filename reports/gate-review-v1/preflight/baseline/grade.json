@@ -1,0 +1,52 @@
+{
+  "public_tests_exit_code": 0,
+  "public_tests_pass": true,
+  "regression_exit_code": 0,
+  "regression": {
+    "valid_url_checks_pass": true,
+    "performance_pass": false,
+    "passed": false,
+    "timings": {
+      "2000": [
+        0.07995090301847085,
+        0.07941637499607168,
+        0.07931669999379665
+      ],
+      "4000": [
+        0.31305068801157176,
+        0.3381568139884621,
+        0.5540260399866384
+      ],
+      "8000": [
+        1.3151053010078613,
+        1.2980738249898423,
+        1.480543095007306
+      ],
+      "30000": []
+    },
+    "medians": {
+      "2000": 0.07941637499607168,
+      "4000": 0.3381568139884621,
+      "8000": 1.3151053010078613
+    },
+    "growth_8k_over_2k_floored": 16.55962389460502,
+    "timeouts": [
+      30000
+    ],
+    "error": null,
+    "thresholds": {
+      "sizes": [
+        2000,
+        4000,
+        8000,
+        30000
+      ],
+      "repeats": 3,
+      "timeout_seconds": 3,
+      "large_median_max": 0.5,
+      "growth_max": 8,
+      "denominator_floor": 0.005
+    }
+  },
+  "verified_local_fix": false
+}

@@ -1,0 +1,5 @@
+A hoàn tất:12B dùng2 candidates,31B dùng3. Không có capture bị truncation; raw/API khớp và tool edit hợp lệ ở5/5 captures.12B qua grader đóng băng;31B vẫn trượt performance dù chức năng qua. Tăng ceiling1536 loại bỏ truncation quan sát ở31B baseline512, nhưng không tạo bản sửa đạt hiệu năng cho model này.
+
+Quan trọng:12B đổi regex thành dạng [^>]{0,100}? để hạn chế tìm kiếm. Post-hoc audit riêng cho thấy tag hợp lệ có attribute dài200/1000 bị trả URL rỗng, trong khi baseline xử lý đúng. Do đó đây là pass của grader hạn chế, không phải sửa đúng đầy đủ. Kết quả grader gốc giữ nguyên để minh bạch; không sửa threshold sau khi thấy patch. Audit không được gửi cho model và không tham gia chọn candidate.
+
+Ceiling1536 không đồng nghĩa model dùng hết budget:12B dùng141+149 tokens,31B146+149+148. Khác biệt patch giữa các lượt temperature0 không thể quy hoàn toàn cho ceiling, vì feedback runtime thay đổi và inference không đảm bảo tái lập bit-for-bit. Chỉ một trajectory/model và baseline lịch sử.

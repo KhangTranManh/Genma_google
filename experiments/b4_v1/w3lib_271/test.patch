@@ -1,0 +1,23 @@
+diff --git a/tests/test_html.py b/tests/test_html.py
+index 492190fba5135d05ac78790e6e52ec009ad2536a..2fd156ff0c8bd11c1c11cec37ffad08cf4b82b41 100644
+--- a/tests/test_html.py
++++ b/tests/test_html.py
+@@ -277,6 +277,18 @@ class TestRemoveTagsWithContent:
+             == "<span></span>"
+         )
+ 
++    def test_no_catastrophic_backtracking(self):
++        evil = "<script " * 50000
++        start = time.perf_counter()
++        assert remove_tags_with_content(evil, which_ones=("script",)) == evil
++        assert (
++            remove_tags_with_content(
++                evil + "<script>x</script>", which_ones=("script",)
++            )
++            == evil
++        )
++        assert time.perf_counter() - start < 2
++
+ 
+ class TestReplaceEscapeChars:
+     def test_returns_unicode(self):

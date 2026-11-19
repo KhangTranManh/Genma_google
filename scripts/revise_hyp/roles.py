@@ -1,0 +1,22 @@
+from pathlib import Path
+import json,time,urllib.request,copy
+ROOT=Path(__file__).resolve().parents[2]
+HYP_SCHEMA={'type':'object','properties':{'hypotheses':{'type':'array','minItems':3,'maxItems':3,'items':{'type':'object','properties':{'id':{'type':'string'},'filepath':{'type':'string'},'start_line':{'type':'integer'},'end_line':{'type':'integer'},'cause':{'type':'string'},'predicted_failure':{'type':'string'}},'required':['id','filepath','start_line','end_line','cause','predicted_failure'],'additionalProperties':False}}},'required':['hypotheses'],'additionalProperties':False}
+PREDICTION={'type':'object','properties':{'probe_id':{'type':'string','enum':['repeated_open','single_open','closed_tags','plain_text']},'expected':{'type':'string','enum':['fast','slow','uncertain']}},'required':['probe_id','expected'],'additionalProperties':False}
+HYP_SCHEMA['properties']['hypotheses']['items']['properties']['predictions']={'type':'array','minItems':4,'maxItems':4,'items':PREDICTION}
+HYP_SCHEMA['properties']['hypotheses']['items']['required'].append('predictions')
+VERDICT_SCHEMA={'type':'object','properties':{'hypothesis_status':{'type':'string','enum':['supported','contradicted','not_distinguished','uncertain']},'patch_status':{'type':'string','enum':['pass','fail','not_run','inconclusive']},'evidence_summary':{'type':'string'},'remaining_uncertainty':{'type':'string'}},'required':['hypothesis_status','patch_status','evidence_summary','remaining_uncertainty'],'additionalProperties':False}
+
+REVISED_SCHEMA=copy.deepcopy(HYP_SCHEMA)
+REVISED_SCHEMA['properties']['hypotheses']['items']['properties']['predictions']['minItems']=6
+REVISED_SCHEMA['properties']['hypotheses']['items']['properties']['predictions']['maxItems']=6
+REVISED_SCHEMA['properties']['hypotheses']['items']['properties']['predictions']['items']['properties']['probe_id']['enum']+=['repeated_open_then_close','repeated_open_then_href']
+
+def call(model,role,prompt,folder,schema,max_tokens):
+    folder.mkdir(parents=True,exist_ok=False)
+    system={'revise':'Revise the causal hypotheses once using ORIGINAL-source evidence and counterexamples. Return exactly three hypotheses and predictions for all six probes. Measurements for the two new probes are withheld. Do not edit or provide a patch, do not invent measurements, do not rank your own proposals. Distinguish observed facts from causal hypotheses. Use uncertain when a prediction cannot be justified.', 'localize':'List exactly three causal hypotheses with source locations and probe-specific observable predictions. Predict fast, slow or uncertain for every probe, without seeing its measurements. Distinct wording is not distinct mechanism. Do not fake a prediction merely to manufacture diversity; use uncertain when evidence is insufficient. Do not edit, produce a patch, or rank your own proposals. Base statements on the supplied evidence.','feedback':'Separate hypothesis_status about ORIGINAL source from patch_status about MODIFIED source. Only original-source probe measurements may support or contradict hypothesis predictions. Patch pass/fail never by itself supports or refutes an original-source hypothesis. Use not_distinguished when probes cannot separate mechanisms and uncertain when evidence is insufficient. Report patch_status independently from objective candidate checks. Do not write a patch, propose edits, or select the winning patch.'}[role]
+    request={'model':f'gemma-4-{model}-it-qat-w4a16-ct','messages':[{'role':'system','content':system},{'role':'user','content':prompt}],'temperature':0,'max_tokens':max_tokens,'stream':False,'chat_template_kwargs':{'enable_thinking':False},'response_format':{'type':'json_schema','json_schema':{'name':role,'strict':True,'schema':schema}}}
+    (folder/'request.json').write_text(json.dumps(request,indent=2)+'\n');start=time.monotonic();req=urllib.request.Request('http://127.0.0.1:8000/v1/chat/completions',data=json.dumps(request).encode(),headers={'Content-Type':'application/json'})
+    response=json.load(urllib.request.urlopen(req,timeout=240));(folder/'response.json').write_text(json.dumps(response,indent=2)+'\n')
+    if response['choices'][0]['finish_reason']=='length':raise RuntimeError(role+' truncated; keep artifacts for review')
+    value=json.loads(response['choices'][0]['message']['content']);(folder/'result.json').write_text(json.dumps(value,indent=2)+'\n');(folder/'timing.json').write_text(json.dumps({'seconds':time.monotonic()-start})+'\n');return value

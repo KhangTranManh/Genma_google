@@ -1,0 +1,8 @@
+name = "ranking-only-v1"
+hard_pruning_enabled = false
+severe_flag_min_contradictions = 3
+severe_flag_min_decisive_observations = 4
+severe_flag_min_contradiction_ratio = 0.75
+severe_flag_changes_eligibility = false
+held_out_grade_used_for_ranking = false
+minimum_patch_attempts_if_valid_hypotheses_exist = 1

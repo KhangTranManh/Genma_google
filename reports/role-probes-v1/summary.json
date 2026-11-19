@@ -1,0 +1,23 @@
+{
+  "status": "complete_with_unavailable_feedback",
+  "models": {
+    "12b": {
+      "calls": 1,
+      "patches": 0,
+      "contradicted": 3,
+      "not_distinguished": 0,
+      "selected": null,
+      "output_tokens": 585,
+      "review_truncated": 0
+    },
+    "31b": {
+      "calls": 3,
+      "patches": 1,
+      "contradicted": 1,
+      "not_distinguished": 1,
+      "selected": null,
+      "output_tokens": 1213,
+      "review_truncated": 1
+    }
+  }
+}

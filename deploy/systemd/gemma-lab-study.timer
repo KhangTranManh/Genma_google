@@ -1,0 +1,11 @@
+[Unit]
+Description=Check Gemma Lab study progress and update report
+
+[Timer]
+OnActiveSec=15s
+OnUnitInactiveSec=2min
+AccuracySec=10s
+Unit=gemma-lab-study.service
+
+[Install]
+WantedBy=timers.target

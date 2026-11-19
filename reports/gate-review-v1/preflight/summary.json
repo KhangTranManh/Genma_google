@@ -1,0 +1,218 @@
+{
+  "usable": true,
+  "results": {
+    "baseline": {
+      "public": {
+        "performance": {
+          "reproducer": "get_base_url(\"<base \" * 6000)",
+          "measure": "function time only, excluding Python startup",
+          "samples_seconds": [
+            0.7036544150032569,
+            0.703405570005998,
+            0.7099832730018534
+          ],
+          "median_seconds": 0.7036544150032569,
+          "timeout_seconds": 2,
+          "median_limit_seconds": 0.2,
+          "timed_out": false,
+          "error": null,
+          "passed": false
+        },
+        "functional": {
+          "tests": 67,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "valid_result": true
+        },
+        "semantic_guard": {
+          "passed": true,
+          "cases": [
+            {
+              "attribute_length": 0,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 200,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 1000,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            }
+          ]
+        },
+        "infrastructure_error": false,
+        "failure_count": 1,
+        "passed": false
+      },
+      "independent": {
+        "public_tests_exit_code": 0,
+        "public_tests_pass": true,
+        "regression_exit_code": 0,
+        "regression": {
+          "valid_url_checks_pass": true,
+          "performance_pass": false,
+          "passed": false,
+          "timings": {
+            "2000": [
+              0.07995090301847085,
+              0.07941637499607168,
+              0.07931669999379665
+            ],
+            "4000": [
+              0.31305068801157176,
+              0.3381568139884621,
+              0.5540260399866384
+            ],
+            "8000": [
+              1.3151053010078613,
+              1.2980738249898423,
+              1.480543095007306
+            ],
+            "30000": []
+          },
+          "medians": {
+            "2000": 0.07941637499607168,
+            "4000": 0.3381568139884621,
+            "8000": 1.3151053010078613
+          },
+          "growth_8k_over_2k_floored": 16.55962389460502,
+          "timeouts": [
+            30000
+          ],
+          "error": null,
+          "thresholds": {
+            "sizes": [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            "repeats": 3,
+            "timeout_seconds": 3,
+            "large_median_max": 0.5,
+            "growth_max": 8,
+            "denominator_floor": 0.005
+          }
+        },
+        "verified_local_fix": false
+      },
+      "semantics": {
+        "passed": true
+      }
+    },
+    "diagnostic_fixed": {
+      "public": {
+        "performance": {
+          "reproducer": "get_base_url(\"<base \" * 6000)",
+          "measure": "function time only, excluding Python startup",
+          "samples_seconds": [
+            0.0002973560185637325,
+            0.00030133099062368274,
+            0.0002963739971164614
+          ],
+          "median_seconds": 0.0002973560185637325,
+          "timeout_seconds": 2,
+          "median_limit_seconds": 0.2,
+          "timed_out": false,
+          "error": null,
+          "passed": true
+        },
+        "functional": {
+          "tests": 67,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "valid_result": true
+        },
+        "semantic_guard": {
+          "passed": true,
+          "cases": [
+            {
+              "attribute_length": 0,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 200,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 1000,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            }
+          ]
+        },
+        "infrastructure_error": false,
+        "failure_count": 0,
+        "passed": true
+      },
+      "independent": {
+        "public_tests_exit_code": 0,
+        "public_tests_pass": true,
+        "regression_exit_code": 0,
+        "regression": {
+          "valid_url_checks_pass": true,
+          "performance_pass": true,
+          "passed": true,
+          "timings": {
+            "2000": [
+              0.00010599897359497845,
+              0.00021032700897194445,
+              0.000113667018013075
+            ],
+            "4000": [
+              0.00019372100359760225,
+              0.00019277000683359802,
+              0.0001947029959410429
+            ],
+            "8000": [
+              0.0003819779958575964,
+              0.00039074101368896663,
+              0.0006033199897501618
+            ],
+            "30000": [
+              0.0013711570063605905,
+              0.0014227459905669093,
+              0.0013663019926752895
+            ]
+          },
+          "medians": {
+            "2000": 0.000113667018013075,
+            "4000": 0.00019372100359760225,
+            "8000": 0.00039074101368896663,
+            "30000": 0.0013711570063605905
+          },
+          "growth_8k_over_2k_floored": 0.07814820273779333,
+          "timeouts": [],
+          "error": null,
+          "thresholds": {
+            "sizes": [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            "repeats": 3,
+            "timeout_seconds": 3,
+            "large_median_max": 0.5,
+            "growth_max": 8,
+            "denominator_floor": 0.005
+          }
+        },
+        "verified_local_fix": true
+      },
+      "semantics": {
+        "passed": true
+      }
+    }
+  }
+}

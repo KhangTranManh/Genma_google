@@ -1,0 +1,49 @@
+{
+  "run_id": "20261116T070957Z-325fe24c",
+  "experiment_id": "progress_guard_v1",
+  "method": "model_sweep",
+  "comparison_valid": true,
+  "model": "31b",
+  "task": "demo-urlkit-query",
+  "status": "local_pass",
+  "elapsed_seconds": 220.16,
+  "agent": {
+    "reason": "submitted",
+    "turns": 18,
+    "tool_calls": 18,
+    "usage": {
+      "prompt_tokens": 43060,
+      "completion_tokens": 1821
+    },
+    "submission_origin": "model",
+    "progress": {
+      "phase": "review_submit",
+      "workspace_version": "83678b7f0970776419c44a25568775aa4020f20d943c26ab541c4f479c30b3f3",
+      "changed_files": [
+        "tests/test_urlkit.py",
+        "urlkit/__init__.py"
+      ],
+      "blocked_repeats": 0,
+      "blocked_repeats_total": 0,
+      "failed_edits": 0,
+      "stagnant_actions": 2,
+      "verification_bound_to_current_code": true,
+      "next_action": "Tests passed for the current code. Review the displayed diff and call submit_patch. Do not rerun unchanged checks.",
+      "observations": 21,
+      "implementation_context": {
+        "urlkit/__init__.py": {
+          "content": "1: \\\"\\\"\\\"Small URL utilities used to exercise the local agent workflow.\\\"\\\"\\\"\n2: from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit\n3: \n4: \n5: def append_query(url, params):\n6:     \\\"\\\"\\\"Append key/value pairs to a URL without changing its other components.\\\"\\\"\\\"\n7:     parts = urlsplit(url)\n8:     query = parse_qsl(parts.query, keep_blank_values=True)\n9:     if isinstance(params, dict):\n10:         query.extend(params.items())\n11:     else:\n12:         query.extend(params)\n13:     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(query), parts.fragment))",
+          "truncated": false
+        }
+      }
+    },
+    "harness_verifications": 0
+  },
+  "error": null,
+  "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+  "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+  "workflow_variant": null,
+  "variant_workflow_sha256": null,
+  "raw_sha256": "42f6c7c14a7e54714cd439aedb7b731ce1a3eccc394f2823d6640785deb7746a",
+  "source_run": "runs/20261116T070957Z-325fe24c"
+}

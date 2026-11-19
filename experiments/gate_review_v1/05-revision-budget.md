@@ -1,0 +1,9 @@
+# 5. Revision is optional and bounded; unseen checks remain separate
+
+Status: defined, not executed. Default0 hypothesis revisions. Optional ablation allows exactly1, with its own token/call budget. Do not repeatedly expose more measurements until model restates them. Match total generated-token allowance against a no-revision control where possible; report actual calls/input/output/time and any unused budget.
+
+Commit initial hypotheses/predictions and evidence availability. If revision enabled, show only declared training/public evidence, keep source original and forbid edits in revision role. Archive new hypothesis version with parent IDs; never overwrite initial predictions. Freeze a fresh transfer probe catalog/outcomes as evaluator artifacts before revision, expose input definitions when asking predictions but keep outcomes hidden. Use >=1 fresh, meaningful decisive prediction to measure transfer; report initial accuracy, exposed-data accuracy and unseen-prediction accuracy separately. Once a probe outcome is revealed it cannot be reused as unseen in another revision.
+
+Use predictions primarily to rank; unseen-probe miss alone does not block Patch. Patch acceptance remains behavior tests; final independent grader cannot trigger another revision or influence online selection. A review of candidate code must explicitly separate original hypothesis status from modified patch status, with unavailable output not blocking Python decisions.
+
+One public issue and dependent hypotheses provide no generality estimate. After P0 audit, select additional development issues and a held-out task split, freeze inputs before tuning. Do not relabel previously observed tasks as unseen. Model output truncation/invalid schema is a stage failure, not a hypothesis-error count. If localize unavailable as in previous12B run, report no hypotheses; no invented rows or retry-until-success.

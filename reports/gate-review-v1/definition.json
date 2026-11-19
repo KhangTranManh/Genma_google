@@ -1,0 +1,32 @@
+{
+  "status": "defined_not_started",
+  "counts": {
+    "hypotheses": 9,
+    "skipped": 8,
+    "allowed_controls": 1
+  },
+  "source_artifact_hashes": {
+    "runs/role-probes-v1/12b/ranking.json": "ec305ca10941bf51c3c294e962696db2014530d5bab344af4f29abcdfbd7a7e9",
+    "runs/role-probes-v1/31b/ranking.json": "6ba2e174167cab02b1150da1ad75effd4880536dfcc7bcd14ca23d944f1a48b6",
+    "runs/revise-hyp-v1/31b/ranking.json": "c2001ebdadc46340e2120d9e24dda60644d4af4dedc0006189c63ddabbcf4aa3"
+  },
+  "definition_file_hashes": {
+    "experiments/gate_review_v1/03-behavior-groups.md": "76b3c5d24490da6cc4d27393de50e5c35a70845e0e2e629926f82b8a0554b6fa",
+    "experiments/gate_review_v1/probe-proposal.schema.json": "421336d72f670c5a611442e175f027fd6bbaef35e949d9f096451e3c15623c44",
+    "experiments/gate_review_v1/01-offline-audit.md": "d7930993807c9e9590fbdc342c7a1a46afe379cbfd0196b9b2cb847a31b2b9b3",
+    "experiments/gate_review_v1/02-ranking-only.md": "4c7388542f93e0ab04f3f50568d70062e4309014938c1256f0178d6ab0a68ec8",
+    "experiments/gate_review_v1/audit-manifest.json": "f3875ff0eaf10b1680dec5735e780aa657bd95ca5b5030941679082813946926",
+    "experiments/gate_review_v1/04-proposed-probes.md": "f4968efb09fd172917c1bfedb9b8da4ef126b07543d75cd3f85c156360207ede",
+    "experiments/gate_review_v1/05-revision-budget.md": "93265a21dd24c76d0aa32cecc433b3316a6a0b0796e50013d0de84fd6e949f8d",
+    "configs/gate-review/proposals.toml": "12918aabe2b45b4482184d59386f8889e366c7ca064fa0046108fec8a7eb7013",
+    "configs/gate-review/ranking.toml": "34fa81d8d8c5d5d4728ffbd5c7211c188a1c5c90c67013deae3df663055b8cd0",
+    "configs/gate-review/plan.toml": "aeda6bb07d56d777859f8b2a7024354bb2999d3fd4e8b7c6012acb90d87b3a3d",
+    "configs/gate-review/groups.toml": "0060fec973cd93abf1ced9681606c38c226183466d874d65df45fd7f3e84542e",
+    "configs/gate-review/revision.toml": "a85407c79d9f8a1851b0dd90e6be95ae90d8239b8b43b429eed5f1001f2dd398",
+    "configs/gate-review/audit.toml": "c6eb53691d48c13734ec0ad92e9783d67c1e30563be2553bfee1479cf0395504",
+    "scripts/gate_review/policies.py": "cae4de185060c7e53929d883f49989b34d321f74f7cce4e135b3ab5c4d1e869d",
+    "scripts/gate_review/build_definition.py": "61406624eaf81ddea5cf0039df618f15776e20af53e61c5b63180a22911fe4d2"
+  },
+  "new_generations": 0,
+  "gpu_jobs_started": false
+}

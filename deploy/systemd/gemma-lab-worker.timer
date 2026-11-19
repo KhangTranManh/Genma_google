@@ -1,0 +1,11 @@
+[Unit]
+Description=Trigger one Gemma Lab experiment step at a time
+
+[Timer]
+OnActiveSec=2min
+OnUnitInactiveSec=5min
+AccuracySec=10s
+Unit=gemma-lab-worker.service
+
+[Install]
+WantedBy=timers.target

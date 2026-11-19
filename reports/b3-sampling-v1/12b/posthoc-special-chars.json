@@ -1,0 +1,139 @@
+{
+  "status": "post_hoc_after_observing_selected_sample",
+  "used_for_selection": false,
+  "pre_registered_results_unchanged": true,
+  "cases": [
+    "<base data-x=\"a[b\" href=\"http://x/\">",
+    "<base title=\"[draft]\" href=\"/a/\">",
+    "<base data-x=\"a]b\" href=\"http://y/\">",
+    "<base data-x=\"a\nb\" href=\"http://z/\">"
+  ],
+  "expected_original": [
+    "http://x/",
+    "/a/",
+    "http://y/",
+    "http://z/"
+  ],
+  "results": [
+    {
+      "sample": "ABC/s1",
+      "agrees_with_original": false,
+      "got": [
+        "http://x/",
+        "/a/",
+        "http://y/",
+        null
+      ]
+    },
+    {
+      "sample": "ABC/s2",
+      "agrees_with_original": false,
+      "got": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "sample": "ABC/s3",
+      "agrees_with_original": false,
+      "got": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "sample": "ABC/s4",
+      "agrees_with_original": false,
+      "got": [
+        null,
+        null,
+        "http://y/",
+        "http://z/"
+      ]
+    },
+    {
+      "sample": "ABC/s5",
+      "agrees_with_original": false,
+      "got": [
+        null,
+        null,
+        "http://y/",
+        null
+      ]
+    },
+    {
+      "sample": "ABC/s6",
+      "agrees_with_original": false,
+      "got": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "sample": "AG/s1",
+      "agrees_with_original": false,
+      "got": [
+        "http://x/",
+        "/a/",
+        "http://y/",
+        null
+      ]
+    },
+    {
+      "sample": "AG/s2",
+      "agrees_with_original": false,
+      "got": [
+        "http://x/",
+        "/a/",
+        "http://y/",
+        null
+      ]
+    },
+    {
+      "sample": "AG/s3",
+      "agrees_with_original": false,
+      "got": [
+        "http://x/",
+        "/a/",
+        "http://y/",
+        null
+      ]
+    },
+    {
+      "sample": "AG/s4",
+      "agrees_with_original": false,
+      "got": [
+        "http://x/",
+        "/a/",
+        "http://y/",
+        null
+      ]
+    },
+    {
+      "sample": "AG/s5",
+      "agrees_with_original": true,
+      "got": [
+        "http://x/",
+        "/a/",
+        "http://y/",
+        "http://z/"
+      ]
+    },
+    {
+      "sample": "AG/s6",
+      "agrees_with_original": true,
+      "got": [
+        "http://x/",
+        "/a/",
+        "http://y/",
+        "http://z/"
+      ]
+    }
+  ]
+}

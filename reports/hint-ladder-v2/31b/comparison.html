@@ -1,0 +1,2848 @@
+<!doctype html><meta charset="utf-8"><title>Hint ladder v2 31b</title><style>body{font:16px system-ui;margin:30px}td,th{border:1px solid #aaa;padding:6px}table{border-collapse:collapse}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style><h1>Hint ladder v2 — 31B</h1><p>Trạng thái: complete</p><table><tr><th>arm</th><th>output_tokens</th><th>finish_reason</th><th>capture</th><th>raw_equals_api</th><th>call_valid</th><th>literal_match</th><th>public_perf</th><th>public_median_s</th><th>functional</th><th>independent</th><th>long_attr</th><th>api_accepted</th><th>api_category</th><th>raw_category</th></tr><tr><td>B (nguyên tắc riêng, không A)</td><td>146</td><td>tool_calls</td><td>captured</td><td>True</td><td>True</td><td>True</td><td>False</td><td>1.1399722350179218</td><td>True</td><td>False</td><td>True</td><td>False</td><td>public_performance_fail</td><td>public_performance_fail</td></tr><tr><td>G (checklist regex chung)</td><td>146</td><td>tool_calls</td><td>captured</td><td>True</td><td>True</td><td>True</td><td>False</td><td>1.1739736949966755</td><td>True</td><td>False</td><td>True</td><td>False</td><td>public_performance_fail</td><td>public_performance_fail</td></tr><tr><td>A+G</td><td>146</td><td>tool_calls</td><td>captured</td><td>True</td><td>True</td><td>True</td><td>True</td><td>0.00026846802211366594</td><td>True</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>accepted</td></tr><tr><td>AB seed 17</td><td>146</td><td>tool_calls</td><td>captured</td><td>True</td><td>True</td><td>True</td><td>True</td><td>0.00029716198332607746</td><td>True</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>accepted</td></tr><tr><td>AB seed 29</td><td>146</td><td>tool_calls</td><td>captured</td><td>True</td><td>True</td><td>True</td><td>True</td><td>0.0002935270022135228</td><td>False</td><td>False</td><td>False</td><td>False</td><td>functional_fail</td><td>functional_fail</td></tr><tr><td>AB seed 43</td><td>146</td><td>tool_calls</td><td>captured</td><td>True</td><td>True</td><td>True</td><td>True</td><td>0.00029647399787791073</td><td>True</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>accepted</td></tr><tr><td>AG seed 17</td><td>146</td><td>tool_calls</td><td>captured</td><td>True</td><td>True</td><td>True</td><td>True</td><td>0.00028136299806647</td><td>True</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>accepted</td></tr><tr><td>AG seed 29</td><td>146</td><td>tool_calls</td><td>captured</td><td>True</td><td>True</td><td>True</td><td>True</td><td>0.00028125799144618213</td><td>True</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>accepted</td></tr><tr><td>AG seed 43</td><td>145</td><td>tool_calls</td><td>captured</td><td>True</td><td>True</td><td>True</td><td>True</td><td>0.00027398898964747787</td><td>True</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>accepted</td></tr></table><h2>Phân tích</h2><pre># Phân tích hint ladder v2 — 31B
+
+Lượt riêng của 31B, 9 lần sinh. Raw/API khớp 9/9, mọi tool call hợp lệ. `accepted` theo 4 bộ chấm đăng ký trước. Cột &quot;Giữ ranh giới thẻ&quot; là audit **sau sự kiện** (`posthoc-tag-boundary.json`), không đổi kết quả chấm gốc.
+
+| Nhánh | Temp | Biểu thức | Accepted | Giữ ranh giới thẻ |
+|---|---|---|---|---|
+| B (không có A) | 0 | `[^&gt;]*?` | Không, vẫn bậc hai | Có |
+| G (checklist chung, không có A) | 0 | `[^&gt;]*?` | Không, vẫn bậc hai | Có |
+| A+G | 0 | `[^&lt;]*?` | **Có** | **Không** |
+| A+B seed 17 | 0,6 | `[^&lt;&gt;]*` | **Có** | Có |
+| A+B seed 29 | 0,6 | `[^&lt; &gt;]*` | Không, loại cả dấu cách nên hỏng thẻ có thuộc tính trước href | Có |
+| A+B seed 43 | 0,6 | `[^&lt;&gt;]*` | **Có** | Có |
+| A+G seed 17 / 29 / 43 | 0,6 | `[^&lt;]*?`, `[^&lt;]*?`, `[^&lt;]*` | **Có ×3** | **Không ×3** |
+
+Gộp với v1 (A+B ở temp 0 đạt), trên cùng bài và cùng model:
+
+- **Cần cả cơ chế lẫn hướng sửa.** Chỉ B, hoặc chỉ G, đều cho lại lối mòn `[^&gt;]*?`. Riêng A cũng vậy (v1). Chỉ khi có đủ &quot;vì sao chậm&quot; và &quot;sửa theo hướng nào&quot;, 31B mới đổi được character class.
+- **A+B ổn định ở mức 3/4** (temp 0 + 2/3 seed). Lần trượt lặp lại đúng lỗi của 12B: loại thêm dấu cách.
+- **A+G (checklist không viết theo đáp án) đạt 4/4 theo bộ chấm**, nhưng cả 4 dùng `[^&lt;]*`, tức chỉ loại `&lt;` mà không loại `&gt;`. Audit sau sự kiện cho thấy biểu thức này bắt nhầm `href` nằm **ngoài** thẻ base đã đóng, ví dụ `&lt;base target=&quot;_top&quot;&gt;see href=&quot;http://x/&quot;`. Cả code gốc lẫn bản tham chiếu `[^&lt;&gt;]*` đều không khớp trường hợp này. Đây là lỗ hổng thứ hai của bộ chấm (lần trước là thuộc tính dài). Checklist chung đưa 31B tới đúng loại cách sửa, nhưng chưa đủ để giữ đúng ngữ nghĩa cũ.
+
+**Hàm ý cho harness:**
+
+1. Một checklist sửa lỗi theo loại lỗi, kèm chẩn đoán cơ chế, là đòn bẩy rõ nhất cho 31B trên bài này. Nó đổi kết quả từ 0 lên 4/4 theo bộ chấm.
+2. Cần thêm một bước kiểm tra &quot;giữ hành vi cũ&quot; do harness sinh, ví dụ chạy song song regex cũ và mới trên các input hợp lệ hoặc gần hợp lệ. Cả hai lỗ hổng bộ chấm đến nay đều là thay đổi ngữ nghĩa mà test hiện có không phủ.
+3. Chẩn đoán A ở đây do host viết. Muốn harness tự động, model phải tự sinh được A. Đó là đúng phần các đợt Localize trước chưa làm ổn.
+
+Giới hạn: một bài, 3 seed mỗi nhánh. Audit ranh giới thẻ được viết sau khi đã thấy biểu thức, nên không dùng để so lại với v1 như một bộ chấm đăng ký trước. Không gộp với 12B.
+</pre><details><summary>B (nguyên tắc riêng, không A)</summary><h3>request.json</h3><pre>{
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;Repair the reported repository defect using the supplied source evidence. Emit one edit_file call. The driver executes and grades the call independently. Do not invent a tool response or answer in prose.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nMaintainer analysis (provided by the host; use it as guidance):\n\nRepair principle (design level): Bound the work of each failed match attempt so that its scan cannot extend beyond the tag in which it started. The attribute scan of one tag should stop at a character that cannot legitimately appear in that tag&#x27;s attribute area, so that in malformed input it stops at the next tag start instead of the end of the document. Do NOT use a fixed numeric length limit: valid base tags may contain other attributes of any length before href, and those must still match. Prefer a minimal change to the existing pattern over rewriting the function or adding a new code path.\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)\nEND_SOURCE\n&quot;
+    }
+  ],
+  &quot;tools&quot;: [
+    {
+      &quot;type&quot;: &quot;function&quot;,
+      &quot;function&quot;: {
+        &quot;name&quot;: &quot;edit_file&quot;,
+        &quot;description&quot;: &quot;Replace a contiguous block of text in an existing file.\n\n        More token-efficient than write_file for targeted changes. Provide 2-4 lines of unique\n        surrounding context in old_string to ensure an unambiguous match.\n\n        Args:\n            filepath: Relative path to the target file.\n            old_string: Text block to replace.\n            new_string: Replacement text block.\n            allow_multiple: Replace all occurrences of old_string if True.\n\n        Returns:\n            Dictionary containing file status, occurrences count, match strategy, and unified diff.\n        &quot;,
+        &quot;parameters&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;filepath&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;old_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;new_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;allow_multiple&quot;: {
+              &quot;default&quot;: false,
+              &quot;type&quot;: &quot;boolean&quot;
+            }
+          },
+          &quot;required&quot;: [
+            &quot;filepath&quot;,
+            &quot;old_string&quot;,
+            &quot;new_string&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;tool_choice&quot;: &quot;auto&quot;,
+  &quot;temperature&quot;: 0,
+  &quot;max_tokens&quot;: 1536,
+  &quot;stream&quot;: false,
+  &quot;return_token_ids&quot;: true,
+  &quot;return_prompt_text&quot;: true,
+  &quot;skip_special_tokens&quot;: false,
+  &quot;include_reasoning&quot;: true,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  }
+}
+</pre><h3>raw-decoded.txt</h3><pre>&lt;|tool_call&gt;call:edit_file{allow_multiple:false,filepath:&lt;|&quot;|&gt;w3lib/html.py&lt;|&quot;|&gt;,new_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&gt;]*?href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;,old_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><h3>parsed-calls.json</h3><pre>[
+  {
+    &quot;name&quot;: &quot;edit_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;allow_multiple&quot;: false,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;new_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;,
+      &quot;old_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;
+    }
+  }
+]
+</pre><h3>api/executed.patch</h3><pre>diff --git a/w3lib/html.py b/w3lib/html.py
+index 6fb7b37..c0d0ff9 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -23,7 +23,7 @@ _ent_re = re.compile(
+ )
+ _tag_re = re.compile(r&quot;&lt;[a-zA-Z\/!].*?&gt;&quot;, re.DOTALL)
+ _baseurl_re = re.compile(
+-    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
++    r&quot;&lt;base\s[^&gt;]*?href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+ )
+ _meta_refresh_re = re.compile(
+     r&#x27;&lt;meta\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\s*=\s*(?P&lt;quote&gt;[&quot;\&#x27;])(?P&lt;int&gt;(\d*\.)?\d+)\s*;\s*url=\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,
+</pre><h3>execution.json</h3><pre>{
+  &quot;raw&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&gt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          1.140659119002521,
+          1.3050861450028606,
+          1.1393392540048808
+        ],
+        &quot;median_seconds&quot;: 1.140659119002521,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: false
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: false,
+          &quot;passed&quot;: false,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.12586891700630076,
+              0.12556187200243585,
+              0.12553536999621429
+            ],
+            &quot;4000&quot;: [
+              0.5071750089991838,
+              0.5058351799962111,
+              0.5065672879863996
+            ],
+            &quot;8000&quot;: [
+              2.12559432501439,
+              2.0300569069804624,
+              2.0573502100014593
+            ],
+            &quot;30000&quot;: []
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.12556187200243585,
+            &quot;4000&quot;: 0.5065672879863996,
+            &quot;8000&quot;: 2.0573502100014593
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 16.3851508200001,
+          &quot;timeouts&quot;: [
+            30000
+          ],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: false
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: false,
+      &quot;accepted&quot;: false
+    },
+    &quot;accepted&quot;: false,
+    &quot;category&quot;: &quot;public_performance_fail&quot;
+  },
+  &quot;api&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&gt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          1.1248828420066275,
+          1.1476531420194078,
+          1.1399722350179218
+        ],
+        &quot;median_seconds&quot;: 1.1399722350179218,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: false
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: false,
+          &quot;passed&quot;: false,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.12806333700427786,
+              0.126649283018196,
+              0.1341604439949151
+            ],
+            &quot;4000&quot;: [
+              0.5060818580095656,
+              0.5226499200216495,
+              0.5057819510111585
+            ],
+            &quot;8000&quot;: [
+              2.0388483019778505,
+              2.027436206000857,
+              2.153309454995906
+            ],
+            &quot;30000&quot;: []
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.12806333700427786,
+            &quot;4000&quot;: 0.5060818580095656,
+            &quot;8000&quot;: 2.0388483019778505
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 15.920624510274509,
+          &quot;timeouts&quot;: [
+            30000
+          ],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: false
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: false,
+      &quot;accepted&quot;: false
+    },
+    &quot;accepted&quot;: false,
+    &quot;category&quot;: &quot;public_performance_fail&quot;
+  }
+}
+</pre></details><details><summary>G (checklist regex chung)</summary><h3>request.json</h3><pre>{
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;Repair the reported repository defect using the supplied source evidence. Emit one edit_file call. The driver executes and grades the call independently. Do not invent a tool response or answer in prose.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nMaintainer analysis (provided by the host; use it as guidance):\n\nRegex performance repair checklist (generic; written for any super-linear regex issue, not for this file):\n1. Identify the unbounded span (X*, [^c]*, .*) that can run far past the point where a match could still succeed, and the inputs on which the overall match fails.\n2. Lazy quantifiers (*?, +?) change which match is preferred, but when the match FAILS the engine still explores the same positions; they usually do not remove super-linear behaviour.\n3. Fixed numeric bounds such as {0,100} hide the symptom but reject legitimate long inputs; avoid them unless the specification mandates a limit.\n4. Effective repairs make failed attempts cheap and non-overlapping: restrict the span&#x27;s character class so it cannot cross a token that would begin a new candidate match, or split/tokenize the input first so each region is scanned once.\n5. Keep the change minimal and make sure every previously valid input, including ones with extra or long content inside the span, still matches.\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)\nEND_SOURCE\n&quot;
+    }
+  ],
+  &quot;tools&quot;: [
+    {
+      &quot;type&quot;: &quot;function&quot;,
+      &quot;function&quot;: {
+        &quot;name&quot;: &quot;edit_file&quot;,
+        &quot;description&quot;: &quot;Replace a contiguous block of text in an existing file.\n\n        More token-efficient than write_file for targeted changes. Provide 2-4 lines of unique\n        surrounding context in old_string to ensure an unambiguous match.\n\n        Args:\n            filepath: Relative path to the target file.\n            old_string: Text block to replace.\n            new_string: Replacement text block.\n            allow_multiple: Replace all occurrences of old_string if True.\n\n        Returns:\n            Dictionary containing file status, occurrences count, match strategy, and unified diff.\n        &quot;,
+        &quot;parameters&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;filepath&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;old_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;new_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;allow_multiple&quot;: {
+              &quot;default&quot;: false,
+              &quot;type&quot;: &quot;boolean&quot;
+            }
+          },
+          &quot;required&quot;: [
+            &quot;filepath&quot;,
+            &quot;old_string&quot;,
+            &quot;new_string&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;tool_choice&quot;: &quot;auto&quot;,
+  &quot;temperature&quot;: 0,
+  &quot;max_tokens&quot;: 1536,
+  &quot;stream&quot;: false,
+  &quot;return_token_ids&quot;: true,
+  &quot;return_prompt_text&quot;: true,
+  &quot;skip_special_tokens&quot;: false,
+  &quot;include_reasoning&quot;: true,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  }
+}
+</pre><h3>raw-decoded.txt</h3><pre>&lt;|tool_call&gt;call:edit_file{allow_multiple:false,filepath:&lt;|&quot;|&gt;w3lib/html.py&lt;|&quot;|&gt;,new_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&gt;]*?href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;,old_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><h3>parsed-calls.json</h3><pre>[
+  {
+    &quot;name&quot;: &quot;edit_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;allow_multiple&quot;: false,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;new_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;,
+      &quot;old_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;
+    }
+  }
+]
+</pre><h3>api/executed.patch</h3><pre>diff --git a/w3lib/html.py b/w3lib/html.py
+index 6fb7b37..c0d0ff9 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -23,7 +23,7 @@ _ent_re = re.compile(
+ )
+ _tag_re = re.compile(r&quot;&lt;[a-zA-Z\/!].*?&gt;&quot;, re.DOTALL)
+ _baseurl_re = re.compile(
+-    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
++    r&quot;&lt;base\s[^&gt;]*?href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+ )
+ _meta_refresh_re = re.compile(
+     r&#x27;&lt;meta\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\s*=\s*(?P&lt;quote&gt;[&quot;\&#x27;])(?P&lt;int&gt;(\d*\.)?\d+)\s*;\s*url=\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,
+</pre><h3>execution.json</h3><pre>{
+  &quot;raw&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&gt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          1.170015429990599,
+          1.1771677539800294,
+          1.130590431013843
+        ],
+        &quot;median_seconds&quot;: 1.170015429990599,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: false
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: false,
+          &quot;passed&quot;: false,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.12690126898814924,
+              0.12704557299730368,
+              0.12782331800553948
+            ],
+            &quot;4000&quot;: [
+              0.5103098840045277,
+              0.503953352017561,
+              0.5083719039976131
+            ],
+            &quot;8000&quot;: [
+              2.025539073976688,
+              2.043412709987024,
+              2.0319568519771565
+            ],
+            &quot;30000&quot;: []
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.12704557299730368,
+            &quot;4000&quot;: 0.5083719039976131,
+            &quot;8000&quot;: 2.0319568519771565
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 15.993920953233697,
+          &quot;timeouts&quot;: [
+            30000
+          ],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: false
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: false,
+      &quot;accepted&quot;: false
+    },
+    &quot;accepted&quot;: false,
+    &quot;category&quot;: &quot;public_performance_fail&quot;
+  },
+  &quot;api&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&gt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          1.209456812008284,
+          1.130292476998875,
+          1.1739736949966755
+        ],
+        &quot;median_seconds&quot;: 1.1739736949966755,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: false
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: false,
+          &quot;passed&quot;: false,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.12843379902187735,
+              0.13034028900437988,
+              0.1255905489961151
+            ],
+            &quot;4000&quot;: [
+              0.5070450919738505,
+              0.5156884290045127,
+              0.5814821300155018
+            ],
+            &quot;8000&quot;: [
+              2.0521629650029354,
+              2.0311065729765687,
+              2.039918733993545
+            ],
+            &quot;30000&quot;: []
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.12843379902187735,
+            &quot;4000&quot;: 0.5156884290045127,
+            &quot;8000&quot;: 2.039918733993545
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 15.88303662687784,
+          &quot;timeouts&quot;: [
+            30000
+          ],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: false
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: false,
+      &quot;accepted&quot;: false
+    },
+    &quot;accepted&quot;: false,
+    &quot;category&quot;: &quot;public_performance_fail&quot;
+  }
+}
+</pre></details><details><summary>A+G</summary><h3>request.json</h3><pre>{
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;Repair the reported repository defect using the supplied source evidence. Emit one edit_file call. The driver executes and grades the call independently. Do not invent a tool response or answer in prose.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nMaintainer analysis (provided by the host; use it as guidance):\n\nMechanism (verified diagnosis): For malformed input such as \&quot;&lt;base &lt;base &lt;base ...\&quot; with no &#x27;&gt;&#x27; anywhere, the regex engine attempts a match at every occurrence of \&quot;&lt;base\&quot; followed by whitespace. At each such start, the attribute-span part of the pattern ([^&gt;]*) consumes all remaining text up to the end of the string, because no &#x27;&gt;&#x27; exists, and then backtracks character by character looking for \&quot;href\&quot;. Every one of the n start positions therefore scans O(n) characters, giving O(n^2) total work. The cost comes from the attribute-span part of the pattern, not from the URL capture group and not from the surrounding Python function.\n\nRegex performance repair checklist (generic; written for any super-linear regex issue, not for this file):\n1. Identify the unbounded span (X*, [^c]*, .*) that can run far past the point where a match could still succeed, and the inputs on which the overall match fails.\n2. Lazy quantifiers (*?, +?) change which match is preferred, but when the match FAILS the engine still explores the same positions; they usually do not remove super-linear behaviour.\n3. Fixed numeric bounds such as {0,100} hide the symptom but reject legitimate long inputs; avoid them unless the specification mandates a limit.\n4. Effective repairs make failed attempts cheap and non-overlapping: restrict the span&#x27;s character class so it cannot cross a token that would begin a new candidate match, or split/tokenize the input first so each region is scanned once.\n5. Keep the change minimal and make sure every previously valid input, including ones with extra or long content inside the span, still matches.\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)\nEND_SOURCE\n&quot;
+    }
+  ],
+  &quot;tools&quot;: [
+    {
+      &quot;type&quot;: &quot;function&quot;,
+      &quot;function&quot;: {
+        &quot;name&quot;: &quot;edit_file&quot;,
+        &quot;description&quot;: &quot;Replace a contiguous block of text in an existing file.\n\n        More token-efficient than write_file for targeted changes. Provide 2-4 lines of unique\n        surrounding context in old_string to ensure an unambiguous match.\n\n        Args:\n            filepath: Relative path to the target file.\n            old_string: Text block to replace.\n            new_string: Replacement text block.\n            allow_multiple: Replace all occurrences of old_string if True.\n\n        Returns:\n            Dictionary containing file status, occurrences count, match strategy, and unified diff.\n        &quot;,
+        &quot;parameters&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;filepath&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;old_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;new_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;allow_multiple&quot;: {
+              &quot;default&quot;: false,
+              &quot;type&quot;: &quot;boolean&quot;
+            }
+          },
+          &quot;required&quot;: [
+            &quot;filepath&quot;,
+            &quot;old_string&quot;,
+            &quot;new_string&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;tool_choice&quot;: &quot;auto&quot;,
+  &quot;temperature&quot;: 0,
+  &quot;max_tokens&quot;: 1536,
+  &quot;stream&quot;: false,
+  &quot;return_token_ids&quot;: true,
+  &quot;return_prompt_text&quot;: true,
+  &quot;skip_special_tokens&quot;: false,
+  &quot;include_reasoning&quot;: true,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  }
+}
+</pre><h3>raw-decoded.txt</h3><pre>&lt;|tool_call&gt;call:edit_file{allow_multiple:false,filepath:&lt;|&quot;|&gt;w3lib/html.py&lt;|&quot;|&gt;,new_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&lt;]*?href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;,old_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><h3>parsed-calls.json</h3><pre>[
+  {
+    &quot;name&quot;: &quot;edit_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;allow_multiple&quot;: false,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;new_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&lt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;,
+      &quot;old_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;
+    }
+  }
+]
+</pre><h3>api/executed.patch</h3><pre>diff --git a/w3lib/html.py b/w3lib/html.py
+index 6fb7b37..a8e9bc8 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -23,7 +23,7 @@ _ent_re = re.compile(
+ )
+ _tag_re = re.compile(r&quot;&lt;[a-zA-Z\/!].*?&gt;&quot;, re.DOTALL)
+ _baseurl_re = re.compile(
+-    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
++    r&quot;&lt;base\s[^&lt;]*?href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+ )
+ _meta_refresh_re = re.compile(
+     r&#x27;&lt;meta\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\s*=\s*(?P&lt;quote&gt;[&quot;\&#x27;])(?P&lt;int&gt;(\d*\.)?\d+)\s*;\s*url=\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,
+</pre><h3>execution.json</h3><pre>{
+  &quot;raw&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.00029811798594892025,
+          0.0002801569935400039,
+          0.0002731580170802772
+        ],
+        &quot;median_seconds&quot;: 0.0002801569935400039,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.00014469699817709625,
+              0.0001128479780163616,
+              0.00017006299458444118
+            ],
+            &quot;4000&quot;: [
+              0.00018685098621062934,
+              0.00020792600116692483,
+              0.00019849598174914718
+            ],
+            &quot;8000&quot;: [
+              0.0005042720003984869,
+              0.00035122199915349483,
+              0.0004373470146674663
+            ],
+            &quot;30000&quot;: [
+              0.0013001399929635227,
+              0.001326103025348857,
+              0.0012952350080013275
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00014469699817709625,
+            &quot;4000&quot;: 0.00019849598174914718,
+            &quot;8000&quot;: 0.0004373470146674663,
+            &quot;30000&quot;: 0.0013001399929635227
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.08746940293349326,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  },
+  &quot;api&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.00026846802211366594,
+          0.0002831299789249897,
+          0.0002665820065885782
+        ],
+        &quot;median_seconds&quot;: 0.00026846802211366594,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.00010239600669592619,
+              9.898497955873609e-05,
+              0.00010198898962698877
+            ],
+            &quot;4000&quot;: [
+              0.00018012398504652083,
+              0.00018395899678580463,
+              0.000198074005311355
+            ],
+            &quot;8000&quot;: [
+              0.00035878099151887,
+              0.0007820460014045238,
+              0.00035044600372202694
+            ],
+            &quot;30000&quot;: [
+              0.001272542984224856,
+              0.0013087780098430812,
+              0.001276137976674363
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00010198898962698877,
+            &quot;4000&quot;: 0.00018395899678580463,
+            &quot;8000&quot;: 0.00035878099151887,
+            &quot;30000&quot;: 0.001276137976674363
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.071756198303774,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  }
+}
+</pre></details><details><summary>AB seed 17</summary><h3>request.json</h3><pre>{
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;Repair the reported repository defect using the supplied source evidence. Emit one edit_file call. The driver executes and grades the call independently. Do not invent a tool response or answer in prose.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nMaintainer analysis (provided by the host; use it as guidance):\n\nMechanism (verified diagnosis): For malformed input such as \&quot;&lt;base &lt;base &lt;base ...\&quot; with no &#x27;&gt;&#x27; anywhere, the regex engine attempts a match at every occurrence of \&quot;&lt;base\&quot; followed by whitespace. At each such start, the attribute-span part of the pattern ([^&gt;]*) consumes all remaining text up to the end of the string, because no &#x27;&gt;&#x27; exists, and then backtracks character by character looking for \&quot;href\&quot;. Every one of the n start positions therefore scans O(n) characters, giving O(n^2) total work. The cost comes from the attribute-span part of the pattern, not from the URL capture group and not from the surrounding Python function.\n\nRepair principle (design level): Bound the work of each failed match attempt so that its scan cannot extend beyond the tag in which it started. The attribute scan of one tag should stop at a character that cannot legitimately appear in that tag&#x27;s attribute area, so that in malformed input it stops at the next tag start instead of the end of the document. Do NOT use a fixed numeric length limit: valid base tags may contain other attributes of any length before href, and those must still match. Prefer a minimal change to the existing pattern over rewriting the function or adding a new code path.\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)\nEND_SOURCE\n&quot;
+    }
+  ],
+  &quot;tools&quot;: [
+    {
+      &quot;type&quot;: &quot;function&quot;,
+      &quot;function&quot;: {
+        &quot;name&quot;: &quot;edit_file&quot;,
+        &quot;description&quot;: &quot;Replace a contiguous block of text in an existing file.\n\n        More token-efficient than write_file for targeted changes. Provide 2-4 lines of unique\n        surrounding context in old_string to ensure an unambiguous match.\n\n        Args:\n            filepath: Relative path to the target file.\n            old_string: Text block to replace.\n            new_string: Replacement text block.\n            allow_multiple: Replace all occurrences of old_string if True.\n\n        Returns:\n            Dictionary containing file status, occurrences count, match strategy, and unified diff.\n        &quot;,
+        &quot;parameters&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;filepath&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;old_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;new_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;allow_multiple&quot;: {
+              &quot;default&quot;: false,
+              &quot;type&quot;: &quot;boolean&quot;
+            }
+          },
+          &quot;required&quot;: [
+            &quot;filepath&quot;,
+            &quot;old_string&quot;,
+            &quot;new_string&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;tool_choice&quot;: &quot;auto&quot;,
+  &quot;temperature&quot;: 0.6,
+  &quot;max_tokens&quot;: 1536,
+  &quot;stream&quot;: false,
+  &quot;return_token_ids&quot;: true,
+  &quot;return_prompt_text&quot;: true,
+  &quot;skip_special_tokens&quot;: false,
+  &quot;include_reasoning&quot;: true,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  },
+  &quot;seed&quot;: 17
+}
+</pre><h3>raw-decoded.txt</h3><pre>&lt;|tool_call&gt;call:edit_file{allow_multiple:false,filepath:&lt;|&quot;|&gt;w3lib/html.py&lt;|&quot;|&gt;,new_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&lt;&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;,old_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><h3>parsed-calls.json</h3><pre>[
+  {
+    &quot;name&quot;: &quot;edit_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;allow_multiple&quot;: false,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;new_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&lt;&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;,
+      &quot;old_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;
+    }
+  }
+]
+</pre><h3>api/executed.patch</h3><pre>diff --git a/w3lib/html.py b/w3lib/html.py
+index 6fb7b37..a5a45a4 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -23,7 +23,7 @@ _ent_re = re.compile(
+ )
+ _tag_re = re.compile(r&quot;&lt;[a-zA-Z\/!].*?&gt;&quot;, re.DOTALL)
+ _baseurl_re = re.compile(
+-    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
++    r&quot;&lt;base\s[^&lt;&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+ )
+ _meta_refresh_re = re.compile(
+     r&#x27;&lt;meta\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\s*=\s*(?P&lt;quote&gt;[&quot;\&#x27;])(?P&lt;int&gt;(\d*\.)?\d+)\s*;\s*url=\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,
+</pre><h3>execution.json</h3><pre>{
+  &quot;raw&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.00030032600625418127,
+          0.0003683929971884936,
+          0.0002828379801940173
+        ],
+        &quot;median_seconds&quot;: 0.00030032600625418127,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.0001084500108845532,
+              0.0001221060228999704,
+              0.00010676900274120271
+            ],
+            &quot;4000&quot;: [
+              0.00021279300563037395,
+              0.00020384200615808368,
+              0.0002039340033661574
+            ],
+            &quot;8000&quot;: [
+              0.00038125700666569173,
+              0.00039319900679402053,
+              0.0003862229932565242
+            ],
+            &quot;30000&quot;: [
+              0.0013851920084562153,
+              0.0013747880002483726,
+              0.0013720169954467565
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.0001084500108845532,
+            &quot;4000&quot;: 0.0002039340033661574,
+            &quot;8000&quot;: 0.0003862229932565242,
+            &quot;30000&quot;: 0.0013747880002483726
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07724459865130484,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  },
+  &quot;api&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.00030117001733742654,
+          0.00029716198332607746,
+          0.0002903849817812443
+        ],
+        &quot;median_seconds&quot;: 0.00029716198332607746,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.00010875199222937226,
+              0.00011181499576196074,
+              0.00010774200200103223
+            ],
+            &quot;4000&quot;: [
+              0.00020271498942747712,
+              0.00019982497906312346,
+              0.0002003819972742349
+            ],
+            &quot;8000&quot;: [
+              0.0003961410257034004,
+              0.00039230199763551354,
+              0.00038698999560438097
+            ],
+            &quot;30000&quot;: [
+              0.001391231024172157,
+              0.0013839029998052865,
+              0.002481077011907473
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00010875199222937226,
+            &quot;4000&quot;: 0.0002003819972742349,
+            &quot;8000&quot;: 0.00039230199763551354,
+            &quot;30000&quot;: 0.001391231024172157
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07846039952710271,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  }
+}
+</pre></details><details><summary>AB seed 29</summary><h3>request.json</h3><pre>{
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;Repair the reported repository defect using the supplied source evidence. Emit one edit_file call. The driver executes and grades the call independently. Do not invent a tool response or answer in prose.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nMaintainer analysis (provided by the host; use it as guidance):\n\nMechanism (verified diagnosis): For malformed input such as \&quot;&lt;base &lt;base &lt;base ...\&quot; with no &#x27;&gt;&#x27; anywhere, the regex engine attempts a match at every occurrence of \&quot;&lt;base\&quot; followed by whitespace. At each such start, the attribute-span part of the pattern ([^&gt;]*) consumes all remaining text up to the end of the string, because no &#x27;&gt;&#x27; exists, and then backtracks character by character looking for \&quot;href\&quot;. Every one of the n start positions therefore scans O(n) characters, giving O(n^2) total work. The cost comes from the attribute-span part of the pattern, not from the URL capture group and not from the surrounding Python function.\n\nRepair principle (design level): Bound the work of each failed match attempt so that its scan cannot extend beyond the tag in which it started. The attribute scan of one tag should stop at a character that cannot legitimately appear in that tag&#x27;s attribute area, so that in malformed input it stops at the next tag start instead of the end of the document. Do NOT use a fixed numeric length limit: valid base tags may contain other attributes of any length before href, and those must still match. Prefer a minimal change to the existing pattern over rewriting the function or adding a new code path.\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)\nEND_SOURCE\n&quot;
+    }
+  ],
+  &quot;tools&quot;: [
+    {
+      &quot;type&quot;: &quot;function&quot;,
+      &quot;function&quot;: {
+        &quot;name&quot;: &quot;edit_file&quot;,
+        &quot;description&quot;: &quot;Replace a contiguous block of text in an existing file.\n\n        More token-efficient than write_file for targeted changes. Provide 2-4 lines of unique\n        surrounding context in old_string to ensure an unambiguous match.\n\n        Args:\n            filepath: Relative path to the target file.\n            old_string: Text block to replace.\n            new_string: Replacement text block.\n            allow_multiple: Replace all occurrences of old_string if True.\n\n        Returns:\n            Dictionary containing file status, occurrences count, match strategy, and unified diff.\n        &quot;,
+        &quot;parameters&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;filepath&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;old_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;new_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;allow_multiple&quot;: {
+              &quot;default&quot;: false,
+              &quot;type&quot;: &quot;boolean&quot;
+            }
+          },
+          &quot;required&quot;: [
+            &quot;filepath&quot;,
+            &quot;old_string&quot;,
+            &quot;new_string&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;tool_choice&quot;: &quot;auto&quot;,
+  &quot;temperature&quot;: 0.6,
+  &quot;max_tokens&quot;: 1536,
+  &quot;stream&quot;: false,
+  &quot;return_token_ids&quot;: true,
+  &quot;return_prompt_text&quot;: true,
+  &quot;skip_special_tokens&quot;: false,
+  &quot;include_reasoning&quot;: true,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  },
+  &quot;seed&quot;: 29
+}
+</pre><h3>raw-decoded.txt</h3><pre>&lt;|tool_call&gt;call:edit_file{allow_multiple:false,filepath:&lt;|&quot;|&gt;w3lib/html.py&lt;|&quot;|&gt;,new_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&lt; &gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;,old_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><h3>parsed-calls.json</h3><pre>[
+  {
+    &quot;name&quot;: &quot;edit_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;allow_multiple&quot;: false,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;new_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&lt; &gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;,
+      &quot;old_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;
+    }
+  }
+]
+</pre><h3>api/executed.patch</h3><pre>diff --git a/w3lib/html.py b/w3lib/html.py
+index 6fb7b37..ed68bf9 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -23,7 +23,7 @@ _ent_re = re.compile(
+ )
+ _tag_re = re.compile(r&quot;&lt;[a-zA-Z\/!].*?&gt;&quot;, re.DOTALL)
+ _baseurl_re = re.compile(
+-    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
++    r&quot;&lt;base\s[^&lt; &gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+ )
+ _meta_refresh_re = re.compile(
+     r&#x27;&lt;meta\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\s*=\s*(?P&lt;quote&gt;[&quot;\&#x27;])(?P&lt;int&gt;(\d*\.)?\d+)\s*;\s*url=\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,
+</pre><h3>execution.json</h3><pre>{
+  &quot;raw&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt; &gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.00028426002245396376,
+          0.00028641000972129405,
+          0.0003835829847957939
+        ],
+        &quot;median_seconds&quot;: 0.00028641000972129405,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: false,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 1,
+        &quot;public_tests_pass&quot;: false,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.0001081649970728904,
+              0.00010719700367189944,
+              0.00010664699948392808
+            ],
+            &quot;4000&quot;: [
+              0.00019894898287020624,
+              0.00019629299640655518,
+              0.00024066699552349746
+            ],
+            &quot;8000&quot;: [
+              0.00038040298386476934,
+              0.00038484198739752173,
+              0.0003945869975723326
+            ],
+            &quot;30000&quot;: [
+              0.0013464369985740632,
+              0.0014056900108698756,
+              0.0013511549914255738
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00010719700367189944,
+            &quot;4000&quot;: 0.00019894898287020624,
+            &quot;8000&quot;: 0.00038484198739752173,
+            &quot;30000&quot;: 0.0013511549914255738
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07696839747950435,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: false
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;&quot;,
+            &quot;passed&quot;: false
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;&quot;,
+            &quot;passed&quot;: false
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;&quot;,
+            &quot;passed&quot;: false
+          }
+        ],
+        &quot;passed&quot;: false
+      },
+      &quot;public_pass&quot;: false,
+      &quot;accepted&quot;: false
+    },
+    &quot;accepted&quot;: false,
+    &quot;category&quot;: &quot;functional_fail&quot;
+  },
+  &quot;api&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt; &gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.0002935270022135228,
+          0.0002815329935401678,
+          0.00030009500915184617
+        ],
+        &quot;median_seconds&quot;: 0.0002935270022135228,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: false,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 1,
+        &quot;public_tests_pass&quot;: false,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.000114077003672719,
+              0.0001048780104611069,
+              0.00010497000766918063
+            ],
+            &quot;4000&quot;: [
+              0.00020308801322244108,
+              0.00021185498917475343,
+              0.00020384599338285625
+            ],
+            &quot;8000&quot;: [
+              0.0003829409833997488,
+              0.00038048101123422384,
+              0.00038773700362071395
+            ],
+            &quot;30000&quot;: [
+              0.0013599629746749997,
+              0.001369102013995871,
+              0.001366520009469241
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00010497000766918063,
+            &quot;4000&quot;: 0.00020384599338285625,
+            &quot;8000&quot;: 0.0003829409833997488,
+            &quot;30000&quot;: 0.001366520009469241
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07658819667994976,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: false
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;&quot;,
+            &quot;passed&quot;: false
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;&quot;,
+            &quot;passed&quot;: false
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;&quot;,
+            &quot;passed&quot;: false
+          }
+        ],
+        &quot;passed&quot;: false
+      },
+      &quot;public_pass&quot;: false,
+      &quot;accepted&quot;: false
+    },
+    &quot;accepted&quot;: false,
+    &quot;category&quot;: &quot;functional_fail&quot;
+  }
+}
+</pre></details><details><summary>AB seed 43</summary><h3>request.json</h3><pre>{
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;Repair the reported repository defect using the supplied source evidence. Emit one edit_file call. The driver executes and grades the call independently. Do not invent a tool response or answer in prose.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nMaintainer analysis (provided by the host; use it as guidance):\n\nMechanism (verified diagnosis): For malformed input such as \&quot;&lt;base &lt;base &lt;base ...\&quot; with no &#x27;&gt;&#x27; anywhere, the regex engine attempts a match at every occurrence of \&quot;&lt;base\&quot; followed by whitespace. At each such start, the attribute-span part of the pattern ([^&gt;]*) consumes all remaining text up to the end of the string, because no &#x27;&gt;&#x27; exists, and then backtracks character by character looking for \&quot;href\&quot;. Every one of the n start positions therefore scans O(n) characters, giving O(n^2) total work. The cost comes from the attribute-span part of the pattern, not from the URL capture group and not from the surrounding Python function.\n\nRepair principle (design level): Bound the work of each failed match attempt so that its scan cannot extend beyond the tag in which it started. The attribute scan of one tag should stop at a character that cannot legitimately appear in that tag&#x27;s attribute area, so that in malformed input it stops at the next tag start instead of the end of the document. Do NOT use a fixed numeric length limit: valid base tags may contain other attributes of any length before href, and those must still match. Prefer a minimal change to the existing pattern over rewriting the function or adding a new code path.\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)\nEND_SOURCE\n&quot;
+    }
+  ],
+  &quot;tools&quot;: [
+    {
+      &quot;type&quot;: &quot;function&quot;,
+      &quot;function&quot;: {
+        &quot;name&quot;: &quot;edit_file&quot;,
+        &quot;description&quot;: &quot;Replace a contiguous block of text in an existing file.\n\n        More token-efficient than write_file for targeted changes. Provide 2-4 lines of unique\n        surrounding context in old_string to ensure an unambiguous match.\n\n        Args:\n            filepath: Relative path to the target file.\n            old_string: Text block to replace.\n            new_string: Replacement text block.\n            allow_multiple: Replace all occurrences of old_string if True.\n\n        Returns:\n            Dictionary containing file status, occurrences count, match strategy, and unified diff.\n        &quot;,
+        &quot;parameters&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;filepath&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;old_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;new_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;allow_multiple&quot;: {
+              &quot;default&quot;: false,
+              &quot;type&quot;: &quot;boolean&quot;
+            }
+          },
+          &quot;required&quot;: [
+            &quot;filepath&quot;,
+            &quot;old_string&quot;,
+            &quot;new_string&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;tool_choice&quot;: &quot;auto&quot;,
+  &quot;temperature&quot;: 0.6,
+  &quot;max_tokens&quot;: 1536,
+  &quot;stream&quot;: false,
+  &quot;return_token_ids&quot;: true,
+  &quot;return_prompt_text&quot;: true,
+  &quot;skip_special_tokens&quot;: false,
+  &quot;include_reasoning&quot;: true,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  },
+  &quot;seed&quot;: 43
+}
+</pre><h3>raw-decoded.txt</h3><pre>&lt;|tool_call&gt;call:edit_file{allow_multiple:false,filepath:&lt;|&quot;|&gt;w3lib/html.py&lt;|&quot;|&gt;,new_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&lt;&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;,old_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><h3>parsed-calls.json</h3><pre>[
+  {
+    &quot;name&quot;: &quot;edit_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;allow_multiple&quot;: false,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;new_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&lt;&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;,
+      &quot;old_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;
+    }
+  }
+]
+</pre><h3>api/executed.patch</h3><pre>diff --git a/w3lib/html.py b/w3lib/html.py
+index 6fb7b37..a5a45a4 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -23,7 +23,7 @@ _ent_re = re.compile(
+ )
+ _tag_re = re.compile(r&quot;&lt;[a-zA-Z\/!].*?&gt;&quot;, re.DOTALL)
+ _baseurl_re = re.compile(
+-    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
++    r&quot;&lt;base\s[^&lt;&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+ )
+ _meta_refresh_re = re.compile(
+     r&#x27;&lt;meta\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\s*=\s*(?P&lt;quote&gt;[&quot;\&#x27;])(?P&lt;int&gt;(\d*\.)?\d+)\s*;\s*url=\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,
+</pre><h3>execution.json</h3><pre>{
+  &quot;raw&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.00028299898258410394,
+          0.0002931019989773631,
+          0.00028519300394691527
+        ],
+        &quot;median_seconds&quot;: 0.00028519300394691527,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.00010807899525389075,
+              0.00010790099622681737,
+              0.00012542199692688882
+            ],
+            &quot;4000&quot;: [
+              0.00019749999046325684,
+              0.00020704901544377208,
+              0.00019777999841608107
+            ],
+            &quot;8000&quot;: [
+              0.00038761799805797637,
+              0.0003896609996445477,
+              0.00038166201557032764
+            ],
+            &quot;30000&quot;: [
+              0.0014485160063486546,
+              0.0014210619847290218,
+              0.0014777859905734658
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00010807899525389075,
+            &quot;4000&quot;: 0.00019777999841608107,
+            &quot;8000&quot;: 0.00038761799805797637,
+            &quot;30000&quot;: 0.0014485160063486546
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07752359961159527,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  },
+  &quot;api&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.0002856980136130005,
+          0.00029647399787791073,
+          0.00030289299320429564
+        ],
+        &quot;median_seconds&quot;: 0.00029647399787791073,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.00011611598893068731,
+              0.00010789500083774328,
+              0.00012040900764986873
+            ],
+            &quot;4000&quot;: [
+              0.00021207399549894035,
+              0.000201324000954628,
+              0.00019470098777674139
+            ],
+            &quot;8000&quot;: [
+              0.00038379698526114225,
+              0.00038460700307041407,
+              0.0003822769795078784
+            ],
+            &quot;30000&quot;: [
+              0.0013700379931833595,
+              0.0014896230131853372,
+              0.0013867160014342517
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00011611598893068731,
+            &quot;4000&quot;: 0.000201324000954628,
+            &quot;8000&quot;: 0.00038379698526114225,
+            &quot;30000&quot;: 0.0013867160014342517
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07675939705222845,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  }
+}
+</pre></details><details><summary>AG seed 17</summary><h3>request.json</h3><pre>{
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;Repair the reported repository defect using the supplied source evidence. Emit one edit_file call. The driver executes and grades the call independently. Do not invent a tool response or answer in prose.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nMaintainer analysis (provided by the host; use it as guidance):\n\nMechanism (verified diagnosis): For malformed input such as \&quot;&lt;base &lt;base &lt;base ...\&quot; with no &#x27;&gt;&#x27; anywhere, the regex engine attempts a match at every occurrence of \&quot;&lt;base\&quot; followed by whitespace. At each such start, the attribute-span part of the pattern ([^&gt;]*) consumes all remaining text up to the end of the string, because no &#x27;&gt;&#x27; exists, and then backtracks character by character looking for \&quot;href\&quot;. Every one of the n start positions therefore scans O(n) characters, giving O(n^2) total work. The cost comes from the attribute-span part of the pattern, not from the URL capture group and not from the surrounding Python function.\n\nRegex performance repair checklist (generic; written for any super-linear regex issue, not for this file):\n1. Identify the unbounded span (X*, [^c]*, .*) that can run far past the point where a match could still succeed, and the inputs on which the overall match fails.\n2. Lazy quantifiers (*?, +?) change which match is preferred, but when the match FAILS the engine still explores the same positions; they usually do not remove super-linear behaviour.\n3. Fixed numeric bounds such as {0,100} hide the symptom but reject legitimate long inputs; avoid them unless the specification mandates a limit.\n4. Effective repairs make failed attempts cheap and non-overlapping: restrict the span&#x27;s character class so it cannot cross a token that would begin a new candidate match, or split/tokenize the input first so each region is scanned once.\n5. Keep the change minimal and make sure every previously valid input, including ones with extra or long content inside the span, still matches.\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)\nEND_SOURCE\n&quot;
+    }
+  ],
+  &quot;tools&quot;: [
+    {
+      &quot;type&quot;: &quot;function&quot;,
+      &quot;function&quot;: {
+        &quot;name&quot;: &quot;edit_file&quot;,
+        &quot;description&quot;: &quot;Replace a contiguous block of text in an existing file.\n\n        More token-efficient than write_file for targeted changes. Provide 2-4 lines of unique\n        surrounding context in old_string to ensure an unambiguous match.\n\n        Args:\n            filepath: Relative path to the target file.\n            old_string: Text block to replace.\n            new_string: Replacement text block.\n            allow_multiple: Replace all occurrences of old_string if True.\n\n        Returns:\n            Dictionary containing file status, occurrences count, match strategy, and unified diff.\n        &quot;,
+        &quot;parameters&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;filepath&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;old_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;new_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;allow_multiple&quot;: {
+              &quot;default&quot;: false,
+              &quot;type&quot;: &quot;boolean&quot;
+            }
+          },
+          &quot;required&quot;: [
+            &quot;filepath&quot;,
+            &quot;old_string&quot;,
+            &quot;new_string&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;tool_choice&quot;: &quot;auto&quot;,
+  &quot;temperature&quot;: 0.6,
+  &quot;max_tokens&quot;: 1536,
+  &quot;stream&quot;: false,
+  &quot;return_token_ids&quot;: true,
+  &quot;return_prompt_text&quot;: true,
+  &quot;skip_special_tokens&quot;: false,
+  &quot;include_reasoning&quot;: true,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  },
+  &quot;seed&quot;: 17
+}
+</pre><h3>raw-decoded.txt</h3><pre>&lt;|tool_call&gt;call:edit_file{allow_multiple:false,filepath:&lt;|&quot;|&gt;w3lib/html.py&lt;|&quot;|&gt;,new_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&lt;]*?href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;,old_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><h3>parsed-calls.json</h3><pre>[
+  {
+    &quot;name&quot;: &quot;edit_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;allow_multiple&quot;: false,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;new_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&lt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;,
+      &quot;old_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;
+    }
+  }
+]
+</pre><h3>api/executed.patch</h3><pre>diff --git a/w3lib/html.py b/w3lib/html.py
+index 6fb7b37..a8e9bc8 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -23,7 +23,7 @@ _ent_re = re.compile(
+ )
+ _tag_re = re.compile(r&quot;&lt;[a-zA-Z\/!].*?&gt;&quot;, re.DOTALL)
+ _baseurl_re = re.compile(
+-    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
++    r&quot;&lt;base\s[^&lt;]*?href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+ )
+ _meta_refresh_re = re.compile(
+     r&#x27;&lt;meta\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\s*=\s*(?P&lt;quote&gt;[&quot;\&#x27;])(?P&lt;int&gt;(\d*\.)?\d+)\s*;\s*url=\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,
+</pre><h3>execution.json</h3><pre>{
+  &quot;raw&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.00026629900094121695,
+          0.00027745100669562817,
+          0.00026676198467612267
+        ],
+        &quot;median_seconds&quot;: 0.00026676198467612267,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.00010389901581220329,
+              0.00010167399886995554,
+              0.00010362701141275465
+            ],
+            &quot;4000&quot;: [
+              0.00018411999917589128,
+              0.00018581197946332395,
+              0.00019158501527272165
+            ],
+            &quot;8000&quot;: [
+              0.0003619719936978072,
+              0.00033905901364050806,
+              0.00035875197499990463
+            ],
+            &quot;30000&quot;: [
+              0.0013036239834036678,
+              0.0012780280085280538,
+              0.0013240400003269315
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00010362701141275465,
+            &quot;4000&quot;: 0.00018581197946332395,
+            &quot;8000&quot;: 0.00035875197499990463,
+            &quot;30000&quot;: 0.0013036239834036678
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07175039499998093,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  },
+  &quot;api&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.0003212830051779747,
+          0.00028136299806647,
+          0.00026985499425791204
+        ],
+        &quot;median_seconds&quot;: 0.00028136299806647,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.00011306101805530488,
+              0.00010060000931844115,
+              0.00010082300286740065
+            ],
+            &quot;4000&quot;: [
+              0.00019676997908391058,
+              0.00020011499873362482,
+              0.00018638698384165764
+            ],
+            &quot;8000&quot;: [
+              0.00037094898289069533,
+              0.0004692500224336982,
+              0.0003740359970834106
+            ],
+            &quot;30000&quot;: [
+              0.0013325260079000145,
+              0.0012855700042564422,
+              0.0012822779826819897
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00010082300286740065,
+            &quot;4000&quot;: 0.00019676997908391058,
+            &quot;8000&quot;: 0.0003740359970834106,
+            &quot;30000&quot;: 0.0012855700042564422
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07480719941668212,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  }
+}
+</pre></details><details><summary>AG seed 29</summary><h3>request.json</h3><pre>{
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;Repair the reported repository defect using the supplied source evidence. Emit one edit_file call. The driver executes and grades the call independently. Do not invent a tool response or answer in prose.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nMaintainer analysis (provided by the host; use it as guidance):\n\nMechanism (verified diagnosis): For malformed input such as \&quot;&lt;base &lt;base &lt;base ...\&quot; with no &#x27;&gt;&#x27; anywhere, the regex engine attempts a match at every occurrence of \&quot;&lt;base\&quot; followed by whitespace. At each such start, the attribute-span part of the pattern ([^&gt;]*) consumes all remaining text up to the end of the string, because no &#x27;&gt;&#x27; exists, and then backtracks character by character looking for \&quot;href\&quot;. Every one of the n start positions therefore scans O(n) characters, giving O(n^2) total work. The cost comes from the attribute-span part of the pattern, not from the URL capture group and not from the surrounding Python function.\n\nRegex performance repair checklist (generic; written for any super-linear regex issue, not for this file):\n1. Identify the unbounded span (X*, [^c]*, .*) that can run far past the point where a match could still succeed, and the inputs on which the overall match fails.\n2. Lazy quantifiers (*?, +?) change which match is preferred, but when the match FAILS the engine still explores the same positions; they usually do not remove super-linear behaviour.\n3. Fixed numeric bounds such as {0,100} hide the symptom but reject legitimate long inputs; avoid them unless the specification mandates a limit.\n4. Effective repairs make failed attempts cheap and non-overlapping: restrict the span&#x27;s character class so it cannot cross a token that would begin a new candidate match, or split/tokenize the input first so each region is scanned once.\n5. Keep the change minimal and make sure every previously valid input, including ones with extra or long content inside the span, still matches.\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)\nEND_SOURCE\n&quot;
+    }
+  ],
+  &quot;tools&quot;: [
+    {
+      &quot;type&quot;: &quot;function&quot;,
+      &quot;function&quot;: {
+        &quot;name&quot;: &quot;edit_file&quot;,
+        &quot;description&quot;: &quot;Replace a contiguous block of text in an existing file.\n\n        More token-efficient than write_file for targeted changes. Provide 2-4 lines of unique\n        surrounding context in old_string to ensure an unambiguous match.\n\n        Args:\n            filepath: Relative path to the target file.\n            old_string: Text block to replace.\n            new_string: Replacement text block.\n            allow_multiple: Replace all occurrences of old_string if True.\n\n        Returns:\n            Dictionary containing file status, occurrences count, match strategy, and unified diff.\n        &quot;,
+        &quot;parameters&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;filepath&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;old_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;new_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;allow_multiple&quot;: {
+              &quot;default&quot;: false,
+              &quot;type&quot;: &quot;boolean&quot;
+            }
+          },
+          &quot;required&quot;: [
+            &quot;filepath&quot;,
+            &quot;old_string&quot;,
+            &quot;new_string&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;tool_choice&quot;: &quot;auto&quot;,
+  &quot;temperature&quot;: 0.6,
+  &quot;max_tokens&quot;: 1536,
+  &quot;stream&quot;: false,
+  &quot;return_token_ids&quot;: true,
+  &quot;return_prompt_text&quot;: true,
+  &quot;skip_special_tokens&quot;: false,
+  &quot;include_reasoning&quot;: true,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  },
+  &quot;seed&quot;: 29
+}
+</pre><h3>raw-decoded.txt</h3><pre>&lt;|tool_call&gt;call:edit_file{allow_multiple:false,filepath:&lt;|&quot;|&gt;w3lib/html.py&lt;|&quot;|&gt;,new_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&lt;]*?href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;,old_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><h3>parsed-calls.json</h3><pre>[
+  {
+    &quot;name&quot;: &quot;edit_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;allow_multiple&quot;: false,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;new_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&lt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;,
+      &quot;old_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;
+    }
+  }
+]
+</pre><h3>api/executed.patch</h3><pre>diff --git a/w3lib/html.py b/w3lib/html.py
+index 6fb7b37..a8e9bc8 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -23,7 +23,7 @@ _ent_re = re.compile(
+ )
+ _tag_re = re.compile(r&quot;&lt;[a-zA-Z\/!].*?&gt;&quot;, re.DOTALL)
+ _baseurl_re = re.compile(
+-    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
++    r&quot;&lt;base\s[^&lt;]*?href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+ )
+ _meta_refresh_re = re.compile(
+     r&#x27;&lt;meta\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\s*=\s*(?P&lt;quote&gt;[&quot;\&#x27;])(?P&lt;int&gt;(\d*\.)?\d+)\s*;\s*url=\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,
+</pre><h3>execution.json</h3><pre>{
+  &quot;raw&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.0002658449811860919,
+          0.00026904299738816917,
+          0.00027557899011299014
+        ],
+        &quot;median_seconds&quot;: 0.00026904299738816917,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.00010025699157267809,
+              9.97520110104233e-05,
+              9.907499770633876e-05
+            ],
+            &quot;4000&quot;: [
+              0.00019126699771732092,
+              0.0001791569811757654,
+              0.00017839600332081318
+            ],
+            &quot;8000&quot;: [
+              0.0003573749854695052,
+              0.000371897011063993,
+              0.00035005700192414224
+            ],
+            &quot;30000&quot;: [
+              0.0012871109938714653,
+              0.001301731972489506,
+              0.0012835650122724473
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 9.97520110104233e-05,
+            &quot;4000&quot;: 0.0001791569811757654,
+            &quot;8000&quot;: 0.0003573749854695052,
+            &quot;30000&quot;: 0.0012871109938714653
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07147499709390104,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  },
+  &quot;api&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;]*?href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.0002706609957385808,
+          0.00028125799144618213,
+          0.00028626801213249564
+        ],
+        &quot;median_seconds&quot;: 0.00028125799144618213,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.00010175601346418262,
+              0.00010272799408994615,
+              0.000104211998404935
+            ],
+            &quot;4000&quot;: [
+              0.00018955499399453402,
+              0.000187463010661304,
+              0.00018742200336419046
+            ],
+            &quot;8000&quot;: [
+              0.00036075798561796546,
+              0.00035429297713562846,
+              0.0003495830169413239
+            ],
+            &quot;30000&quot;: [
+              0.0012721170205622911,
+              0.0013190250028856099,
+              0.0012807229941245168
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00010272799408994615,
+            &quot;4000&quot;: 0.000187463010661304,
+            &quot;8000&quot;: 0.00035429297713562846,
+            &quot;30000&quot;: 0.0012807229941245168
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07085859542712569,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  }
+}
+</pre></details><details><summary>AG seed 43</summary><h3>request.json</h3><pre>{
+  &quot;model&quot;: &quot;gemma-4-31b-it-qat-w4a16-ct&quot;,
+  &quot;messages&quot;: [
+    {
+      &quot;role&quot;: &quot;system&quot;,
+      &quot;content&quot;: &quot;Repair the reported repository defect using the supplied source evidence. Emit one edit_file call. The driver executes and grades the call independently. Do not invent a tool response or answer in prose.&quot;
+    },
+    {
+      &quot;role&quot;: &quot;user&quot;,
+      &quot;content&quot;: &quot;Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\&quot;&lt;base \&quot; * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nMaintainer analysis (provided by the host; use it as guidance):\n\nMechanism (verified diagnosis): For malformed input such as \&quot;&lt;base &lt;base &lt;base ...\&quot; with no &#x27;&gt;&#x27; anywhere, the regex engine attempts a match at every occurrence of \&quot;&lt;base\&quot; followed by whitespace. At each such start, the attribute-span part of the pattern ([^&gt;]*) consumes all remaining text up to the end of the string, because no &#x27;&gt;&#x27; exists, and then backtracks character by character looking for \&quot;href\&quot;. Every one of the n start positions therefore scans O(n) characters, giving O(n^2) total work. The cost comes from the attribute-span part of the pattern, not from the URL capture group and not from the surrounding Python function.\n\nRegex performance repair checklist (generic; written for any super-linear regex issue, not for this file):\n1. Identify the unbounded span (X*, [^c]*, .*) that can run far past the point where a match could still succeed, and the inputs on which the overall match fails.\n2. Lazy quantifiers (*?, +?) change which match is preferred, but when the match FAILS the engine still explores the same positions; they usually do not remove super-linear behaviour.\n3. Fixed numeric bounds such as {0,100} hide the symptom but reject legitimate long inputs; avoid them unless the specification mandates a limit.\n4. Effective repairs make failed attempts cheap and non-overlapping: restrict the span&#x27;s character class so it cannot cross a token that would begin a new candidate match, or split/tokenize the input first so each region is scanned once.\n5. Keep the change minimal and make sure every previously valid input, including ones with extra or long content inside the span, still matches.\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)\nEND_SOURCE\n&quot;
+    }
+  ],
+  &quot;tools&quot;: [
+    {
+      &quot;type&quot;: &quot;function&quot;,
+      &quot;function&quot;: {
+        &quot;name&quot;: &quot;edit_file&quot;,
+        &quot;description&quot;: &quot;Replace a contiguous block of text in an existing file.\n\n        More token-efficient than write_file for targeted changes. Provide 2-4 lines of unique\n        surrounding context in old_string to ensure an unambiguous match.\n\n        Args:\n            filepath: Relative path to the target file.\n            old_string: Text block to replace.\n            new_string: Replacement text block.\n            allow_multiple: Replace all occurrences of old_string if True.\n\n        Returns:\n            Dictionary containing file status, occurrences count, match strategy, and unified diff.\n        &quot;,
+        &quot;parameters&quot;: {
+          &quot;type&quot;: &quot;object&quot;,
+          &quot;properties&quot;: {
+            &quot;filepath&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;old_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;new_string&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;allow_multiple&quot;: {
+              &quot;default&quot;: false,
+              &quot;type&quot;: &quot;boolean&quot;
+            }
+          },
+          &quot;required&quot;: [
+            &quot;filepath&quot;,
+            &quot;old_string&quot;,
+            &quot;new_string&quot;
+          ]
+        }
+      }
+    }
+  ],
+  &quot;tool_choice&quot;: &quot;auto&quot;,
+  &quot;temperature&quot;: 0.6,
+  &quot;max_tokens&quot;: 1536,
+  &quot;stream&quot;: false,
+  &quot;return_token_ids&quot;: true,
+  &quot;return_prompt_text&quot;: true,
+  &quot;skip_special_tokens&quot;: false,
+  &quot;include_reasoning&quot;: true,
+  &quot;chat_template_kwargs&quot;: {
+    &quot;enable_thinking&quot;: false
+  },
+  &quot;seed&quot;: 43
+}
+</pre><h3>raw-decoded.txt</h3><pre>&lt;|tool_call&gt;call:edit_file{allow_multiple:false,filepath:&lt;|&quot;|&gt;w3lib/html.py&lt;|&quot;|&gt;,new_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&lt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;,old_string:&lt;|&quot;|&gt;_baseurl_re = re.compile(
+    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+)&lt;|&quot;|&gt;}&lt;tool_call|&gt;&lt;|tool_response&gt;</pre><h3>parsed-calls.json</h3><pre>[
+  {
+    &quot;name&quot;: &quot;edit_file&quot;,
+    &quot;arguments&quot;: {
+      &quot;allow_multiple&quot;: false,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;new_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&lt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;,
+      &quot;old_string&quot;: &quot;_baseurl_re = re.compile(\n    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n)&quot;
+    }
+  }
+]
+</pre><h3>api/executed.patch</h3><pre>diff --git a/w3lib/html.py b/w3lib/html.py
+index 6fb7b37..28b51f5 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -23,7 +23,7 @@ _ent_re = re.compile(
+ )
+ _tag_re = re.compile(r&quot;&lt;[a-zA-Z\/!].*?&gt;&quot;, re.DOTALL)
+ _baseurl_re = re.compile(
+-    r&quot;&lt;base\s[^&gt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
++    r&quot;&lt;base\s[^&lt;]*href\s*=\s*[\&quot;\&#x27;]\s*([^\&quot;\&#x27;\s]+)\s*[\&quot;\&#x27;]&quot;, re.IGNORECASE
+ )
+ _meta_refresh_re = re.compile(
+     r&#x27;&lt;meta\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\s*=\s*(?P&lt;quote&gt;[&quot;\&#x27;])(?P&lt;int&gt;(\d*\.)?\d+)\s*;\s*url=\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,
+</pre><h3>execution.json</h3><pre>{
+  &quot;raw&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.0002869109739549458,
+          0.0002718599862419069,
+          0.0002761140058282763
+        ],
+        &quot;median_seconds&quot;: 0.0002761140058282763,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.00010327898780815303,
+              0.00010457000462338328,
+              0.00011378200724720955
+            ],
+            &quot;4000&quot;: [
+              0.0001865399826783687,
+              0.00018509398796595633,
+              0.00019253298523835838
+            ],
+            &quot;8000&quot;: [
+              0.0003634300082921982,
+              0.0003641099901869893,
+              0.00036257601459510624
+            ],
+            &quot;30000&quot;: [
+              0.0013215939980000257,
+              0.0013092159933876246,
+              0.0013462779752444476
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00010457000462338328,
+            &quot;4000&quot;: 0.0001865399826783687,
+            &quot;8000&quot;: 0.0003634300082921982,
+            &quot;30000&quot;: 0.0013215939980000257
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07268600165843964,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  },
+  &quot;api&quot;: {
+    &quot;call_valid&quot;: true,
+    &quot;executed&quot;: true,
+    &quot;tool_result&quot;: {
+      &quot;status&quot;: &quot;ok&quot;,
+      &quot;filepath&quot;: &quot;w3lib/html.py&quot;,
+      &quot;occurrences&quot;: 1,
+      &quot;strategy&quot;: &quot;exact&quot;,
+      &quot;diff&quot;: &quot;--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\&quot;&lt;[a-zA-Z\\/!].*?&gt;\&quot;, re.DOTALL)\n _baseurl_re = re.compile(\n-    r\&quot;&lt;base\\s[^&gt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n+    r\&quot;&lt;base\\s[^&lt;]*href\\s*=\\s*[\\\&quot;\\&#x27;]\\s*([^\\\&quot;\\&#x27;\\s]+)\\s*[\\\&quot;\\&#x27;]\&quot;, re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r&#x27;&lt;meta\\s[^&gt;]*http-equiv[^&gt;]*refresh[^&gt;]*content\\s*=\\s*(?P&lt;quote&gt;[\&quot;\\&#x27;])(?P&lt;int&gt;(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P&lt;url&gt;.*?)(?P=quote)&#x27;,\n&quot;,
+      &quot;is_truncated&quot;: false
+    },
+    &quot;old_string_literal_match&quot;: true,
+    &quot;file_changed&quot;: true,
+    &quot;evaluation&quot;: {
+      &quot;public_diagnostic&quot;: {
+        &quot;reproducer&quot;: &quot;get_base_url(\&quot;&lt;base \&quot; * 6000)&quot;,
+        &quot;measure&quot;: &quot;function time only, excluding Python startup&quot;,
+        &quot;samples_seconds&quot;: [
+          0.0002734099980443716,
+          0.00027398898964747787,
+          0.0002861559914890677
+        ],
+        &quot;median_seconds&quot;: 0.00027398898964747787,
+        &quot;timeout_seconds&quot;: 2,
+        &quot;median_limit_seconds&quot;: 0.2,
+        &quot;timed_out&quot;: false,
+        &quot;error&quot;: null,
+        &quot;passed&quot;: true
+      },
+      &quot;functional_tests_pass&quot;: true,
+      &quot;independent&quot;: {
+        &quot;public_tests_exit_code&quot;: 0,
+        &quot;public_tests_pass&quot;: true,
+        &quot;regression_exit_code&quot;: 0,
+        &quot;regression&quot;: {
+          &quot;valid_url_checks_pass&quot;: true,
+          &quot;performance_pass&quot;: true,
+          &quot;passed&quot;: true,
+          &quot;timings&quot;: {
+            &quot;2000&quot;: [
+              0.0001026960089802742,
+              0.00010697499965317547,
+              0.0001140979875344783
+            ],
+            &quot;4000&quot;: [
+              0.00019710898050107062,
+              0.00019156301277689636,
+              0.00019692000932991505
+            ],
+            &quot;8000&quot;: [
+              0.0003604200028348714,
+              0.000375561008695513,
+              0.00037152200820855796
+            ],
+            &quot;30000&quot;: [
+              0.001325313001871109,
+              0.0013485939998645335,
+              0.0013208359887357801
+            ]
+          },
+          &quot;medians&quot;: {
+            &quot;2000&quot;: 0.00010697499965317547,
+            &quot;4000&quot;: 0.00019692000932991505,
+            &quot;8000&quot;: 0.00037152200820855796,
+            &quot;30000&quot;: 0.001325313001871109
+          },
+          &quot;growth_8k_over_2k_floored&quot;: 0.07430440164171159,
+          &quot;timeouts&quot;: [],
+          &quot;error&quot;: null,
+          &quot;thresholds&quot;: {
+            &quot;sizes&quot;: [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            &quot;repeats&quot;: 3,
+            &quot;timeout_seconds&quot;: 3,
+            &quot;large_median_max&quot;: 0.5,
+            &quot;growth_max&quot;: 8,
+            &quot;denominator_floor&quot;: 0.005
+          }
+        },
+        &quot;verified_local_fix&quot;: true
+      },
+      &quot;semantic_long_attribute&quot;: {
+        &quot;cases&quot;: [
+          {
+            &quot;attribute_length&quot;: 0,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 200,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          },
+          {
+            &quot;attribute_length&quot;: 1000,
+            &quot;expected&quot;: &quot;https://example.org/path/&quot;,
+            &quot;actual&quot;: &quot;https://example.org/path/&quot;,
+            &quot;passed&quot;: true
+          }
+        ],
+        &quot;passed&quot;: true
+      },
+      &quot;public_pass&quot;: true,
+      &quot;accepted&quot;: true
+    },
+    &quot;accepted&quot;: true,
+    &quot;category&quot;: &quot;accepted&quot;
+  }
+}
+</pre></details>

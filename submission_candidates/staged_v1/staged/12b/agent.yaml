@@ -1,0 +1,6 @@
+agent_class: SequentialAgent
+name: staged_repair
+sub_agents:
+  - config_path: sub_agents/planner.yaml
+  - config_path: sub_agents/repair_cycle.yaml
+  - config_path: sub_agents/submitter.yaml

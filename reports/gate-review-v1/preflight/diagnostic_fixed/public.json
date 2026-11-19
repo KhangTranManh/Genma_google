@@ -1,0 +1,48 @@
+{
+  "performance": {
+    "reproducer": "get_base_url(\"<base \" * 6000)",
+    "measure": "function time only, excluding Python startup",
+    "samples_seconds": [
+      0.0002973560185637325,
+      0.00030133099062368274,
+      0.0002963739971164614
+    ],
+    "median_seconds": 0.0002973560185637325,
+    "timeout_seconds": 2,
+    "median_limit_seconds": 0.2,
+    "timed_out": false,
+    "error": null,
+    "passed": true
+  },
+  "functional": {
+    "tests": 67,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "valid_result": true
+  },
+  "semantic_guard": {
+    "passed": true,
+    "cases": [
+      {
+        "attribute_length": 0,
+        "passed": true,
+        "actual": "https://example.org/path/"
+      },
+      {
+        "attribute_length": 200,
+        "passed": true,
+        "actual": "https://example.org/path/"
+      },
+      {
+        "attribute_length": 1000,
+        "passed": true,
+        "actual": "https://example.org/path/"
+      }
+    ]
+  },
+  "infrastructure_error": false,
+  "failure_count": 0,
+  "passed": true
+}

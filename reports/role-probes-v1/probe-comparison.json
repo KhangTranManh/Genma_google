@@ -1,0 +1,194 @@
+[
+  {
+    "model": "12b",
+    "hypothesis": "h1",
+    "probe": "repeated_open",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "12b",
+    "hypothesis": "h1",
+    "probe": "single_open",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "12b",
+    "hypothesis": "h1",
+    "probe": "closed_tags",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "12b",
+    "hypothesis": "h1",
+    "probe": "plain_text",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "12b",
+    "hypothesis": "h2",
+    "probe": "repeated_open",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "12b",
+    "hypothesis": "h2",
+    "probe": "single_open",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "12b",
+    "hypothesis": "h2",
+    "probe": "closed_tags",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "12b",
+    "hypothesis": "h2",
+    "probe": "plain_text",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "12b",
+    "hypothesis": "h3",
+    "probe": "repeated_open",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "12b",
+    "hypothesis": "h3",
+    "probe": "single_open",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "12b",
+    "hypothesis": "h3",
+    "probe": "closed_tags",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "12b",
+    "hypothesis": "h3",
+    "probe": "plain_text",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "catastrophic_backtracking_greedy_wildcard",
+    "probe": "repeated_open",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "patch_representative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "catastrophic_backtracking_greedy_wildcard",
+    "probe": "single_open",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "patch_representative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "catastrophic_backtracking_greedy_wildcard",
+    "probe": "closed_tags",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "patch_representative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "catastrophic_backtracking_greedy_wildcard",
+    "probe": "plain_text",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "patch_representative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "greedy_attribute_overlap",
+    "probe": "repeated_open",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "skip_not_distinguished"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "greedy_attribute_overlap",
+    "probe": "single_open",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_not_distinguished"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "greedy_attribute_overlap",
+    "probe": "closed_tags",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_not_distinguished"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "greedy_attribute_overlap",
+    "probe": "plain_text",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_not_distinguished"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "linear_scan_failure",
+    "probe": "repeated_open",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "linear_scan_failure",
+    "probe": "single_open",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "linear_scan_failure",
+    "probe": "closed_tags",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "linear_scan_failure",
+    "probe": "plain_text",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  }
+]

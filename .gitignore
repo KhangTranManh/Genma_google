@@ -1,0 +1,16 @@
+__pycache__/
+*.egg-info/
+.venv/
+.env
+.env.*
+!.env.example
+data/
+models/
+runs/
+dist/
+third_party/
+submission/adapters/
+.pytest_cache/
+experiments/results/**/raw.tar.gz
+
+.venv-official/

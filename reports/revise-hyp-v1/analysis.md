@@ -1,0 +1,20 @@
+Batch revise-hyp-v1 đã chạy xong đúng ngân sách. Source/input hashes không đổi trong inference; summary.json ghi đối chiếu. Sau inference chỉ bổ sung báo cáo stage unavailable và thống kê, không sửa response/candidate. Tổng3 model calls,3342 output tokens,0 patch calls. Không có patch được giữ/chọn, không có submission và KHÔNG chạy independent final grader.
+
+| Model | Localize ban đầu | Một lần revise | Hai probe mới | Patch |
+|---|---|---|---|---|
+|31B|Hoàn tất, một giả thuyết sai3/4 probe đã biết sau đo|Hoàn tất; cả3 khớp4/4 kết quả được reveal|Mỗi giả thuyết chỉ đúng1/2, sai case có href ở cuối|Không cấp edit|
+|12B|Sinh lặp trong cause đến2048 tokens, finish_reason=length, JSON chưa hoàn chỉnh|Không chạy|Không có prediction hợp lệ để chấm|Không cấp edit|
+
+31B: initial hypotheses có known-probe matches4/4,1/4,4/4. Sau khi nhận bốn phép đo, cả3 hypotheses đều khớp4/4, mô tả cơ chế cũng cụ thể hơn về việc quét qua các prefix<base lặp lại. Nhưng cả3 cùng dự đoán repeated_open_then_href là slow trong khi thực tế fast. Đây là sai dự đoán trên code gốc chưa sửa, không phải patch execution failure. Catalog mới phân biệt được việc model nhớ/restate bốn observations với việc dự đoán thêm input chưa xem kết quả. Nó chưa chứng minh model không thể suy luận tổng quát vì chỉ hai probes cùng một issue.
+
+Phép đo baseline: repeated_open≈0.719s; single_open≈0.000061s; closed_tags≈0.000274s; plain_text≈0.000021s; repeated_open_then_close≈0.714s; repeated_open_then_href≈0.000237s. Ngưỡng fast≤0.05s,slow≥0.2s; mỗi case3 mẫu,function time không gồm startup. Case thêmhref được regex gốc match thành công nhanh, khác case thiếuhref khiến phải tìm qua các điểm bắt đầu rồi thất bại. Diễn giải này là suy luận từ source và quan sát, không phải định lý độ phức tạp mọi input. Model không nhận biểu thức sửa đúng.
+
+12B: critical Localize output không hoàn chỉnh do lặp một cụm mô tả word boundary. Không trích partial hypotheses để sửa hộ schema, không gọi lại ngầm, không đi vào revise vì chưa có artifacts hợp lệ. Do đó tuyệt đối không ghi12B0/3 về inference accuracy hay so revision trực tiếp với31B. Đây là model generation/schema compliance failure trong setup này; chưa cô lập model weights, decoding backend hay prompt là nguồn lỗi. Budget2048 đã lớn hơn lượt trước nhưng vẫn có repetition, nên không coi tăng token đơn thuần là giải pháp đã được chứng minh.
+
+Leakage audit: request REVISE_HYPOTHESIS chỉ chứa bốn original-source observations, initial hypotheses/host assessment và định nghĩa hai probe mới, KHÔNG chứa hai số đo mới. Revision được lưu trước reveal. Sáu kết quả được đo/cache trong preflight trước model, không phải mới chạy sau prediction. Diagnostic fixed có qua preflight nhưng implementation/results không đưa vào model prompt. Các artifacts request/response đều lưu đầy đủ.
+
+Ý nghĩa: harness đã đi hết các bước có điều kiện và không cho edit khi thiếu/không khớp bằng chứng. Với31B, sửa giả thuyết sau phản hồi giúp khớp các quan sát được xem nhưng chưa vượt qua transfer check mới. Với12B, nút thắt lần này là không hoàn thành output có cấu trúc. Chưa có dữ liệu patch mới để kết luận khả năng sửa code được cải thiện hay giảm.
+
+Giới hạn: đây vẫn là issuew3lib_264 được quan sát nhiều lần; location/code excerpt do host cấp. Thêm revision budget và hai probes đồng thời, không equal-compute với role-probes. Gate yêu cầu không có mâu thuẫn có thể loại một nguyên nhân đúng chung chỉ vì dự đoán control sai. Do đó skip là quyết định phân bổ tìm kiếm, không phải bác bỏ mọi dạng giả thuyết. Review-role không chạy vì không candidate; optional-review hardening chưa được kiểm thử model-run ở nhánh này.
+
+Hướng tiếp nên riêng biệt: (A) schema Localize ngắn, enum đường dẫn và maxLength cho cause/prediction để đo việc hoàn tất12B, giữ nội dung và budget có kiểm soát; (B) đối chứng dự đoán trên issue/probe khác để tránh tiếp tục tối ưu một bài; (C) nếu thử reasoning/thinking settings, giữ một nhánh tách và cùng input. Chưa chạy những nhánh này. Không tự thêm lượt để đổi kết quả đã đo.

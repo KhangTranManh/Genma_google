@@ -1,0 +1,551 @@
+{
+  "status": "complete",
+  "model": "31b",
+  "max_samples": 8,
+  "completed": [
+    {
+      "task": "w3lib_266",
+      "sample": "t0",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": true,
+          "perf_per_function": {
+            "get_meta_refresh": true
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": true,
+          "hidden_upstream": true,
+          "hidden_growth": true,
+          "hidden_diff": true,
+          "accepted_audit": true
+        }
+      ],
+      "final_public_pass": true,
+      "final_accepted": true,
+      "accepted_round0": true,
+      "selected": true
+    },
+    {
+      "task": "w3lib_268",
+      "sample": "t0",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": false,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": true,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_268",
+      "sample": "s17",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": false,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": true,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_268",
+      "sample": "s29",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": false,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": true,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_268",
+      "sample": "s43",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": false,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": true,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_268",
+      "sample": "s5",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": false,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": true,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_268",
+      "sample": "s11",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": false,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": true,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_268",
+      "sample": "s23",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": false,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": true,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_268",
+      "sample": "s31",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": false,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "replace_tags": true,
+            "remove_tags": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_271",
+      "sample": "t0",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "noop",
+          "generations": 2
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "remove_tags_with_content": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_271",
+      "sample": "s17",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "remove_tags_with_content": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        },
+        {
+          "round": 1,
+          "guard": "noop",
+          "generations": 2
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_271",
+      "sample": "s29",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": true,
+          "perf_per_function": {
+            "remove_tags_with_content": true
+          },
+          "public_tests": true,
+          "public_diff": false,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": true,
+          "hidden_diff": false,
+          "accepted_audit": false
+        },
+        {
+          "round": 1,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "remove_tags_with_content": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_271",
+      "sample": "s43",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": false,
+          "perf_per_function": {
+            "remove_tags_with_content": false
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": false,
+          "hidden_upstream": false,
+          "hidden_growth": false,
+          "hidden_diff": true,
+          "accepted_audit": false
+        },
+        {
+          "round": 1,
+          "guard": "noop",
+          "generations": 2
+        }
+      ],
+      "final_public_pass": false,
+      "final_accepted": false,
+      "accepted_round0": false
+    },
+    {
+      "task": "w3lib_271",
+      "sample": "s5",
+      "rounds": [
+        {
+          "round": 0,
+          "guard": "ok",
+          "generations": 1,
+          "public_perf": true,
+          "perf_per_function": {
+            "remove_tags_with_content": true
+          },
+          "public_tests": true,
+          "public_diff": true,
+          "public_pass": true,
+          "hidden_upstream": true,
+          "hidden_growth": true,
+          "hidden_diff": false,
+          "accepted_audit": false
+        }
+      ],
+      "final_public_pass": true,
+      "final_accepted": false,
+      "accepted_round0": false,
+      "selected": true
+    }
+  ],
+  "selection": {
+    "w3lib_266": {
+      "selected": "t0",
+      "selected_accepted": true,
+      "samples_used": 1
+    },
+    "w3lib_268": {
+      "selected": null,
+      "selected_accepted": null,
+      "samples_used": 8
+    },
+    "w3lib_271": {
+      "selected": "s5",
+      "selected_accepted": false,
+      "samples_used": 5
+    }
+  }
+}

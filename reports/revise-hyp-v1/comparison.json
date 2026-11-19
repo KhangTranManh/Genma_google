@@ -1,0 +1,62 @@
+[
+  {
+    "model": "12b",
+    "candidate": "localize_unavailable",
+    "hypothesis": null,
+    "ochiai": null,
+    "capture": "model_stage_output_unavailable",
+    "raw_equals_api": null,
+    "public_failures": null,
+    "public_pass": null,
+    "retain": false,
+    "duplicate": null,
+    "review_hypothesis_status": null,
+    "review_patch_status": "not_run",
+    "final_independent_pass": null
+  },
+  {
+    "model": "31b",
+    "candidate": "not_run_0",
+    "hypothesis": "catastrophic_backtracking_greedy_wildcard",
+    "ochiai": 0,
+    "capture": "skip_contradicted_or_uninformative",
+    "raw_equals_api": null,
+    "public_failures": null,
+    "public_pass": null,
+    "retain": false,
+    "duplicate": null,
+    "review_hypothesis_status": null,
+    "review_patch_status": "not_run",
+    "final_independent_pass": null
+  },
+  {
+    "model": "31b",
+    "candidate": "not_run_1",
+    "hypothesis": "greedy_attribute_overlap",
+    "ochiai": 0,
+    "capture": "skip_contradicted_or_uninformative",
+    "raw_equals_api": null,
+    "public_failures": null,
+    "public_pass": null,
+    "retain": false,
+    "duplicate": null,
+    "review_hypothesis_status": null,
+    "review_patch_status": "not_run",
+    "final_independent_pass": null
+  },
+  {
+    "model": "31b",
+    "candidate": "not_run_2",
+    "hypothesis": "linear_scan_failure",
+    "ochiai": 0,
+    "capture": "skip_contradicted_or_uninformative",
+    "raw_equals_api": null,
+    "public_failures": null,
+    "public_pass": null,
+    "retain": false,
+    "duplicate": null,
+    "review_hypothesis_status": null,
+    "review_patch_status": "not_run",
+    "final_independent_pass": null
+  }
+]

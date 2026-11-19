@@ -1,0 +1,14 @@
+name = "toolcall-stress-v1"
+models = ["12b", "31b"]
+arms = ["short_direct", "long_direct", "short_skill"]
+expected_requests = 24
+repeats_per_cell = 1
+long_prompt_tokens = 8192
+long_prompt_tolerance = 128
+max_model_len = 16384
+max_tokens = 512
+temperature = 0
+stream = false
+thinking = false
+execute_tools = false
+# No long+skill arm: isolate context length from nested skill interface first.

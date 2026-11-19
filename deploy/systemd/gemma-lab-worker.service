@@ -1,0 +1,15 @@
+[Unit]
+Description=Gemma Lab bounded experiment pipeline step
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=@PROJECT_ROOT@
+ExecStart=@PROJECT_ROOT@/.venv/bin/python -m gemma_lab.worker --config @WORKER_CONFIG@ --stop-timer-on-terminal
+Environment=PYTHONUNBUFFERED=1
+TimeoutStartSec=45min
+TimeoutStopSec=45
+KillMode=control-group
+StandardOutput=append:@WORKER_LOG@
+StandardError=inherit

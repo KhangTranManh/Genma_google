@@ -1,0 +1,317 @@
+{
+  "generated_at": "2026-11-18T08:12:59.253895+00:00",
+  "state": {
+    "status": "complete",
+    "phase": "complete",
+    "models": [
+      "12b",
+      "31b"
+    ],
+    "tasks": [
+      "w3lib_264",
+      "packaging_1125",
+      "platformdirs_540"
+    ],
+    "dataset": "FreshSWE-Py independent pilot",
+    "official_competition_score": false,
+    "frozen_sha256": "e14ba39bbda690fa6b0b0983db5ff8d7310b545cf695d91c4850123294f93f62",
+    "in_progress": false,
+    "updated_at": "2026-11-16T11:08:26.887741+00:00",
+    "image_ids": {
+      "w3lib_264": "sha256:8592d8130c55add0bd59372a466c8b29c7a760f3c446e94dd7b8b11383d749e7",
+      "packaging_1125": "sha256:96d9ef44608a80e49c6c0bfbb8f3484ca1a876b74b717b4ec835ab9e31cd2e51",
+      "platformdirs_540": "sha256:a8c04eb58be8358c428aee5d76532237ccd58661dfa4eba84d8bb6df2523c1f6"
+    },
+    "current_model": "31b",
+    "current_task": "platformdirs_540",
+    "completed": [
+      {
+        "model": "12b",
+        "task": "w3lib_264",
+        "resolved": false
+      },
+      {
+        "model": "12b",
+        "task": "packaging_1125",
+        "resolved": false
+      },
+      {
+        "model": "12b",
+        "task": "platformdirs_540",
+        "resolved": false
+      },
+      {
+        "model": "31b",
+        "task": "w3lib_264",
+        "resolved": false
+      },
+      {
+        "model": "31b",
+        "task": "packaging_1125",
+        "resolved": false
+      },
+      {
+        "model": "31b",
+        "task": "platformdirs_540",
+        "resolved": false
+      }
+    ]
+  },
+  "validations": {
+    "12b": {
+      "model": "gemma-4-12b-it-qat-w4a16-ct",
+      "directory_validated": true,
+      "agent_compiled": true,
+      "agent_class": "LlmAgent",
+      "tools": [
+        "run_command",
+        "read_file",
+        "edit_file",
+        "write_file",
+        "get_status",
+        "submit_patch"
+      ],
+      "versions": {
+        "adk-submission": "0.2.13",
+        "adk-eval-core": "0.1.0",
+        "swegemma": "0.2.11",
+        "google-adk": "1.36.1",
+        "litellm": "1.109.1"
+      },
+      "archive": "dist/official/12b/submission.zip",
+      "sha256": "9e90bc91f717fe8debc86a6bb04dbed82a044db2279f9f350c3c4e24d03a1ed8",
+      "official_tasks_scored": false,
+      "local_python_harness_exported": false
+    },
+    "31b": {
+      "model": "gemma-4-31b-it-qat-w4a16-ct",
+      "directory_validated": true,
+      "agent_compiled": true,
+      "agent_class": "LlmAgent",
+      "tools": [
+        "run_command",
+        "read_file",
+        "edit_file",
+        "write_file",
+        "get_status",
+        "submit_patch"
+      ],
+      "versions": {
+        "adk-submission": "0.2.13",
+        "adk-eval-core": "0.1.0",
+        "swegemma": "0.2.11",
+        "google-adk": "1.36.1",
+        "litellm": "1.109.1"
+      },
+      "archive": "dist/official/31b/submission.zip",
+      "sha256": "c5bd3c0ef7a20048995ee5f83e202fddde820bf023ff3c390e9d2eb605aab0c0",
+      "official_tasks_scored": false,
+      "local_python_harness_exported": false
+    }
+  },
+  "preflight": [
+    {
+      "task": "w3lib_264",
+      "phase": "preflight",
+      "repo": "scrapy/w3lib",
+      "base_commit": "d5877fe4798609da79d7bfd0e683d4cd00a4dd27",
+      "baseline_resolved": false,
+      "baseline_exit_code": 1,
+      "baseline_error": null,
+      "reference_resolved": true,
+      "reference_exit_code": 0,
+      "reference_error": null,
+      "usable": true,
+      "seconds": 33.575
+    },
+    {
+      "task": "packaging_1125",
+      "phase": "preflight",
+      "repo": "pypa/packaging",
+      "base_commit": "f294d529e2634798a98fd9cee6708307a5c1792c",
+      "baseline_resolved": false,
+      "baseline_exit_code": 2,
+      "baseline_error": null,
+      "reference_resolved": true,
+      "reference_exit_code": 0,
+      "reference_error": null,
+      "usable": true,
+      "seconds": 18.575
+    },
+    {
+      "task": "platformdirs_540",
+      "phase": "preflight",
+      "repo": "tox-dev/platformdirs",
+      "base_commit": "a209bf88a0c5937d784baa1cddd67f69f4b411d2",
+      "baseline_resolved": false,
+      "baseline_exit_code": 1,
+      "baseline_error": null,
+      "reference_resolved": true,
+      "reference_exit_code": 0,
+      "reference_error": null,
+      "usable": true,
+      "seconds": 18.735
+    }
+  ],
+  "rows": [
+    {
+      "model": "12b",
+      "task": "w3lib_264",
+      "status": "fail",
+      "seconds": 406.0007119360016,
+      "tools": 46,
+      "llm_calls": 48,
+      "tool_requests_by_name": {
+        "run_command": 31,
+        "read_file": 11,
+        "write_file": 5,
+        "edit_file": 1
+      },
+      "submit_requests": 0,
+      "patch_bytes": 750,
+      "observed_test_summary": [
+        [
+          "1",
+          "failed"
+        ],
+        [
+          "67",
+          "passed"
+        ]
+      ],
+      "error": "Agent exceeded turns budget (48 turns)",
+      "evidence": "runs/official-pilot/12b/w3lib_264/summary.json"
+    },
+    {
+      "model": "12b",
+      "task": "packaging_1125",
+      "status": "fail",
+      "seconds": 308.4468853419967,
+      "tools": 47,
+      "llm_calls": 48,
+      "tool_requests_by_name": {
+        "read_file": 36,
+        "run_command": 11,
+        "write_file": 1
+      },
+      "submit_requests": 0,
+      "patch_bytes": 0,
+      "observed_test_summary": [],
+      "error": "Agent exceeded turns budget (48 turns)",
+      "evidence": "runs/official-pilot/12b/packaging_1125/summary.json"
+    },
+    {
+      "model": "12b",
+      "task": "platformdirs_540",
+      "status": "fail",
+      "seconds": 148.07064771799924,
+      "tools": 14,
+      "llm_calls": 18,
+      "tool_requests_by_name": {
+        "run_command": 9,
+        "read_file": 5,
+        "submit_patch": 1
+      },
+      "submit_requests": 1,
+      "patch_bytes": 0,
+      "observed_test_summary": [
+        [
+          "73",
+          "failed"
+        ],
+        [
+          "736",
+          "passed"
+        ]
+      ],
+      "error": null,
+      "evidence": "runs/official-pilot/12b/platformdirs_540/summary.json"
+    },
+    {
+      "model": "31b",
+      "task": "w3lib_264",
+      "status": "fail",
+      "seconds": 722.828594259001,
+      "tools": 47,
+      "llm_calls": 48,
+      "tool_requests_by_name": {
+        "read_file": 43,
+        "write_file": 1,
+        "run_command": 4
+      },
+      "submit_requests": 0,
+      "patch_bytes": 1528,
+      "observed_test_summary": [
+        [
+          "1",
+          "failed"
+        ],
+        [
+          "67",
+          "passed"
+        ]
+      ],
+      "error": "Agent exceeded turns budget (48 turns)",
+      "evidence": "runs/official-pilot/31b/w3lib_264/summary.json"
+    },
+    {
+      "model": "31b",
+      "task": "packaging_1125",
+      "status": "fail",
+      "seconds": 567.4916919149982,
+      "tools": 47,
+      "llm_calls": 48,
+      "tool_requests_by_name": {
+        "read_file": 39,
+        "run_command": 9
+      },
+      "submit_requests": 0,
+      "patch_bytes": 0,
+      "observed_test_summary": [],
+      "error": "Agent exceeded turns budget (48 turns)",
+      "evidence": "runs/official-pilot/31b/packaging_1125/summary.json"
+    },
+    {
+      "model": "31b",
+      "task": "platformdirs_540",
+      "status": "fail",
+      "seconds": 732.4122517169963,
+      "tools": 47,
+      "llm_calls": 48,
+      "tool_requests_by_name": {
+        "run_command": 10,
+        "read_file": 37,
+        "write_file": 1
+      },
+      "submit_requests": 0,
+      "patch_bytes": 2755,
+      "observed_test_summary": [
+        [
+          "73",
+          "failed"
+        ],
+        [
+          "736",
+          "passed"
+        ]
+      ],
+      "error": "Agent exceeded turns budget (48 turns)",
+      "evidence": "runs/official-pilot/31b/platformdirs_540/summary.json"
+    }
+  ],
+  "scope": "Official public wheelhouse v31 compiler/evaluator with independent FreshSWE-Py tasks; not Kaggle competition score.",
+  "differences": [
+    "2 A16 GPUs / vLLM 0.33.0 / 8192 context, not official 4 L4 / wheelhouse vLLM / 32768 context",
+    "Host dependencies resolved locally; organizer core wheels and ADK version pinned, not a full wheelhouse recreation",
+    "Local ProgressAgent and its verification fix are not used by the official runtime",
+    "Three public issue-sourced tasks selected before model outcomes; not a representative score estimate"
+  ],
+  "analysis": [
+    "Đã kết thúc 6/6 lượt; thành công 0 lượt. Đây là pilot ba issue/model, không phải ước lượng điểm leaderboard.",
+    "5/6 lượt chạm giới hạn 48 lượt. Thời gian ngắn hơn 900 giây không có nghĩa còn lượt để thử tiếp.",
+    "w3lib: patch của cả hai model chưa xử lý được test hiệu năng về catastrophic backtracking; chấm độc lập ghi 67 pass / 1 fail. packaging: cả hai không có patch thu hồi, nên không ghi 0 test pass như một kết quả đã chạy test.",
+    "Các request read_file chiếm phần lớn lượt ở 31B; một số filepath bị ghép sai với start_line. Đây là triệu chứng từ trajectory, chưa chứng minh do model, prompt hay parser riêng lẻ.",
+    "ProgressAgent và bộ chặn loop local không chạy trong pilot này. Không thể chuyển kết luận pass ở URLKit sang runtime chính thức hoặc quy toàn bộ khác biệt cho model.",
+    "Ưu tiên tiếp: phân loại lỗi tool/đọc lặp/patch rỗng; thử prompt ví dụ arguments chính xác và hạn mức đọc trước khi sửa bằng YAML/prompt/skills được hỗ trợ. Giữ đối chứng, không tăng lượt để che loop; cần thêm issue trước khi kết luận năng lực tổng quát."
+  ]
+}

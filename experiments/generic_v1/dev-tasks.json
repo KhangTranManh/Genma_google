@@ -1,0 +1,13 @@
+{
+  "ids": [
+    "w3lib_264",
+    "markdown_1621",
+    "werkzeug_3147",
+    "tenacity_640",
+    "humanize_334",
+    "packaging_1155",
+    "click_3299",
+    "platformdirs_540"
+  ],
+  "selection": "lite\u2229issue split, one single-file small fix per repo (alphabetical first per repo), plus pilot platformdirs_540; no model outcomes used"
+}

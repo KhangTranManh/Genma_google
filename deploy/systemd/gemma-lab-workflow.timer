@@ -1,0 +1,11 @@
+[Unit]
+Description=Trigger isolated workflow-code phases sequentially
+
+[Timer]
+OnActiveSec=15s
+OnUnitInactiveSec=2min
+AccuracySec=10s
+Unit=gemma-lab-workflow.service
+
+[Install]
+WantedBy=timers.target

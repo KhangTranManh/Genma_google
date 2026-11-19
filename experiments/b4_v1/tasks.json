@@ -1,0 +1,118 @@
+{
+  "w3lib_266": {
+    "repo": "scrapy/w3lib",
+    "file": "w3lib/html.py",
+    "issue": "get_meta_refresh() is quadratic on malformed HTML\n\nCalling get_meta_refresh(\"<meta \" * n) on malformed HTML grows quadratically: n=5000 takes 0.069s, n=10000 0.266s, n=20000 1.529s (about 4x time for 2x input). Repair this performance problem while preserving the existing behavior of get_meta_refresh() on normal HTML.\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.",
+    "regions": [
+      [
+        "_meta_tag_re =",
+        "\n\nHTML5_WHITESPACE"
+      ]
+    ],
+    "repro": {
+      "setup": "from w3lib.html import get_meta_refresh",
+      "expr": "get_meta_refresh(\"<meta \" * N)",
+      "check": "r==(None,None)"
+    },
+    "diff_calls": [
+      "get_meta_refresh(t)",
+      "get_meta_refresh(t, \"http://b.example/\", \"utf-8\", ())"
+    ],
+    "repro_parts": [
+      {
+        "name": "get_meta_refresh",
+        "setup": "from w3lib.html import get_meta_refresh",
+        "expr": "get_meta_refresh(\"<meta \" * N)",
+        "check": "r==(None,None)"
+      }
+    ],
+    "region_functions": [
+      [
+        "get_meta_refresh"
+      ]
+    ]
+  },
+  "w3lib_268": {
+    "repo": "scrapy/w3lib",
+    "file": "w3lib/html.py",
+    "issue": "replace_tags() and remove_tags() are quadratic on malformed HTML\n\nTiming replace_tags(\"<a\" * n): n=2000 takes 0.04s, n=4000 0.16s, n=8000 0.63s (O(n^2)). remove_tags(\"<a\" * 20000) takes about 20s. Repair both performance problems while preserving the existing behavior of replace_tags() and remove_tags() on normal HTML.\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.",
+    "regions": [
+      [
+        "_tag_re =",
+        "_baseurl_re ="
+      ],
+      [
+        "_tags_re =",
+        "_meta_tag_re ="
+      ]
+    ],
+    "repro": {
+      "setup": "from w3lib.html import replace_tags,remove_tags",
+      "expr": "(replace_tags(\"<a\" * N), remove_tags(\"<a\" * N))",
+      "check": "True"
+    },
+    "diff_calls": [
+      "replace_tags(t)",
+      "replace_tags(t, \"|\")",
+      "remove_tags(t)",
+      "remove_tags(t, which_ones=(\"a\",\"b\"))",
+      "remove_tags(t, keep=(\"p\",\"div\"))"
+    ],
+    "repro_parts": [
+      {
+        "name": "replace_tags",
+        "setup": "from w3lib.html import replace_tags",
+        "expr": "replace_tags(\"<a\" * N)",
+        "check": "True"
+      },
+      {
+        "name": "remove_tags",
+        "setup": "from w3lib.html import remove_tags",
+        "expr": "remove_tags(\"<a\" * N)",
+        "check": "True"
+      }
+    ],
+    "region_functions": [
+      [
+        "replace_tags"
+      ],
+      [
+        "remove_tags"
+      ]
+    ]
+  },
+  "w3lib_271": {
+    "repo": "scrapy/w3lib",
+    "file": "w3lib/html.py",
+    "issue": "remove_tags_with_content() is quadratic on malformed HTML\n\nremove_tags_with_content(\"<script \" * n, which_ones=(\"script\",)) takes 0.56s for n=10000, 2.05s for n=20000 and 10.68s for n=40000. get_meta_refresh() reaches the same code path because it strips script/noscript content by default. Repair this performance problem while preserving the existing behavior of remove_tags_with_content() on normal HTML.\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.",
+    "regions": [
+      [
+        "def _build_remove_tags_pattern",
+        "\n\ndef remove_tags_with_content"
+      ]
+    ],
+    "repro": {
+      "setup": "from w3lib.html import remove_tags_with_content",
+      "expr": "remove_tags_with_content(\"<script \" * N, which_ones=(\"script\",))",
+      "check": "True"
+    },
+    "diff_calls": [
+      "remove_tags_with_content(t, which_ones=(\"script\",\"style\"))",
+      "remove_tags_with_content(t, which_ones=(\"b\",\"div\"))",
+      "get_meta_refresh(t)"
+    ],
+    "repro_parts": [
+      {
+        "name": "remove_tags_with_content",
+        "setup": "from w3lib.html import remove_tags_with_content",
+        "expr": "remove_tags_with_content(\"<script \" * N, which_ones=(\"script\",))",
+        "check": "True"
+      }
+    ],
+    "region_functions": [
+      [
+        "remove_tags_with_content"
+      ]
+    ]
+  }
+}

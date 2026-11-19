@@ -1,0 +1,9 @@
+extends = "workflow_code.toml"
+[experiment]
+id = "workflow_code_12b_v2"
+method = "workflow_code"
+[workflow_changes]
+status = "enabled_isolated"
+proposal_count = 1
+paired_repeats = 1
+promotion = "artifact_only"

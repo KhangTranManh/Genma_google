@@ -1,0 +1,146 @@
+[
+  {
+    "model": "31b",
+    "hypothesis": "catastrophic_backtracking_greedy_wildcard",
+    "probe": "repeated_open",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "catastrophic_backtracking_greedy_wildcard",
+    "probe": "single_open",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "catastrophic_backtracking_greedy_wildcard",
+    "probe": "closed_tags",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "catastrophic_backtracking_greedy_wildcard",
+    "probe": "plain_text",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "catastrophic_backtracking_greedy_wildcard",
+    "probe": "repeated_open_then_close",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "catastrophic_backtracking_greedy_wildcard",
+    "probe": "repeated_open_then_href",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "greedy_attribute_overlap",
+    "probe": "repeated_open",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "greedy_attribute_overlap",
+    "probe": "single_open",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "greedy_attribute_overlap",
+    "probe": "closed_tags",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "greedy_attribute_overlap",
+    "probe": "plain_text",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "greedy_attribute_overlap",
+    "probe": "repeated_open_then_close",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "greedy_attribute_overlap",
+    "probe": "repeated_open_then_href",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "linear_scan_failure",
+    "probe": "repeated_open",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "linear_scan_failure",
+    "probe": "single_open",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "linear_scan_failure",
+    "probe": "closed_tags",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "linear_scan_failure",
+    "probe": "plain_text",
+    "predicted": "fast",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "linear_scan_failure",
+    "probe": "repeated_open_then_close",
+    "predicted": "slow",
+    "observed_original": "slow",
+    "gate": "skip_contradicted_or_uninformative"
+  },
+  {
+    "model": "31b",
+    "hypothesis": "linear_scan_failure",
+    "probe": "repeated_open_then_href",
+    "predicted": "slow",
+    "observed_original": "fast",
+    "gate": "skip_contradicted_or_uninformative"
+  }
+]

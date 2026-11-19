@@ -1,0 +1,9 @@
+[Unit]
+Description=Advance focused-reading experiment
+[Timer]
+OnActiveSec=15s
+OnUnitInactiveSec=30s
+AccuracySec=5s
+Unit=gemma-lab-reading.service
+[Install]
+WantedBy=timers.target

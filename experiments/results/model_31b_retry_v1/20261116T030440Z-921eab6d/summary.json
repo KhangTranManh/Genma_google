@@ -1,0 +1,26 @@
+{
+  "run_id": "20261116T030440Z-921eab6d",
+  "experiment_id": "model_31b_retry_v1",
+  "method": "model_sweep",
+  "comparison_valid": true,
+  "model": "12b",
+  "task": "demo-urlkit-query",
+  "status": "incomplete",
+  "elapsed_seconds": 230.01,
+  "agent": {
+    "reason": "turn_limit",
+    "turns": 48,
+    "tool_calls": 48,
+    "usage": {
+      "prompt_tokens": 133807,
+      "completion_tokens": 3580
+    }
+  },
+  "error": null,
+  "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+  "workflow_sha256": "936a9c5ce82be35f61fdb47871125ce8eb47684365308ebdf90552476fa14f00",
+  "workflow_variant": null,
+  "variant_workflow_sha256": null,
+  "raw_sha256": "176fde8a6a3f5fff00ff51cf585747e10880185fa7cda7ff2b54277119777027",
+  "source_run": "runs/20261116T030440Z-921eab6d"
+}

@@ -1,0 +1,11 @@
+# 3. Exact behavioral signatures, bounded diversity request
+
+Status: defined, signature/grouping helper implemented/tested; no model run. Group by ordered prediction vector across the SAME catalog/version/phase, independent of name or causal wording. Probe-ID ordering in JSON is irrelevant; missing/duplicate IDs are schema errors. fast/slow/uncertain retained explicitly. Two hypotheses are duplicate_on_catalog only if every prediction matches exactly. They are not proven to have the same causal mechanism or patch behavior.
+
+Correct an earlier overbroad rule: compatible predictions with no observed contradiction are NOT necessarily exact duplicates. E.g. slow,uncertain vs slow,fast must not collapse. unknown observations do not redefine the authored prediction signature. Track distinct_hypothesis_ids, unique_prediction_vectors, decisive_diversity and unique_diff_hashes as DIFFERENT quantities.
+
+Groups are a scheduling/reporting device, not an automatic skip. Rank group representatives first, then remaining group members if budget permits. P0 audit must still patch all archived members: equal behavior predictions can lead to different repairs. Keep member IDs, causes and outcome provenance. Record duplicate_signature separately from duplicate_diff.
+
+If only1 unique vector remains, allow exactly1 NEW_HYPOTHESIS request: original issue/code, existing hypotheses/signatures, catalog, no hidden measurements, no patch. Require a different vector on >=1 probe; separately require >=1 decisive fast-vs-slow disagreement to count as useful diversity. Merely changing uncertain to a confident answer or renaming an ID is not evidence of an alternative mechanism. New hypothesis must explain a distinct proposed mechanism, but causal distinctness remains a review criterion rather than a formal guarantee. Never force a fabricated prediction just to meetK; unavailable/identical/unsupported output is logged, bounded call ends, proceed with original queue. This is addition, not rewriting original committed hypotheses.
+
+Run as a separate factor from rank-only. Measure accepted new signatures, probe discrimination, patch success and marginal call/token cost. Do not call diversity improved just because IDs/count increased.

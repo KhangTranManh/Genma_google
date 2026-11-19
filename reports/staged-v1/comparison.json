@@ -1,0 +1,764 @@
+{
+  "generated_at": "2026-11-17T01:54:00.653918+00:00",
+  "state": {
+    "status": "complete",
+    "phase": "complete",
+    "experiment": "staged-workflow-v1",
+    "in_progress": false,
+    "completed": [
+      {
+        "model": "31b",
+        "task": "w3lib_264",
+        "arm": "staged",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "w3lib_264",
+        "arm": "flat",
+        "resolved": true,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "packaging_1125",
+        "arm": "staged",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "packaging_1125",
+        "arm": "flat",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "platformdirs_540",
+        "arm": "staged",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "31b",
+        "task": "platformdirs_540",
+        "arm": "flat",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "w3lib_264",
+        "arm": "staged",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "w3lib_264",
+        "arm": "flat",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "packaging_1125",
+        "arm": "staged",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "packaging_1125",
+        "arm": "flat",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "platformdirs_540",
+        "arm": "staged",
+        "resolved": false,
+        "autonomous_pass": false
+      },
+      {
+        "model": "12b",
+        "task": "platformdirs_540",
+        "arm": "flat",
+        "resolved": false,
+        "autonomous_pass": false
+      }
+    ],
+    "updated_at": "2026-11-16T18:31:47.881581+00:00",
+    "image_ids": {
+      "w3lib_264": "sha256:8592d8130c55add0bd59372a466c8b29c7a760f3c446e94dd7b8b11383d749e7",
+      "packaging_1125": "sha256:96d9ef44608a80e49c6c0bfbb8f3484ca1a876b74b717b4ec835ab9e31cd2e51",
+      "platformdirs_540": "sha256:a8c04eb58be8358c428aee5d76532237ccd58661dfa4eba84d8bb6df2523c1f6"
+    },
+    "frozen_sha256": "6a721935cd27aedb48180c465ea451470b0a77d27c8f8ff93fbd16edf0336198",
+    "current": {
+      "model": "12b",
+      "task": "platformdirs_540",
+      "arm": "flat"
+    },
+    "job_started_at": "2026-11-16T18:28:59.860333+00:00"
+  },
+  "live": {
+    "time": "2026-11-16T18:31:57.745031+00:00",
+    "status": "complete",
+    "phase": "complete",
+    "current": {
+      "model": "12b",
+      "task": "platformdirs_540",
+      "arm": "flat"
+    },
+    "waiting_for": null,
+    "alerts": []
+  },
+  "rows": [
+    {
+      "model": "31b",
+      "task": "w3lib_264",
+      "arm": "staged",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 619.2166811460047,
+      "llm_calls": 48,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "load_skill": 4,
+          "run_skill_script": 28,
+          "write_file": 4,
+          "edit_file": 11
+        },
+        "read_requests": 0,
+        "successful_read_results": 0,
+        "bounded_read_requests": 0,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "FileEditError": 11,
+          "unspecified": 2
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 56.968279123306274,
+        "skill_loaded_observed": true,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 161649,
+        "completion_tokens_observed": 4988,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "planner": 1,
+          "editor": 47
+        },
+        "phase_sequence": [
+          "planner",
+          "editor"
+        ],
+        "script_requests": {
+          "read": 15,
+          "test": 4,
+          "search": 8,
+          "python3": 1
+        },
+        "bounded_inspection_requests": 23,
+        "denied_operations": {
+          "duplicate_inspection": 4,
+          "inspection_budget_exhausted": 3
+        },
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/31b/staged/w3lib_264/summary.json"
+    },
+    {
+      "model": "31b",
+      "task": "w3lib_264",
+      "arm": "flat",
+      "status": "pass",
+      "autonomous_pass": false,
+      "seconds": 910.2507261930004,
+      "llm_calls": 34,
+      "error": null,
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 5,
+          "read_file": 27,
+          "write_file": 1,
+          "edit_file": 1
+        },
+        "read_requests": 27,
+        "successful_read_results": 27,
+        "bounded_read_requests": 1,
+        "repeated_identical_read_results": 25,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 2
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 30.960227251052856,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 219466,
+        "completion_tokens_observed": 1676,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "repo_coder": 34
+        },
+        "phase_sequence": [
+          "repo_coder"
+        ],
+        "script_requests": {},
+        "bounded_inspection_requests": 0,
+        "denied_operations": {},
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/31b/flat/w3lib_264/summary.json"
+    },
+    {
+      "model": "31b",
+      "task": "packaging_1125",
+      "arm": "staged",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 307.59653758100467,
+      "llm_calls": 48,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "load_skill": 3,
+          "run_skill_script": 42,
+          "list_skills": 2
+        },
+        "read_requests": 0,
+        "successful_read_results": 0,
+        "bounded_read_requests": 0,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {},
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": true,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 160007,
+        "completion_tokens_observed": 3026,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "planner": 1,
+          "editor": 47
+        },
+        "phase_sequence": [
+          "planner",
+          "editor"
+        ],
+        "script_requests": {
+          "search": 40,
+          "read": 2
+        },
+        "bounded_inspection_requests": 42,
+        "denied_operations": {},
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/31b/staged/packaging_1125/summary.json"
+    },
+    {
+      "model": "31b",
+      "task": "packaging_1125",
+      "arm": "flat",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 613.0390900170023,
+      "llm_calls": 48,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "read_file": 33,
+          "run_command": 15
+        },
+        "read_requests": 33,
+        "successful_read_results": 32,
+        "bounded_read_requests": 20,
+        "repeated_identical_read_results": 19,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 202925,
+        "completion_tokens_observed": 1626,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "repo_coder": 48
+        },
+        "phase_sequence": [
+          "repo_coder"
+        ],
+        "script_requests": {},
+        "bounded_inspection_requests": 0,
+        "denied_operations": {},
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/31b/flat/packaging_1125/summary.json"
+    },
+    {
+      "model": "31b",
+      "task": "platformdirs_540",
+      "arm": "staged",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 424.13679049799975,
+      "llm_calls": 23,
+      "error": null,
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "load_skill": 1,
+          "run_skill_script": 10,
+          "write_file": 2,
+          "load_skill_resource": 1,
+          "edit_file": 1,
+          "get_status": 1,
+          "submit_patch": 1
+        },
+        "read_requests": 0,
+        "successful_read_results": 0,
+        "bounded_read_requests": 0,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "unspecified": 2
+        },
+        "explicit_nonempty_submission": true,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 248.9735107421875,
+        "skill_loaded_observed": true,
+        "skill_resource_requests": [
+          {
+            "skill_name": "bounded-workspace",
+            "file_path": "scripts/workspace_ops.py",
+            "observed_success": true
+          }
+        ],
+        "prompt_tokens_observed": 83340,
+        "completion_tokens_observed": 3076,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "planner": 1,
+          "editor": 18,
+          "verifier": 2,
+          "submitter": 1
+        },
+        "phase_sequence": [
+          "planner",
+          "editor",
+          "verifier",
+          "editor",
+          "verifier",
+          "submitter"
+        ],
+        "script_requests": {
+          "search": 2,
+          "read": 2,
+          "pytest": 1,
+          "test": 5
+        },
+        "bounded_inspection_requests": 4,
+        "denied_operations": {},
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/31b/staged/platformdirs_540/summary.json"
+    },
+    {
+      "model": "31b",
+      "task": "platformdirs_540",
+      "arm": "flat",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 363.274008487002,
+      "llm_calls": 19,
+      "error": null,
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 8,
+          "read_file": 6,
+          "write_file": 2,
+          "edit_file": 1,
+          "submit_patch": 1
+        },
+        "read_requests": 6,
+        "successful_read_results": 6,
+        "bounded_read_requests": 5,
+        "repeated_identical_read_results": 1,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 2
+        },
+        "explicit_nonempty_submission": true,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 272.6518738269806,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 77875,
+        "completion_tokens_observed": 1826,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "repo_coder": 19
+        },
+        "phase_sequence": [
+          "repo_coder"
+        ],
+        "script_requests": {},
+        "bounded_inspection_requests": 0,
+        "denied_operations": {},
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/31b/flat/platformdirs_540/summary.json"
+    },
+    {
+      "model": "12b",
+      "task": "w3lib_264",
+      "arm": "staged",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 904.8485772809945,
+      "llm_calls": 14,
+      "error": "Agent exceeded session timeout (15 min)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "edit_file": 2,
+          "write_file": 11
+        },
+        "read_requests": 0,
+        "successful_read_results": 0,
+        "bounded_read_requests": 0,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "FileEditError": 2
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 85439,
+        "completion_tokens_observed": 23050,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "planner": 1,
+          "editor": 13
+        },
+        "phase_sequence": [
+          "planner",
+          "editor"
+        ],
+        "script_requests": {},
+        "bounded_inspection_requests": 0,
+        "denied_operations": {},
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/12b/staged/w3lib_264/summary.json"
+    },
+    {
+      "model": "12b",
+      "task": "w3lib_264",
+      "arm": "flat",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 245.66301463500713,
+      "llm_calls": 48,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 47,
+          "read_file": 1
+        },
+        "read_requests": 1,
+        "successful_read_results": 1,
+        "bounded_read_requests": 1,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 2,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 150817,
+        "completion_tokens_observed": 2726,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "repo_coder": 48
+        },
+        "phase_sequence": [
+          "repo_coder"
+        ],
+        "script_requests": {},
+        "bounded_inspection_requests": 0,
+        "denied_operations": {},
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/12b/flat/w3lib_264/summary.json"
+    },
+    {
+      "model": "12b",
+      "task": "packaging_1125",
+      "arm": "staged",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 370.35320430999855,
+      "llm_calls": 48,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "edit_file": 45,
+          "write_file": 2
+        },
+        "read_requests": 0,
+        "successful_read_results": 0,
+        "bounded_read_requests": 0,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "FileEditError": 42,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": 31.235721349716187,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 163030,
+        "completion_tokens_observed": 9460,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "planner": 1,
+          "editor": 47
+        },
+        "phase_sequence": [
+          "planner",
+          "editor"
+        ],
+        "script_requests": {},
+        "bounded_inspection_requests": 0,
+        "denied_operations": {},
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/12b/staged/packaging_1125/summary.json"
+    },
+    {
+      "model": "12b",
+      "task": "packaging_1125",
+      "arm": "flat",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 156.56701368000358,
+      "llm_calls": 19,
+      "error": "Agent completed execution without calling submit_patch.",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "read_file": 11,
+          "run_command": 4
+        },
+        "read_requests": 11,
+        "successful_read_results": 11,
+        "bounded_read_requests": 8,
+        "repeated_identical_read_results": 2,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {},
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 79949,
+        "completion_tokens_observed": 1192,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "repo_coder": 21
+        },
+        "phase_sequence": [
+          "repo_coder"
+        ],
+        "script_requests": {},
+        "bounded_inspection_requests": 0,
+        "denied_operations": {},
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/12b/flat/packaging_1125/summary.json"
+    },
+    {
+      "model": "12b",
+      "task": "platformdirs_540",
+      "arm": "staged",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 414.80582536399015,
+      "llm_calls": 48,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "edit_file": 7,
+          "write_file": 40
+        },
+        "read_requests": 0,
+        "successful_read_results": 0,
+        "bounded_read_requests": 0,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "FileEditError": 7,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 165202,
+        "completion_tokens_observed": 11263,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "planner": 1,
+          "editor": 47
+        },
+        "phase_sequence": [
+          "planner",
+          "editor"
+        ],
+        "script_requests": {},
+        "bounded_inspection_requests": 0,
+        "denied_operations": {},
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/12b/staged/platformdirs_540/summary.json"
+    },
+    {
+      "model": "12b",
+      "task": "platformdirs_540",
+      "arm": "flat",
+      "status": "fail",
+      "autonomous_pass": false,
+      "seconds": 115.2326652030024,
+      "llm_calls": 48,
+      "error": "Agent exceeded turns budget (48 turns)",
+      "metrics": {
+        "trace_available": true,
+        "tool_requests": {
+          "run_command": 48
+        },
+        "read_requests": 0,
+        "successful_read_results": 0,
+        "bounded_read_requests": 0,
+        "repeated_identical_read_results": 0,
+        "invalid_arguments_observed": 0,
+        "suspected_malformed_filepath_requests": 0,
+        "tool_errors_by_type": {
+          "CommandError": 1,
+          "BudgetExceeded": 1
+        },
+        "explicit_nonempty_submission": false,
+        "empty_submit_successes": 0,
+        "first_successful_source_file_tool_seconds": null,
+        "skill_loaded_observed": false,
+        "skill_resource_requests": [],
+        "prompt_tokens_observed": 151726,
+        "completion_tokens_observed": 2501,
+        "token_source": "sum_agent_step_metrics; not provider-billed totals",
+        "limits": "Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed."
+      },
+      "stages": {
+        "trace_available": true,
+        "phase_llm_steps": {
+          "repo_coder": 48
+        },
+        "phase_sequence": [
+          "repo_coder"
+        ],
+        "script_requests": {},
+        "bounded_inspection_requests": 0,
+        "denied_operations": {},
+        "note": "Requests include denials; phases are observed authors, not assumed transitions."
+      },
+      "evidence": "runs/staged-v1/12b/flat/platformdirs_540/summary.json"
+    }
+  ],
+  "scope": "Development pilot: workflow/tool-budget bundle vs fresh flat R1. Not Kaggle score."
+}

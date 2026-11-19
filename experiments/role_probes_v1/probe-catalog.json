@@ -1,0 +1,6 @@
+[
+ {"id":"repeated_open","description":"Repeat the incomplete fragment <base SPACE 6000 times; no href and no closing greater-than.","repetitions":6000},
+ {"id":"single_open","description":"One <base SPACE followed by 6000 x characters; no href and no closing greater-than.","repetitions":6000},
+ {"id":"closed_tags","description":"Repeat the complete fragment <base > 6000 times; no href.","repetitions":6000},
+ {"id":"plain_text","description":"6000 x characters, no markup and no href.","repetitions":6000}
+]

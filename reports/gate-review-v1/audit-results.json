@@ -1,0 +1,1619 @@
+{
+  "status": "complete",
+  "metrics": {
+    "planned": 9,
+    "scorable": 9,
+    "missing_or_unrun": 0,
+    "skipped_scorable": 8,
+    "allowed_scorable": 1,
+    "verified_passes": 0,
+    "missed_successes": 0,
+    "missed_success_yield": 0.0,
+    "false_negative_rate_among_successes": null,
+    "allowed_patch_yield": 0.0
+  },
+  "by_model": {
+    "12b": {
+      "planned": 3,
+      "scorable": 3,
+      "missing_or_unrun": 0,
+      "skipped_scorable": 3,
+      "allowed_scorable": 0,
+      "verified_passes": 0,
+      "missed_successes": 0,
+      "missed_success_yield": 0.0,
+      "false_negative_rate_among_successes": null,
+      "allowed_patch_yield": null
+    },
+    "31b": {
+      "planned": 6,
+      "scorable": 6,
+      "missing_or_unrun": 0,
+      "skipped_scorable": 5,
+      "allowed_scorable": 1,
+      "verified_passes": 0,
+      "missed_successes": 0,
+      "missed_success_yield": 0.0,
+      "false_negative_rate_among_successes": null,
+      "allowed_patch_yield": 0.0
+    }
+  },
+  "records": [
+    {
+      "record_id": "role-probes-v1/12b/0",
+      "source_run": "role-probes-v1",
+      "model": "12b",
+      "trajectory": "role-probes-v1/12b",
+      "source_index": 0,
+      "hypothesis": {
+        "id": "h1",
+        "filepath": "w3lib/html.py",
+        "start_line": 25,
+        "end_line": 27,
+        "cause": "The regex `_baseurl_re` uses a greedy `.*` which causes excessive backtracking when the engine fails to find a matching `href` attribute in a long string of `<base ` tags.",
+        "predicted_failure": "The engine explores many permutations of the `.*` match against the repeated `<base ` prefixes before failing, leading to quadratic time complexity relative to the number of tags.",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "plain_text"
+        ],
+        "contradicted": [
+          "single_open",
+          "closed_tags"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/role-probes-v1/12b/ranking.json",
+      "source_ranking_sha256": "ec305ca10941bf51c3c294e962696db2014530d5bab344af4f29abcdfbd7a7e9",
+      "historical_candidate_dir": null,
+      "attempt_status": "scorable",
+      "verified_patch_pass": false,
+      "call_valid": true,
+      "capture_label": "captured",
+      "raw_equals_api": true,
+      "reason": "behavioral_tests_failed",
+      "tool_result": {
+        "status": "ok",
+        "filepath": "w3lib/html.py",
+        "occurrences": 1,
+        "strategy": "exact",
+        "diff": "--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\"<[a-zA-Z\\/!].*?>\", re.DOTALL)\n _baseurl_re = re.compile(\n-    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n+    r\"<base\\s+[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE | re.DOTALL\n )\n _meta_refresh_re = re.compile(\n     r'<meta\\s[^>]*http-equiv[^>]*refresh[^>]*content\\s*=\\s*(?P<quote>[\"\\'])(?P<int>(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P<url>.*?)(?P=quote)',\n",
+        "is_truncated": false
+      },
+      "public_observations": {
+        "performance": {
+          "reproducer": "get_base_url(\"<base \" * 6000)",
+          "measure": "function time only, excluding Python startup",
+          "samples_seconds": [
+            1.13171253100154,
+            1.155633307993412,
+            1.1364862289919984
+          ],
+          "median_seconds": 1.1364862289919984,
+          "timeout_seconds": 2,
+          "median_limit_seconds": 0.2,
+          "timed_out": false,
+          "error": null,
+          "passed": false
+        },
+        "functional": {
+          "tests": 67,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "valid_result": true
+        },
+        "semantic_guard": {
+          "passed": true,
+          "cases": [
+            {
+              "attribute_length": 0,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 200,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 1000,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            }
+          ]
+        },
+        "infrastructure_error": false,
+        "failure_count": 1,
+        "passed": false
+      },
+      "independent_grade": {
+        "public_tests_exit_code": 0,
+        "public_tests_pass": true,
+        "regression_exit_code": 0,
+        "regression": {
+          "valid_url_checks_pass": true,
+          "performance_pass": false,
+          "passed": false,
+          "timings": {
+            "2000": [
+              0.1256988259847276,
+              0.1250997880124487,
+              0.125359842000762
+            ],
+            "4000": [
+              0.4982323030126281,
+              0.4997948690142948,
+              0.49987365200649947
+            ],
+            "8000": [
+              2.000304900982883,
+              1.9979630279995035,
+              1.9976897580199875
+            ],
+            "30000": []
+          },
+          "medians": {
+            "2000": 0.125359842000762,
+            "4000": 0.4997948690142948,
+            "8000": 1.9979630279995035
+          },
+          "growth_8k_over_2k_floored": 15.937823437806813,
+          "timeouts": [
+            30000
+          ],
+          "error": null,
+          "thresholds": {
+            "sizes": [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            "repeats": 3,
+            "timeout_seconds": 3,
+            "large_median_max": 0.5,
+            "growth_max": 8,
+            "denominator_floor": 0.005
+          }
+        },
+        "verified_local_fix": false
+      },
+      "additional_semantics": {
+        "passed": true,
+        "cases": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "record_id": "role-probes-v1/12b/1",
+      "source_run": "role-probes-v1",
+      "model": "12b",
+      "trajectory": "role-probes-v1/12b",
+      "source_index": 1,
+      "hypothesis": {
+        "id": "h2",
+        "filepath": "w3lib/html.py",
+        "start_line": 25,
+        "end_line": 27,
+        "cause": "The `.*` in `_baseurl_re` is non-possessive and captures across multiple tag boundaries, forcing the engine to backtrack across all previous `<base ` tags when a match is not found.",
+        "predicted_failure": "The engine attempts to match the entire string as a single `<base ...>` tag, backtracking through every space and `<` character in the repeated sequence.",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "plain_text"
+        ],
+        "contradicted": [
+          "single_open",
+          "closed_tags"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/role-probes-v1/12b/ranking.json",
+      "source_ranking_sha256": "ec305ca10941bf51c3c294e962696db2014530d5bab344af4f29abcdfbd7a7e9",
+      "historical_candidate_dir": null,
+      "attempt_status": "scorable",
+      "verified_patch_pass": false,
+      "call_valid": true,
+      "capture_label": "captured",
+      "raw_equals_api": true,
+      "reason": "behavioral_tests_failed",
+      "tool_result": {
+        "status": "ok",
+        "filepath": "w3lib/html.py",
+        "occurrences": 1,
+        "strategy": "exact",
+        "diff": "--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\"<[a-zA-Z\\/!].*?>\", re.DOTALL)\n _baseurl_re = re.compile(\n-    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n+    r\"<base\\s+[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE | re.DOTALL\n )\n _meta_refresh_re = re.compile(\n     r'<meta\\s[^>]*http-equiv[^>]*refresh[^>]*content\\s*=\\s*(?P<quote>[\"\\'])(?P<int>(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P<url>.*?)(?P=quote)',\n",
+        "is_truncated": false
+      },
+      "public_observations": {
+        "performance": {
+          "reproducer": "get_base_url(\"<base \" * 6000)",
+          "measure": "function time only, excluding Python startup",
+          "samples_seconds": [
+            1.1268253670132253,
+            1.1573535640200134,
+            1.155218284984585
+          ],
+          "median_seconds": 1.155218284984585,
+          "timeout_seconds": 2,
+          "median_limit_seconds": 0.2,
+          "timed_out": false,
+          "error": null,
+          "passed": false
+        },
+        "functional": {
+          "tests": 67,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "valid_result": true
+        },
+        "semantic_guard": {
+          "passed": true,
+          "cases": [
+            {
+              "attribute_length": 0,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 200,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 1000,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            }
+          ]
+        },
+        "infrastructure_error": false,
+        "failure_count": 1,
+        "passed": false
+      },
+      "independent_grade": {
+        "public_tests_exit_code": 0,
+        "public_tests_pass": true,
+        "regression_exit_code": 0,
+        "regression": {
+          "valid_url_checks_pass": true,
+          "performance_pass": false,
+          "passed": false,
+          "timings": {
+            "2000": [
+              0.13162150399875827,
+              0.12512286400306039,
+              0.1245972909964621
+            ],
+            "4000": [
+              0.5008828639984131,
+              0.5153500850137789,
+              0.5008938589890022
+            ],
+            "8000": [
+              2.0174279710045084,
+              2.1107488550187554,
+              2.043945576995611
+            ],
+            "30000": []
+          },
+          "medians": {
+            "2000": 0.12512286400306039,
+            "4000": 0.5008938589890022,
+            "8000": 2.043945576995611
+          },
+          "growth_8k_over_2k_floored": 16.335508248481414,
+          "timeouts": [
+            30000
+          ],
+          "error": null,
+          "thresholds": {
+            "sizes": [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            "repeats": 3,
+            "timeout_seconds": 3,
+            "large_median_max": 0.5,
+            "growth_max": 8,
+            "denominator_floor": 0.005
+          }
+        },
+        "verified_local_fix": false
+      },
+      "additional_semantics": {
+        "passed": true,
+        "cases": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "record_id": "role-probes-v1/12b/2",
+      "source_run": "role-probes-v1",
+      "model": "12b",
+      "trajectory": "role-probes-v1/12b",
+      "source_index": 2,
+      "hypothesis": {
+        "id": "h3",
+        "filepath": "w3lib/html.py",
+        "start_line": 25,
+        "end_line": 27,
+        "cause": "The regex engine's handling of the `\b` or `\r\n` equivalents in `.*` combined with the `re.IGNORECASE` flag increases the state space for backtracking on malformed input.",
+        "predicted_failure": "The complexity is driven by the interaction between the greedy quantifier and the lack of a terminating boundary for the tag content.",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "plain_text"
+        ],
+        "contradicted": [
+          "single_open",
+          "closed_tags"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/role-probes-v1/12b/ranking.json",
+      "source_ranking_sha256": "ec305ca10941bf51c3c294e962696db2014530d5bab344af4f29abcdfbd7a7e9",
+      "historical_candidate_dir": null,
+      "attempt_status": "scorable",
+      "verified_patch_pass": false,
+      "call_valid": true,
+      "capture_label": "captured",
+      "raw_equals_api": true,
+      "reason": "behavioral_tests_failed",
+      "tool_result": {
+        "status": "ok",
+        "filepath": "w3lib/html.py",
+        "occurrences": 1,
+        "strategy": "exact",
+        "diff": "--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\"<[a-zA-Z\\/!].*?>\", re.DOTALL)\n _baseurl_re = re.compile(\n-    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n+    r\"<base\\s+[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE | re.DOTALL\n )\n _meta_refresh_re = re.compile(\n     r'<meta\\s[^>]*http-equiv[^>]*refresh[^>]*content\\s*=\\s*(?P<quote>[\"\\'])(?P<int>(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P<url>.*?)(?P=quote)',\n",
+        "is_truncated": false
+      },
+      "public_observations": {
+        "performance": {
+          "reproducer": "get_base_url(\"<base \" * 6000)",
+          "measure": "function time only, excluding Python startup",
+          "samples_seconds": [
+            1.1769208739860915,
+            1.1447861960041337,
+            1.1544578229950275
+          ],
+          "median_seconds": 1.1544578229950275,
+          "timeout_seconds": 2,
+          "median_limit_seconds": 0.2,
+          "timed_out": false,
+          "error": null,
+          "passed": false
+        },
+        "functional": {
+          "tests": 67,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "valid_result": true
+        },
+        "semantic_guard": {
+          "passed": true,
+          "cases": [
+            {
+              "attribute_length": 0,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 200,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 1000,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            }
+          ]
+        },
+        "infrastructure_error": false,
+        "failure_count": 1,
+        "passed": false
+      },
+      "independent_grade": {
+        "public_tests_exit_code": 0,
+        "public_tests_pass": true,
+        "regression_exit_code": 0,
+        "regression": {
+          "valid_url_checks_pass": true,
+          "performance_pass": false,
+          "passed": false,
+          "timings": {
+            "2000": [
+              0.1275733219808899,
+              0.12489815198932774,
+              0.12569854999310337
+            ],
+            "4000": [
+              0.49875014898134395,
+              0.5007876929885242,
+              0.5065765299950726
+            ],
+            "8000": [
+              2.0384161429828964,
+              2.003892230015481,
+              2.000217975990381
+            ],
+            "30000": []
+          },
+          "medians": {
+            "2000": 0.12569854999310337,
+            "4000": 0.5007876929885242,
+            "8000": 2.003892230015481
+          },
+          "growth_8k_over_2k_floored": 15.942047303850579,
+          "timeouts": [
+            30000
+          ],
+          "error": null,
+          "thresholds": {
+            "sizes": [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            "repeats": 3,
+            "timeout_seconds": 3,
+            "large_median_max": 0.5,
+            "growth_max": 8,
+            "denominator_floor": 0.005
+          }
+        },
+        "verified_local_fix": false
+      },
+      "additional_semantics": {
+        "passed": true,
+        "cases": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "record_id": "role-probes-v1/31b/0",
+      "source_run": "role-probes-v1",
+      "model": "31b",
+      "trajectory": "role-probes-v1/31b",
+      "source_index": 0,
+      "hypothesis": {
+        "id": "catastrophic_backtracking_greedy_wildcard",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The greedy wildcard [^>]* in _baseurl_re causes catastrophic backtracking when the input contains many '<base ' sequences but lacks a closing '>' or a valid 'href' attribute, as the engine repeatedly attempts to expand the match and backtrack.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          }
+        ]
+      },
+      "old_gate": "patch_representative",
+      "old_skipped": false,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "single_open",
+          "closed_tags",
+          "plain_text"
+        ],
+        "contradicted": [],
+        "unknown": [],
+        "eligible": true,
+        "prediction_status": "consistent_not_proven"
+      },
+      "source_ranking": "runs/role-probes-v1/31b/ranking.json",
+      "source_ranking_sha256": "6ba2e174167cab02b1150da1ad75effd4880536dfcc7bcd14ca23d944f1a48b6",
+      "historical_candidate_dir": "runs/role-probes-v1/31b/role_split/hypothesis_0",
+      "attempt_status": "scorable",
+      "verified_patch_pass": false,
+      "call_valid": true,
+      "capture_label": "captured",
+      "raw_equals_api": true,
+      "reason": "behavioral_tests_failed",
+      "tool_result": {
+        "status": "ok",
+        "filepath": "w3lib/html.py",
+        "occurrences": 1,
+        "strategy": "exact",
+        "diff": "--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\"<[a-zA-Z\\/!].*?>\", re.DOTALL)\n _baseurl_re = re.compile(\n-    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n+    r\"<base\\s+[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r'<meta\\s[^>]*http-equiv[^>]*refresh[^>]*content\\s*=\\s*(?P<quote>[\"\\'])(?P<int>(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P<url>.*?)(?P=quote)',\n",
+        "is_truncated": false
+      },
+      "public_observations": {
+        "performance": {
+          "reproducer": "get_base_url(\"<base \" * 6000)",
+          "measure": "function time only, excluding Python startup",
+          "samples_seconds": [
+            1.144361384009244,
+            1.2294946969777811,
+            1.1316777130123228
+          ],
+          "median_seconds": 1.144361384009244,
+          "timeout_seconds": 2,
+          "median_limit_seconds": 0.2,
+          "timed_out": false,
+          "error": null,
+          "passed": false
+        },
+        "functional": {
+          "tests": 67,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "valid_result": true
+        },
+        "semantic_guard": {
+          "passed": true,
+          "cases": [
+            {
+              "attribute_length": 0,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 200,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 1000,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            }
+          ]
+        },
+        "infrastructure_error": false,
+        "failure_count": 1,
+        "passed": false
+      },
+      "independent_grade": {
+        "public_tests_exit_code": 0,
+        "public_tests_pass": true,
+        "regression_exit_code": 0,
+        "regression": {
+          "valid_url_checks_pass": true,
+          "performance_pass": false,
+          "passed": false,
+          "timings": {
+            "2000": [
+              0.12464398401789367,
+              0.12499940898851492,
+              0.12526751001132652
+            ],
+            "4000": [
+              0.5039317580231,
+              0.4980208159831818,
+              0.5016113829915412
+            ],
+            "8000": [
+              2.0229423359851353,
+              2.0515198509965558,
+              2.0465693489823025
+            ],
+            "30000": []
+          },
+          "medians": {
+            "2000": 0.12499940898851492,
+            "4000": 0.5016113829915412,
+            "8000": 2.0465693489823025
+          },
+          "growth_8k_over_2k_floored": 16.372632203167804,
+          "timeouts": [
+            30000
+          ],
+          "error": null,
+          "thresholds": {
+            "sizes": [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            "repeats": 3,
+            "timeout_seconds": 3,
+            "large_median_max": 0.5,
+            "growth_max": 8,
+            "denominator_floor": 0.005
+          }
+        },
+        "verified_local_fix": false
+      },
+      "additional_semantics": {
+        "passed": true,
+        "cases": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "record_id": "role-probes-v1/31b/1",
+      "source_run": "role-probes-v1",
+      "model": "31b",
+      "trajectory": "role-probes-v1/31b",
+      "source_index": 1,
+      "hypothesis": {
+        "id": "greedy_attribute_overlap",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The regex fails specifically when multiple '<base' tags are present without closing brackets, because the [^>]* consumes subsequent '<base' strings, and the engine backtracks to try every possible split point to find a valid 'href' sequence.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          }
+        ]
+      },
+      "old_gate": "skip_not_distinguished",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "single_open",
+          "closed_tags",
+          "plain_text"
+        ],
+        "contradicted": [],
+        "unknown": [],
+        "eligible": true,
+        "prediction_status": "consistent_not_proven"
+      },
+      "source_ranking": "runs/role-probes-v1/31b/ranking.json",
+      "source_ranking_sha256": "6ba2e174167cab02b1150da1ad75effd4880536dfcc7bcd14ca23d944f1a48b6",
+      "historical_candidate_dir": null,
+      "attempt_status": "scorable",
+      "verified_patch_pass": false,
+      "call_valid": true,
+      "capture_label": "captured",
+      "raw_equals_api": true,
+      "reason": "behavioral_tests_failed",
+      "tool_result": {
+        "status": "ok",
+        "filepath": "w3lib/html.py",
+        "occurrences": 1,
+        "strategy": "exact",
+        "diff": "--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\"<[a-zA-Z\\/!].*?>\", re.DOTALL)\n _baseurl_re = re.compile(\n-    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n+    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r'<meta\\s[^>]*http-equiv[^>]*refresh[^>]*content\\s*=\\s*(?P<quote>[\"\\'])(?P<int>(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P<url>.*?)(?P=quote)',\n",
+        "is_truncated": false
+      },
+      "public_observations": {
+        "performance": {
+          "reproducer": "get_base_url(\"<base \" * 6000)",
+          "measure": "function time only, excluding Python startup",
+          "samples_seconds": [
+            1.1332773650065064,
+            1.126146925991634,
+            1.1290085070068017
+          ],
+          "median_seconds": 1.1290085070068017,
+          "timeout_seconds": 2,
+          "median_limit_seconds": 0.2,
+          "timed_out": false,
+          "error": null,
+          "passed": false
+        },
+        "functional": {
+          "tests": 67,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "valid_result": true
+        },
+        "semantic_guard": {
+          "passed": true,
+          "cases": [
+            {
+              "attribute_length": 0,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 200,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 1000,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            }
+          ]
+        },
+        "infrastructure_error": false,
+        "failure_count": 1,
+        "passed": false
+      },
+      "independent_grade": {
+        "public_tests_exit_code": 0,
+        "public_tests_pass": true,
+        "regression_exit_code": 0,
+        "regression": {
+          "valid_url_checks_pass": true,
+          "performance_pass": false,
+          "passed": false,
+          "timings": {
+            "2000": [
+              0.12708506899070926,
+              0.128888837993145,
+              0.12637666700175032
+            ],
+            "4000": [
+              0.5064638959884178,
+              0.5048419840168208,
+              0.5030874680087436
+            ],
+            "8000": [
+              2.0223973910033237,
+              2.0123306380119175,
+              2.0193146750098094
+            ],
+            "30000": []
+          },
+          "medians": {
+            "2000": 0.12708506899070926,
+            "4000": 0.5048419840168208,
+            "8000": 2.0193146750098094
+          },
+          "growth_8k_over_2k_floored": 15.8894722334174,
+          "timeouts": [
+            30000
+          ],
+          "error": null,
+          "thresholds": {
+            "sizes": [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            "repeats": 3,
+            "timeout_seconds": 3,
+            "large_median_max": 0.5,
+            "growth_max": 8,
+            "denominator_floor": 0.005
+          }
+        },
+        "verified_local_fix": false
+      },
+      "additional_semantics": {
+        "passed": true,
+        "cases": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "record_id": "role-probes-v1/31b/2",
+      "source_run": "role-probes-v1",
+      "model": "31b",
+      "trajectory": "role-probes-v1/31b",
+      "source_index": 2,
+      "hypothesis": {
+        "id": "linear_scan_failure",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The regex engine performs a linear scan of the input; however, the specific combination of the '<base' anchor and the subsequent greedy match causes the engine to restart the search at every single character position when no match is found, leading to quadratic time complexity relative to input length.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "slow"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open"
+        ],
+        "contradicted": [
+          "single_open",
+          "closed_tags",
+          "plain_text"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/role-probes-v1/31b/ranking.json",
+      "source_ranking_sha256": "6ba2e174167cab02b1150da1ad75effd4880536dfcc7bcd14ca23d944f1a48b6",
+      "historical_candidate_dir": null,
+      "attempt_status": "scorable",
+      "verified_patch_pass": false,
+      "call_valid": true,
+      "capture_label": "captured",
+      "raw_equals_api": true,
+      "reason": "behavioral_tests_failed",
+      "tool_result": {
+        "status": "ok",
+        "filepath": "w3lib/html.py",
+        "occurrences": 1,
+        "strategy": "exact",
+        "diff": "--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\"<[a-zA-Z\\/!].*?>\", re.DOTALL)\n _baseurl_re = re.compile(\n-    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n+    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r'<meta\\s[^>]*http-equiv[^>]*refresh[^>]*content\\s*=\\s*(?P<quote>[\"\\'])(?P<int>(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P<url>.*?)(?P=quote)',\n",
+        "is_truncated": false
+      },
+      "public_observations": {
+        "performance": {
+          "reproducer": "get_base_url(\"<base \" * 6000)",
+          "measure": "function time only, excluding Python startup",
+          "samples_seconds": [
+            1.1241674500051886,
+            1.1447907040128484,
+            1.1408466510183644
+          ],
+          "median_seconds": 1.1408466510183644,
+          "timeout_seconds": 2,
+          "median_limit_seconds": 0.2,
+          "timed_out": false,
+          "error": null,
+          "passed": false
+        },
+        "functional": {
+          "tests": 67,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "valid_result": true
+        },
+        "semantic_guard": {
+          "passed": true,
+          "cases": [
+            {
+              "attribute_length": 0,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 200,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 1000,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            }
+          ]
+        },
+        "infrastructure_error": false,
+        "failure_count": 1,
+        "passed": false
+      },
+      "independent_grade": {
+        "public_tests_exit_code": 0,
+        "public_tests_pass": true,
+        "regression_exit_code": 0,
+        "regression": {
+          "valid_url_checks_pass": true,
+          "performance_pass": false,
+          "passed": false,
+          "timings": {
+            "2000": [
+              0.1894192089966964,
+              0.12662259599892423,
+              0.12655370001448318
+            ],
+            "4000": [
+              0.5112449970038142,
+              0.537447761016665,
+              0.52867930100183
+            ],
+            "8000": [
+              2.0776554140029475,
+              2.0159942079917528,
+              2.032120179006597
+            ],
+            "30000": []
+          },
+          "medians": {
+            "2000": 0.12662259599892423,
+            "4000": 0.52867930100183,
+            "8000": 2.032120179006597
+          },
+          "growth_8k_over_2k_floored": 16.04863778834436,
+          "timeouts": [
+            30000
+          ],
+          "error": null,
+          "thresholds": {
+            "sizes": [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            "repeats": 3,
+            "timeout_seconds": 3,
+            "large_median_max": 0.5,
+            "growth_max": 8,
+            "denominator_floor": 0.005
+          }
+        },
+        "verified_local_fix": false
+      },
+      "additional_semantics": {
+        "passed": true,
+        "cases": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "record_id": "revise-hyp-v1/31b/0",
+      "source_run": "revise-hyp-v1",
+      "model": "31b",
+      "trajectory": "revise-hyp-v1/31b",
+      "source_index": 0,
+      "hypothesis": {
+        "id": "catastrophic_backtracking_greedy_wildcard",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The regex _baseurl_re uses a greedy wildcard [^>]* following the '<base ' anchor. When the input contains multiple '<base ' sequences but no closing '>' or 'href', the engine attempts to match the first '<base ', then consumes subsequent '<base ' sequences via [^>]*. Upon failing to find 'href', it backtracks to the second '<base ' and repeats the process, leading to quadratic complexity relative to the number of '<base ' occurrences.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "repeated_open_then_close",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "repeated_open_then_href",
+            "expected": "slow"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "single_open",
+          "closed_tags",
+          "plain_text",
+          "repeated_open_then_close"
+        ],
+        "contradicted": [
+          "repeated_open_then_href"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/revise-hyp-v1/31b/ranking.json",
+      "source_ranking_sha256": "c2001ebdadc46340e2120d9e24dda60644d4af4dedc0006189c63ddabbcf4aa3",
+      "historical_candidate_dir": null,
+      "attempt_status": "scorable",
+      "verified_patch_pass": false,
+      "call_valid": true,
+      "capture_label": "captured",
+      "raw_equals_api": true,
+      "reason": "behavioral_tests_failed",
+      "tool_result": {
+        "status": "ok",
+        "filepath": "w3lib/html.py",
+        "occurrences": 1,
+        "strategy": "exact",
+        "diff": "--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\"<[a-zA-Z\\/!].*?>\", re.DOTALL)\n _baseurl_re = re.compile(\n-    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n+    r\"<base\\s+[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r'<meta\\s[^>]*http-equiv[^>]*refresh[^>]*content\\s*=\\s*(?P<quote>[\"\\'])(?P<int>(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P<url>.*?)(?P=quote)',\n",
+        "is_truncated": false
+      },
+      "public_observations": {
+        "performance": {
+          "reproducer": "get_base_url(\"<base \" * 6000)",
+          "measure": "function time only, excluding Python startup",
+          "samples_seconds": [
+            1.1394535519939382,
+            1.123815168015426,
+            1.129287922027288
+          ],
+          "median_seconds": 1.129287922027288,
+          "timeout_seconds": 2,
+          "median_limit_seconds": 0.2,
+          "timed_out": false,
+          "error": null,
+          "passed": false
+        },
+        "functional": {
+          "tests": 67,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "valid_result": true
+        },
+        "semantic_guard": {
+          "passed": true,
+          "cases": [
+            {
+              "attribute_length": 0,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 200,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 1000,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            }
+          ]
+        },
+        "infrastructure_error": false,
+        "failure_count": 1,
+        "passed": false
+      },
+      "independent_grade": {
+        "public_tests_exit_code": 0,
+        "public_tests_pass": true,
+        "regression_exit_code": 0,
+        "regression": {
+          "valid_url_checks_pass": true,
+          "performance_pass": false,
+          "passed": false,
+          "timings": {
+            "2000": [
+              0.12462984398007393,
+              0.12441012301133014,
+              0.12430836199200712
+            ],
+            "4000": [
+              0.5015775680076331,
+              0.49952823598869145,
+              0.49902776000089943
+            ],
+            "8000": [
+              2.032998244976625,
+              2.1418163999915123,
+              2.02276644599624
+            ],
+            "30000": []
+          },
+          "medians": {
+            "2000": 0.12441012301133014,
+            "4000": 0.49952823598869145,
+            "8000": 2.032998244976625
+          },
+          "growth_8k_over_2k_floored": 16.34109987007631,
+          "timeouts": [
+            30000
+          ],
+          "error": null,
+          "thresholds": {
+            "sizes": [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            "repeats": 3,
+            "timeout_seconds": 3,
+            "large_median_max": 0.5,
+            "growth_max": 8,
+            "denominator_floor": 0.005
+          }
+        },
+        "verified_local_fix": false
+      },
+      "additional_semantics": {
+        "passed": true,
+        "cases": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "record_id": "revise-hyp-v1/31b/1",
+      "source_run": "revise-hyp-v1",
+      "model": "31b",
+      "trajectory": "revise-hyp-v1/31b",
+      "source_index": 1,
+      "hypothesis": {
+        "id": "greedy_attribute_overlap",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The performance degradation is caused by the interaction between the greedy [^>]* and the required 'href' literal. In the absence of a closing '>', the engine treats the entire string as a potential attribute list for the first '<base ' match. When 'href' is missing, it backtracks to try the same greedy match starting from the second '<base ', and so on, creating a nested loop of failed match attempts.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "repeated_open_then_close",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "repeated_open_then_href",
+            "expected": "slow"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "single_open",
+          "closed_tags",
+          "plain_text",
+          "repeated_open_then_close"
+        ],
+        "contradicted": [
+          "repeated_open_then_href"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/revise-hyp-v1/31b/ranking.json",
+      "source_ranking_sha256": "c2001ebdadc46340e2120d9e24dda60644d4af4dedc0006189c63ddabbcf4aa3",
+      "historical_candidate_dir": null,
+      "attempt_status": "scorable",
+      "verified_patch_pass": false,
+      "call_valid": true,
+      "capture_label": "captured",
+      "raw_equals_api": true,
+      "reason": "behavioral_tests_failed",
+      "tool_result": {
+        "status": "ok",
+        "filepath": "w3lib/html.py",
+        "occurrences": 1,
+        "strategy": "exact",
+        "diff": "--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\"<[a-zA-Z\\/!].*?>\", re.DOTALL)\n _baseurl_re = re.compile(\n-    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n+    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r'<meta\\s[^>]*http-equiv[^>]*refresh[^>]*content\\s*=\\s*(?P<quote>[\"\\'])(?P<int>(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P<url>.*?)(?P=quote)',\n",
+        "is_truncated": false
+      },
+      "public_observations": {
+        "performance": {
+          "reproducer": "get_base_url(\"<base \" * 6000)",
+          "measure": "function time only, excluding Python startup",
+          "samples_seconds": [
+            1.1325255199917592,
+            1.131903337984113,
+            1.1428503410133999
+          ],
+          "median_seconds": 1.1325255199917592,
+          "timeout_seconds": 2,
+          "median_limit_seconds": 0.2,
+          "timed_out": false,
+          "error": null,
+          "passed": false
+        },
+        "functional": {
+          "tests": 67,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "valid_result": true
+        },
+        "semantic_guard": {
+          "passed": true,
+          "cases": [
+            {
+              "attribute_length": 0,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 200,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 1000,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            }
+          ]
+        },
+        "infrastructure_error": false,
+        "failure_count": 1,
+        "passed": false
+      },
+      "independent_grade": {
+        "public_tests_exit_code": 0,
+        "public_tests_pass": true,
+        "regression_exit_code": 0,
+        "regression": {
+          "valid_url_checks_pass": true,
+          "performance_pass": false,
+          "passed": false,
+          "timings": {
+            "2000": [
+              0.12677266402170062,
+              0.126083707989892,
+              0.1262822090066038
+            ],
+            "4000": [
+              0.544055495003704,
+              0.5029643820016645,
+              0.5145093949977309
+            ],
+            "8000": [
+              2.0131174240086693,
+              2.0998051289934665,
+              2.0312427099852357
+            ],
+            "30000": []
+          },
+          "medians": {
+            "2000": 0.1262822090066038,
+            "4000": 0.5145093949977309,
+            "8000": 2.0312427099852357
+          },
+          "growth_8k_over_2k_floored": 16.08494756279575,
+          "timeouts": [
+            30000
+          ],
+          "error": null,
+          "thresholds": {
+            "sizes": [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            "repeats": 3,
+            "timeout_seconds": 3,
+            "large_median_max": 0.5,
+            "growth_max": 8,
+            "denominator_floor": 0.005
+          }
+        },
+        "verified_local_fix": false
+      },
+      "additional_semantics": {
+        "passed": true,
+        "cases": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "record_id": "revise-hyp-v1/31b/2",
+      "source_run": "revise-hyp-v1",
+      "model": "31b",
+      "trajectory": "revise-hyp-v1/31b",
+      "source_index": 2,
+      "hypothesis": {
+        "id": "linear_scan_failure",
+        "filepath": "w3lib/html.py",
+        "start_line": 26,
+        "end_line": 26,
+        "cause": "The regex engine fails to efficiently discard non-matching prefixes when the input consists of repeated partial matches of the start of the regex. The combination of the anchor '<base' and the greedy [^>]* causes the engine to re-scan the remainder of the string for every instance of '<base ' encountered.",
+        "predicted_failure": "slow",
+        "predictions": [
+          {
+            "probe_id": "repeated_open",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "single_open",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "closed_tags",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "plain_text",
+            "expected": "fast"
+          },
+          {
+            "probe_id": "repeated_open_then_close",
+            "expected": "slow"
+          },
+          {
+            "probe_id": "repeated_open_then_href",
+            "expected": "slow"
+          }
+        ]
+      },
+      "old_gate": "skip_contradicted_or_uninformative",
+      "old_skipped": true,
+      "old_assessment": {
+        "matched": [
+          "repeated_open",
+          "single_open",
+          "closed_tags",
+          "plain_text",
+          "repeated_open_then_close"
+        ],
+        "contradicted": [
+          "repeated_open_then_href"
+        ],
+        "unknown": [],
+        "eligible": false,
+        "prediction_status": "contradicted"
+      },
+      "source_ranking": "runs/revise-hyp-v1/31b/ranking.json",
+      "source_ranking_sha256": "c2001ebdadc46340e2120d9e24dda60644d4af4dedc0006189c63ddabbcf4aa3",
+      "historical_candidate_dir": null,
+      "attempt_status": "scorable",
+      "verified_patch_pass": false,
+      "call_valid": true,
+      "capture_label": "captured",
+      "raw_equals_api": true,
+      "reason": "behavioral_tests_failed",
+      "tool_result": {
+        "status": "ok",
+        "filepath": "w3lib/html.py",
+        "occurrences": 1,
+        "strategy": "exact",
+        "diff": "--- a/w3lib/html.py\n+++ b/w3lib/html.py\n@@ -23,7 +23,7 @@\n )\n _tag_re = re.compile(r\"<[a-zA-Z\\/!].*?>\", re.DOTALL)\n _baseurl_re = re.compile(\n-    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n+    r\"<base\\s[^>]*?href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n )\n _meta_refresh_re = re.compile(\n     r'<meta\\s[^>]*http-equiv[^>]*refresh[^>]*content\\s*=\\s*(?P<quote>[\"\\'])(?P<int>(\\d*\\.)?\\d+)\\s*;\\s*url=\\s*(?P<url>.*?)(?P=quote)',\n",
+        "is_truncated": false
+      },
+      "public_observations": {
+        "performance": {
+          "reproducer": "get_base_url(\"<base \" * 6000)",
+          "measure": "function time only, excluding Python startup",
+          "samples_seconds": [
+            1.1354532719997223,
+            1.12670834097662,
+            1.130952603998594
+          ],
+          "median_seconds": 1.130952603998594,
+          "timeout_seconds": 2,
+          "median_limit_seconds": 0.2,
+          "timed_out": false,
+          "error": null,
+          "passed": false
+        },
+        "functional": {
+          "tests": 67,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "exit_code": 0,
+          "valid_result": true
+        },
+        "semantic_guard": {
+          "passed": true,
+          "cases": [
+            {
+              "attribute_length": 0,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 200,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            },
+            {
+              "attribute_length": 1000,
+              "passed": true,
+              "actual": "https://example.org/path/"
+            }
+          ]
+        },
+        "infrastructure_error": false,
+        "failure_count": 1,
+        "passed": false
+      },
+      "independent_grade": {
+        "public_tests_exit_code": 0,
+        "public_tests_pass": true,
+        "regression_exit_code": 0,
+        "regression": {
+          "valid_url_checks_pass": true,
+          "performance_pass": false,
+          "passed": false,
+          "timings": {
+            "2000": [
+              0.12633493400062434,
+              0.12635008999495767,
+              0.12579676898894832
+            ],
+            "4000": [
+              0.5408292489883024,
+              0.5066779549815692,
+              0.5033895609958563
+            ],
+            "8000": [
+              2.2940389520081226,
+              2.0308898100047372,
+              2.079580983001506
+            ],
+            "30000": []
+          },
+          "medians": {
+            "2000": 0.12633493400062434,
+            "4000": 0.5066779549815692,
+            "8000": 2.079580983001506
+          },
+          "growth_8k_over_2k_floored": 16.460854627835786,
+          "timeouts": [
+            30000
+          ],
+          "error": null,
+          "thresholds": {
+            "sizes": [
+              2000,
+              4000,
+              8000,
+              30000
+            ],
+            "repeats": 3,
+            "timeout_seconds": 3,
+            "large_median_max": 0.5,
+            "growth_max": 8,
+            "denominator_floor": 0.005
+          }
+        },
+        "verified_local_fix": false
+      },
+      "additional_semantics": {
+        "passed": true,
+        "cases": [
+          true,
+          true
+        ]
+      }
+    }
+  ]
+}

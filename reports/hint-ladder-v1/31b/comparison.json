@@ -1,0 +1,122 @@
+{
+  "model": "31b",
+  "state": {
+    "status": "complete",
+    "model": "31b",
+    "arms": [
+      "control",
+      "A",
+      "AB",
+      "ABC"
+    ],
+    "completed": [
+      {
+        "arm": "control",
+        "capture": "captured",
+        "output_tokens": 146,
+        "api_category": "public_performance_fail",
+        "api_accepted": false,
+        "raw_category": "public_performance_fail"
+      },
+      {
+        "arm": "A",
+        "capture": "captured",
+        "output_tokens": 146,
+        "api_category": "public_performance_fail",
+        "api_accepted": false,
+        "raw_category": "public_performance_fail"
+      },
+      {
+        "arm": "AB",
+        "capture": "captured",
+        "output_tokens": 146,
+        "api_category": "accepted",
+        "api_accepted": true,
+        "raw_category": "accepted"
+      },
+      {
+        "arm": "ABC",
+        "capture": "captured",
+        "output_tokens": 145,
+        "api_category": "accepted",
+        "api_accepted": true,
+        "raw_category": "accepted"
+      }
+    ]
+  },
+  "preflight_usable": true,
+  "rows": [
+    {
+      "arm": "control",
+      "output_tokens": 146,
+      "finish_reason": "tool_calls",
+      "capture": "captured",
+      "raw_equals_api": true,
+      "call_valid": true,
+      "literal_match": true,
+      "public_perf": false,
+      "public_median_s": 1.1304106249881443,
+      "functional": true,
+      "independent": false,
+      "long_attr": true,
+      "api_accepted": false,
+      "api_category": "public_performance_fail",
+      "raw_category": "public_performance_fail",
+      "raw_accepted": false
+    },
+    {
+      "arm": "A",
+      "output_tokens": 146,
+      "finish_reason": "tool_calls",
+      "capture": "captured",
+      "raw_equals_api": true,
+      "call_valid": true,
+      "literal_match": true,
+      "public_perf": false,
+      "public_median_s": 1.1359041529940441,
+      "functional": true,
+      "independent": false,
+      "long_attr": true,
+      "api_accepted": false,
+      "api_category": "public_performance_fail",
+      "raw_category": "public_performance_fail",
+      "raw_accepted": false
+    },
+    {
+      "arm": "AB",
+      "output_tokens": 146,
+      "finish_reason": "tool_calls",
+      "capture": "captured",
+      "raw_equals_api": true,
+      "call_valid": true,
+      "literal_match": true,
+      "public_perf": true,
+      "public_median_s": 0.00029963499400764704,
+      "functional": true,
+      "independent": true,
+      "long_attr": true,
+      "api_accepted": true,
+      "api_category": "accepted",
+      "raw_category": "accepted",
+      "raw_accepted": true
+    },
+    {
+      "arm": "ABC",
+      "output_tokens": 145,
+      "finish_reason": "tool_calls",
+      "capture": "captured",
+      "raw_equals_api": true,
+      "call_valid": true,
+      "literal_match": true,
+      "public_perf": true,
+      "public_median_s": 0.0002879890089388937,
+      "functional": true,
+      "independent": true,
+      "long_attr": true,
+      "api_accepted": true,
+      "api_category": "accepted",
+      "raw_category": "accepted",
+      "raw_accepted": true
+    }
+  ]
+}

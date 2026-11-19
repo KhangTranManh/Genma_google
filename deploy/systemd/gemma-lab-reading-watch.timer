@@ -1,0 +1,9 @@
+[Unit]
+Description=Observe focused-reading logs once a minute
+[Timer]
+OnActiveSec=20s
+OnUnitInactiveSec=60s
+AccuracySec=5s
+Unit=gemma-lab-reading-watch.service
+[Install]
+WantedBy=timers.target

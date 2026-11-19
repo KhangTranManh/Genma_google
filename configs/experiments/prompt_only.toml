@@ -1,0 +1,11 @@
+extends = "../project.toml"
+[experiment]
+id = "prompt_only_12b_v1"
+method = "prompt_only"
+[defaults]
+model = "12b"
+[automation]
+strategy = "prompt_only"
+model_order = ["12b"]
+max_prompt_trials_per_model = 1
+seed_run = ""

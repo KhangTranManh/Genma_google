@@ -1,0 +1,9 @@
+[Unit]
+Description=Observe simple-direct experiment
+[Service]
+Type=oneshot
+WorkingDirectory=@PROJECT_ROOT@
+ExecStart=@PROJECT_ROOT@/.venv/bin/python @PROJECT_ROOT@/scripts/simple/watch.py
+TimeoutStartSec=45s
+StandardOutput=append:@PROJECT_ROOT@/runs/simple-v1/watch.log
+StandardError=inherit

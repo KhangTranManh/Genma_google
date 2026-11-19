@@ -1,0 +1,45 @@
+{
+  "status": "post_hoc_after_observing_31b_AG_pattern",
+  "used_for_selection_or_feedback": false,
+  "pre_registered_accepted_unchanged": true,
+  "check": "href text that appears AFTER a closed <base ...> tag must not be extracted (original and reference both return no match)",
+  "cases": [
+    "<base target=\"_top\">see href=\"http://x.example/\" in text",
+    "<base target=_top> href=\"http://y.example/\"<p>"
+  ],
+  "results": [
+    {
+      "model": "12b",
+      "arm": "ABC_r0",
+      "pattern": "<base\\s[^> <]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": false,
+      "matches_outside_base_tag": [
+        null,
+        null
+      ],
+      "tag_boundary_preserved": true
+    },
+    {
+      "model": "12b",
+      "arm": "ABC_r1",
+      "pattern": "<base\\s[^> <]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": false,
+      "matches_outside_base_tag": [
+        null,
+        null
+      ],
+      "tag_boundary_preserved": true
+    },
+    {
+      "model": "12b",
+      "arm": "ABC_r2",
+      "pattern": "<base\\s[^> <]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']",
+      "api_accepted": false,
+      "matches_outside_base_tag": [
+        null,
+        null
+      ],
+      "tag_boundary_preserved": true
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+diff --git a/w3lib/html.py b/w3lib/html.py
+index c3679401dffb0534f45e988d1ff5824d52375bab..b586856e9d6287ab988cd09b47a7dee14f5fb378 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -231,9 +231,9 @@ def remove_tags(
+ def _build_remove_tags_pattern(tags_tuple: tuple[str, ...]) -> re.Pattern[str]:
+     tags = "|".join(re.escape(tag) for tag in tags_tuple)
+     pattern = rf"""
+-        <(?P<tag>{tags})\b[^>]*>.*?</(?P=tag)>
++        <(?P<tag>{tags})\b[^<>]*>.*?</(?P=tag)>
+         |
+-        <(?P<tag2>{tags})\b[^>]*/>
++        <(?P<tag2>{tags})\b[^<>]*/>
+     """
+     return re.compile(pattern, re.IGNORECASE | re.DOTALL | re.VERBOSE)
+ 

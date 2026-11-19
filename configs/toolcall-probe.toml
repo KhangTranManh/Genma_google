@@ -1,0 +1,23 @@
+name = "toolcall-parser-probe-v1"
+phase = "ready_for_execution"
+models = ["12b", "31b"]
+cases = ["read_range", "write_quotes_newlines", "edit_exact_line", "run_test_command"]
+initial_requests = 8
+repeats_per_case = 1
+stream = false
+return_token_ids = true
+skip_special_tokens = false
+temperature = 0
+max_tokens = 512
+thinking = false
+execute_tools = false
+schema_source = "organizer SwegemmaContext -> ADK FunctionTool -> LiteLLM converter"
+
+[artifacts]
+folder = "runs/toolcall-probe-v1/{model}/{case}"
+required = ["request.json", "response.json", "output-token-ids.json", "raw-decoded.txt", "parsed-calls.json", "classification.json", "runtime.json"]
+
+[classification]
+allowed = ["correct", "raw_output_defect", "parser_mismatch_suspected", "schema_or_adapter_issue_suspected", "truncated", "missing_raw_capture", "ambiguous"]
+# Classifications need the SAME generation's raw token ids and parsed calls.
+compare_separate_generations = false

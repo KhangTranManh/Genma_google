@@ -1,0 +1,9 @@
+[Unit]
+Description=Advance staged workflow after reading experiment finishes
+[Timer]
+OnActiveSec=15s
+OnUnitInactiveSec=45s
+AccuracySec=5s
+Unit=gemma-lab-staged.service
+[Install]
+WantedBy=timers.target

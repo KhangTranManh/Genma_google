@@ -1,0 +1,96 @@
+{
+  "model": "12b",
+  "state": {
+    "status": "complete",
+    "model": "12b",
+    "plan": [
+      "ABC_r0",
+      "feedback rounds<=2"
+    ],
+    "completed": [
+      {
+        "arm": "ABC_r0",
+        "capture": "captured",
+        "output_tokens": 140,
+        "api_category": "functional_fail",
+        "api_accepted": false,
+        "raw_category": "functional_fail"
+      },
+      {
+        "arm": "ABC_r1",
+        "capture": "captured",
+        "output_tokens": 141,
+        "api_category": "tool_error",
+        "api_accepted": false,
+        "raw_category": "tool_error",
+        "feedback_round": 1
+      },
+      {
+        "arm": "ABC_r2",
+        "capture": "captured",
+        "output_tokens": 141,
+        "api_category": "tool_error",
+        "api_accepted": false,
+        "raw_category": "tool_error",
+        "feedback_round": 2
+      }
+    ]
+  },
+  "preflight_usable": true,
+  "rows": [
+    {
+      "arm": "ABC_r0",
+      "output_tokens": 140,
+      "finish_reason": "tool_calls",
+      "capture": "captured",
+      "raw_equals_api": true,
+      "call_valid": true,
+      "literal_match": true,
+      "public_perf": true,
+      "public_median_s": 0.0002869990130420774,
+      "functional": false,
+      "independent": false,
+      "long_attr": false,
+      "api_accepted": false,
+      "api_category": "functional_fail",
+      "raw_category": "functional_fail",
+      "raw_accepted": false
+    },
+    {
+      "arm": "ABC_r1",
+      "output_tokens": 141,
+      "finish_reason": "tool_calls",
+      "capture": "captured",
+      "raw_equals_api": true,
+      "call_valid": true,
+      "literal_match": true,
+      "public_perf": null,
+      "public_median_s": null,
+      "functional": null,
+      "independent": null,
+      "long_attr": null,
+      "api_accepted": false,
+      "api_category": "tool_error",
+      "raw_category": "tool_error",
+      "raw_accepted": false
+    },
+    {
+      "arm": "ABC_r2",
+      "output_tokens": 141,
+      "finish_reason": "tool_calls",
+      "capture": "captured",
+      "raw_equals_api": true,
+      "call_valid": true,
+      "literal_match": true,
+      "public_perf": null,
+      "public_median_s": null,
+      "functional": null,
+      "independent": null,
+      "long_attr": null,
+      "api_accepted": false,
+      "api_category": "tool_error",
+      "raw_category": "tool_error",
+      "raw_accepted": false
+    }
+  ]
+}

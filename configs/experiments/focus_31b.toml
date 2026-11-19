@@ -1,0 +1,11 @@
+extends = "progress_guard.toml"
+[experiment]
+id = "focus_31b_reliability_v1"
+method = "model_sweep"
+[defaults]
+model = "31b"
+[automation]
+strategy = "model_sweep"
+model_order = ["31b"]
+max_prompt_trials_per_model = 0
+seed_run = ""

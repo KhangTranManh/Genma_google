@@ -1,0 +1,25 @@
+{
+  "model": "gemma-4-12b-it-qat-w4a16-ct",
+  "directory_validated": true,
+  "agent_compiled": true,
+  "agent_class": "LlmAgent",
+  "tools": [
+    "run_command",
+    "read_file",
+    "edit_file",
+    "write_file",
+    "get_status",
+    "submit_patch"
+  ],
+  "versions": {
+    "adk-submission": "0.2.13",
+    "adk-eval-core": "0.1.0",
+    "swegemma": "0.2.11",
+    "google-adk": "1.36.1",
+    "litellm": "1.109.1"
+  },
+  "archive": "dist/simple-v1/control/12b/submission.zip",
+  "sha256": "09b3301ded9bc067a1f1243ee7d9f7a10919059d7c4b1c03b18cf8ebb7e3b0a0",
+  "official_tasks_scored": false,
+  "local_python_harness_exported": false
+}

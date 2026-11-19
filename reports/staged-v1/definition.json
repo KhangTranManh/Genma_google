@@ -1,0 +1,25 @@
+{
+  "status": "defined_not_executed",
+  "candidates": [
+    {
+      "model": "31b",
+      "arm": "flat",
+      "path": "submission_candidates/staged_v1/flat/31b"
+    },
+    {
+      "model": "31b",
+      "arm": "staged",
+      "path": "submission_candidates/staged_v1/staged/31b"
+    },
+    {
+      "model": "12b",
+      "arm": "flat",
+      "path": "submission_candidates/staged_v1/flat/12b"
+    },
+    {
+      "model": "12b",
+      "arm": "staged",
+      "path": "submission_candidates/staged_v1/staged/12b"
+    }
+  ]
+}

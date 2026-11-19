@@ -1,0 +1,12 @@
+[Unit]
+Description=One bounded focused-reading R0/R1/R2 task
+After=network.target docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=@PROJECT_ROOT@
+ExecStart=@PROJECT_ROOT@/.venv/bin/python @PROJECT_ROOT@/scripts/official/reading_worker.py
+Environment=PYTHONUNBUFFERED=1
+TimeoutStartSec=45min
+StandardOutput=append:@PROJECT_ROOT@/runs/reading-v1/worker.log
+StandardError=inherit

@@ -1,0 +1,25 @@
+{
+  "status": "complete",
+  "models": {
+    "12b": {
+      "calls": 7,
+      "patches": 3,
+      "retained": 0,
+      "selected": null,
+      "duplicate_diffs": 0,
+      "output_tokens": 1402,
+      "independent_final_grade_run": false
+    },
+    "31b": {
+      "calls": 7,
+      "patches": 3,
+      "retained": 0,
+      "selected": null,
+      "duplicate_diffs": 2,
+      "output_tokens": 1347,
+      "independent_final_grade_run": false
+    }
+  },
+  "scope": "one previously observed development issue; host-supplied source excerpts",
+  "frozen_source_changes_at_completion": []
+}

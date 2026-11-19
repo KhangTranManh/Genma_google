@@ -1,0 +1,788 @@
+{
+  "usable": true,
+  "checker_sha256": "b2562d161f606defacfa204a5da492d179bea4613ebe9ade5ce5422ca1eaf683",
+  "note": "lazy expectation left open (None): recorded, not required",
+  "results": {
+    "original": {
+      "expected_public": true,
+      "expected_hidden": true,
+      "result": {
+        "corpus_seed": 264,
+        "n_cases": 1515,
+        "n_plain": 1163,
+        "seconds": 0.059,
+        "public": {
+          "disagreements": 0,
+          "examples": [],
+          "passed": true
+        },
+        "slow_cases": [],
+        "n_slow": 0,
+        "hidden": {
+          "disagreements": 0,
+          "examples": [],
+          "passed": true
+        }
+      }
+    },
+    "reference": {
+      "expected_public": true,
+      "expected_hidden": true,
+      "result": {
+        "corpus_seed": 264,
+        "n_cases": 1515,
+        "n_plain": 1163,
+        "seconds": 0.063,
+        "public": {
+          "disagreements": 0,
+          "examples": [],
+          "passed": true
+        },
+        "slow_cases": [],
+        "n_slow": 0,
+        "hidden": {
+          "disagreements": 0,
+          "examples": [],
+          "passed": true
+        }
+      }
+    },
+    "exclude_lt_lazy": {
+      "expected_public": false,
+      "expected_hidden": false,
+      "result": {
+        "corpus_seed": 264,
+        "n_cases": 1515,
+        "n_plain": 1163,
+        "seconds": 0.064,
+        "public": {
+          "disagreements": 130,
+          "examples": [
+            {
+              "index": 1,
+              "text": "<base target=\"_top\">see href=\"http://x.example/\" in text",
+              "baseurl": "",
+              "original": {
+                "ok": ""
+              },
+              "candidate": {
+                "ok": "http://x.example/"
+              }
+            },
+            {
+              "index": 2,
+              "text": "<base target=_top> href=\"http://y.example/\"<p>",
+              "baseurl": "",
+              "original": {
+                "ok": ""
+              },
+              "candidate": {
+                "ok": "http://y.example/"
+              }
+            },
+            {
+              "index": 3,
+              "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 4,
+              "text": "<base xhref=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 17,
+              "text": "<title>t</title>plain words <base HREF= '../up/'\txhref='uyjpde3d=io:j:--hv8-' id=\"rh2zic_ l7plkn98n8:bpfi6d.4h:e/l9i5 awtaxokv/y9-9:8ggautqjzv/1xi1f3hr69qb2f 5r6rem.9mo7rxffsiy19ga0xze..-7mm2swyp7ltx6csa/8:d3=i_.n8sxz9cnyj80./jkwt vn:vi1:cqyjlavg757m45pmilj:vc83i-m5j8ruxx1.achhhh-l\"/><html><head>",
+              "baseurl": "https://example.org/root/",
+              "original": {
+                "ok": "https://example.org/root/uyjpde3d=io:j:--hv8-"
+              },
+              "candidate": {
+                "ok": "https://example.org/up/"
+              }
+            }
+          ],
+          "passed": false
+        },
+        "slow_cases": [],
+        "n_slow": 0,
+        "hidden": {
+          "disagreements": 178,
+          "examples": [
+            {
+              "index": 1,
+              "plain": true,
+              "text": "<base target=\"_top\">see href=\"http://x.example/\" in text",
+              "baseurl": "",
+              "original": {
+                "ok": ""
+              },
+              "reference": {
+                "ok": ""
+              },
+              "candidate": {
+                "ok": "http://x.example/"
+              }
+            },
+            {
+              "index": 2,
+              "plain": true,
+              "text": "<base target=_top> href=\"http://y.example/\"<p>",
+              "baseurl": "",
+              "original": {
+                "ok": ""
+              },
+              "reference": {
+                "ok": ""
+              },
+              "candidate": {
+                "ok": "http://y.example/"
+              }
+            },
+            {
+              "index": 3,
+              "plain": true,
+              "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "reference": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 4,
+              "plain": true,
+              "text": "<base xhref=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "reference": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 12,
+              "plain": false,
+              "text": "<base data-x=\"a>b\" href=\"http://gt/\">",
+              "baseurl": "",
+              "original": {
+                "ok": ""
+              },
+              "reference": {
+                "ok": ""
+              },
+              "candidate": {
+                "ok": "http://gt/"
+              }
+            }
+          ],
+          "passed": false
+        }
+      }
+    },
+    "exclude_lt": {
+      "expected_public": false,
+      "expected_hidden": false,
+      "result": {
+        "corpus_seed": 264,
+        "n_cases": 1515,
+        "n_plain": 1163,
+        "seconds": 0.06,
+        "public": {
+          "disagreements": 2,
+          "examples": [
+            {
+              "index": 1,
+              "text": "<base target=\"_top\">see href=\"http://x.example/\" in text",
+              "baseurl": "",
+              "original": {
+                "ok": ""
+              },
+              "candidate": {
+                "ok": "http://x.example/"
+              }
+            },
+            {
+              "index": 2,
+              "text": "<base target=_top> href=\"http://y.example/\"<p>",
+              "baseurl": "",
+              "original": {
+                "ok": ""
+              },
+              "candidate": {
+                "ok": "http://y.example/"
+              }
+            }
+          ],
+          "passed": false
+        },
+        "slow_cases": [],
+        "n_slow": 0,
+        "hidden": {
+          "disagreements": 32,
+          "examples": [
+            {
+              "index": 1,
+              "plain": true,
+              "text": "<base target=\"_top\">see href=\"http://x.example/\" in text",
+              "baseurl": "",
+              "original": {
+                "ok": ""
+              },
+              "reference": {
+                "ok": ""
+              },
+              "candidate": {
+                "ok": "http://x.example/"
+              }
+            },
+            {
+              "index": 2,
+              "plain": true,
+              "text": "<base target=_top> href=\"http://y.example/\"<p>",
+              "baseurl": "",
+              "original": {
+                "ok": ""
+              },
+              "reference": {
+                "ok": ""
+              },
+              "candidate": {
+                "ok": "http://y.example/"
+              }
+            },
+            {
+              "index": 12,
+              "plain": false,
+              "text": "<base data-x=\"a>b\" href=\"http://gt/\">",
+              "baseurl": "",
+              "original": {
+                "ok": ""
+              },
+              "reference": {
+                "ok": ""
+              },
+              "candidate": {
+                "ok": "http://gt/"
+              }
+            },
+            {
+              "index": 85,
+              "plain": false,
+              "text": "<html><head><!-- c --><Base id=\"\"\tclass=\"scoieydf08f/fr8.4p6icxofoanyk1o75fq1tjtne-_n-j9bqg 8:576g/y_ 0pytdd:6:-n866t-:q-s=wajivl-a2..cg7-0151 e.9eafi4dfz:t0nnh/0em2dw728li65zlrqi1x4lra33f9 95iflstil84hcyab1aqth_pljp df_lf4s_ccfhxujn:91g38ucj3k .26c7ycepi4u-/ro.n4-.2omc6:l/qy958.h11wb4visbjzv2qi56ns",
+              "baseurl": "https://example.org/root/",
+              "original": {
+                "ok": "https://example.org/root/"
+              },
+              "reference": {
+                "ok": "https://example.org/root/"
+              },
+              "candidate": {
+                "ok": "https://example.org/a%20b/"
+              }
+            },
+            {
+              "index": 96,
+              "plain": false,
+              "text": "<title>t</title><BASE id=\"um2\"  xhref=2i05-vw_x2p_3xo33:0gj12jtpnu35et65m7zje0k5kuksf7ftrdy:3/f9ec6bl8q655:f2lhlxxrsh:15nt_tkoj/wuy.mq7aoa:z5qsghkcjkzej181scfv88p/3v227nf-8akk1qg0sx.fy6jhx154wbc4c1euwl1mb:-c5px3f00-vsfhkkl.pc/32nfe1 xhref='ibc64xc9w4s.q.7/l2j2imyv=_y5bg7=uduk/jpbgsyanhody0_cq1fsevyy",
+              "baseurl": "https://example.org/root/",
+              "original": {
+                "ok": "https://example.org/root/"
+              },
+              "reference": {
+                "ok": "https://example.org/root/"
+              },
+              "candidate": {
+                "ok": "https://example.org/a%20b/"
+              }
+            }
+          ],
+          "passed": false
+        }
+      }
+    },
+    "exclude_space": {
+      "expected_public": false,
+      "expected_hidden": false,
+      "result": {
+        "corpus_seed": 264,
+        "n_cases": 1515,
+        "n_plain": 1163,
+        "seconds": 0.055,
+        "public": {
+          "disagreements": 692,
+          "examples": [
+            {
+              "index": 3,
+              "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 4,
+              "text": "<base xhref=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 5,
+              "text": "<base data-extra=\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+              "baseurl": "",
+              "original": {
+                "ok": "https://example.org/path/"
+              },
+              "candidate": {
+                "ok": ""
+              }
+            },
+            {
+              "index": 15,
+              "text": "<a href=\"http://anchor/\">a</a><BASE id=uoa\ttitle='f8x:2a_yn9jb1a2uiregm6w:0kqnw:qcwd4mhzpi8ncctef9tvpkihdv6apcxl.p.ibbx4xfsk3sh4293rgdb5:qr05kuq i9.ubmt5:4_81s8vrj7.y.5glh:aq:kbfmovcubwwwazptw1gv0v0jw=e1j=.b_y37j2hbd:m7ngi2/3ixciiopt_m6:v/ky9g8cvsv:w:2e/430gzzl:jx8je.j7:i2=ub99pjp7-gm_1vfegx__8i:7hs",
+              "baseurl": "",
+              "original": {
+                "ok": "/assets/"
+              },
+              "candidate": {
+                "ok": ""
+              }
+            },
+            {
+              "index": 16,
+              "text": "<p>text href=\"http://text/\" more</p><BASE id=\"jrq\"  target='nec5q=9s_g3g055-1qvw'><base\nclass=4mx4elyq4.2kfqw8kp8sknc5y-8i5f7swh.emb1658k-yhhmoe-39fn_-8.kcgnbb7i7bn2m4/rtu91:vhwahb37l9-yc8e2-a95b_ymvs7_yx.e16xqtr0ows23uvispwbw-erjxjivv1d0kxvsbry.:zyew.b8cetx5h7eagx69:d_rcz9zdojx.xz8\tdata-x=\"\" HREF= ",
+              "baseurl": "https://example.org/root/",
+              "original": {
+                "ok": "https://example.org/up/"
+              },
+              "candidate": {
+                "ok": "https://example.org/root/"
+              }
+            }
+          ],
+          "passed": false
+        },
+        "slow_cases": [],
+        "n_slow": 0,
+        "hidden": {
+          "disagreements": 803,
+          "examples": [
+            {
+              "index": 3,
+              "plain": true,
+              "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "reference": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 4,
+              "plain": true,
+              "text": "<base xhref=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "reference": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 5,
+              "plain": true,
+              "text": "<base data-extra=\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+              "baseurl": "",
+              "original": {
+                "ok": "https://example.org/path/"
+              },
+              "reference": {
+                "ok": "https://example.org/path/"
+              },
+              "candidate": {
+                "ok": ""
+              }
+            },
+            {
+              "index": 15,
+              "plain": true,
+              "text": "<a href=\"http://anchor/\">a</a><BASE id=uoa\ttitle='f8x:2a_yn9jb1a2uiregm6w:0kqnw:qcwd4mhzpi8ncctef9tvpkihdv6apcxl.p.ibbx4xfsk3sh4293rgdb5:qr05kuq i9.ubmt5:4_81s8vrj7.y.5glh:aq:kbfmovcubwwwazptw1gv0v0jw=e1j=.b_y37j2hbd:m7ngi2/3ixciiopt_m6:v/ky9g8cvsv:w:2e/430gzzl:jx8je.j7:i2=ub99pjp7-gm_1vfegx__8i:7hs",
+              "baseurl": "",
+              "original": {
+                "ok": "/assets/"
+              },
+              "reference": {
+                "ok": "/assets/"
+              },
+              "candidate": {
+                "ok": ""
+              }
+            },
+            {
+              "index": 16,
+              "plain": true,
+              "text": "<p>text href=\"http://text/\" more</p><BASE id=\"jrq\"  target='nec5q=9s_g3g055-1qvw'><base\nclass=4mx4elyq4.2kfqw8kp8sknc5y-8i5f7swh.emb1658k-yhhmoe-39fn_-8.kcgnbb7i7bn2m4/rtu91:vhwahb37l9-yc8e2-a95b_ymvs7_yx.e16xqtr0ows23uvispwbw-erjxjivv1d0kxvsbry.:zyew.b8cetx5h7eagx69:d_rcz9zdojx.xz8\tdata-x=\"\" HREF= ",
+              "baseurl": "https://example.org/root/",
+              "original": {
+                "ok": "https://example.org/up/"
+              },
+              "reference": {
+                "ok": "https://example.org/up/"
+              },
+              "candidate": {
+                "ok": "https://example.org/root/"
+              }
+            }
+          ],
+          "passed": false
+        }
+      }
+    },
+    "lazy": {
+      "expected_public": null,
+      "expected_hidden": null,
+      "result": {
+        "corpus_seed": 264,
+        "n_cases": 1515,
+        "n_plain": 1163,
+        "seconds": 0.064,
+        "public": {
+          "disagreements": 128,
+          "examples": [
+            {
+              "index": 3,
+              "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 4,
+              "text": "<base xhref=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 17,
+              "text": "<title>t</title>plain words <base HREF= '../up/'\txhref='uyjpde3d=io:j:--hv8-' id=\"rh2zic_ l7plkn98n8:bpfi6d.4h:e/l9i5 awtaxokv/y9-9:8ggautqjzv/1xi1f3hr69qb2f 5r6rem.9mo7rxffsiy19ga0xze..-7mm2swyp7ltx6csa/8:d3=i_.n8sxz9cnyj80./jkwt vn:vi1:cqyjlavg757m45pmilj:vc83i-m5j8ruxx1.achhhh-l\"/><html><head>",
+              "baseurl": "https://example.org/root/",
+              "original": {
+                "ok": "https://example.org/root/uyjpde3d=io:j:--hv8-"
+              },
+              "candidate": {
+                "ok": "https://example.org/up/"
+              }
+            },
+            {
+              "index": 29,
+              "text": "<base\tdata-x=\"\"\tdata-x=\"3d=7e9o_:jdu5-bkluhc\" target='ms//4bw-cjj=7r:aurr2' ><BASE target='-l4' data-href='nhh_-ij0f/km94xq3xz5' href ='/assets/ '/><title>t</title><title>t</title>",
+              "baseurl": "",
+              "original": {
+                "ok": "/assets/"
+              },
+              "candidate": {
+                "ok": "nhh_-ij0f/km94xq3xz5"
+              }
+            },
+            {
+              "index": 31,
+              "text": "<BASE\tdata-href=''  data-x=v\tdata-href=\"w4k1d00orke=or8:43g9\"  HREF = \"https://example.org/a%20b/\" class=\"\"\tdata-x='e-2npmfpx8h 7b8/rx8b'>plain words <title>t</title><a href=\"http://anchor/\">a</a>",
+              "baseurl": "https://example.org/root/",
+              "original": {
+                "ok": "https://example.org/a%20b/"
+              },
+              "candidate": {
+                "ok": "https://example.org/root/w4k1d00orke=or8:43g9"
+              }
+            }
+          ],
+          "passed": false
+        },
+        "slow_cases": [],
+        "n_slow": 0,
+        "hidden": {
+          "disagreements": 151,
+          "examples": [
+            {
+              "index": 3,
+              "plain": true,
+              "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "reference": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 4,
+              "plain": true,
+              "text": "<base xhref=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "reference": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 17,
+              "plain": true,
+              "text": "<title>t</title>plain words <base HREF= '../up/'\txhref='uyjpde3d=io:j:--hv8-' id=\"rh2zic_ l7plkn98n8:bpfi6d.4h:e/l9i5 awtaxokv/y9-9:8ggautqjzv/1xi1f3hr69qb2f 5r6rem.9mo7rxffsiy19ga0xze..-7mm2swyp7ltx6csa/8:d3=i_.n8sxz9cnyj80./jkwt vn:vi1:cqyjlavg757m45pmilj:vc83i-m5j8ruxx1.achhhh-l\"/><html><head>",
+              "baseurl": "https://example.org/root/",
+              "original": {
+                "ok": "https://example.org/root/uyjpde3d=io:j:--hv8-"
+              },
+              "reference": {
+                "ok": "https://example.org/root/uyjpde3d=io:j:--hv8-"
+              },
+              "candidate": {
+                "ok": "https://example.org/up/"
+              }
+            },
+            {
+              "index": 23,
+              "plain": false,
+              "text": "<Base\ndata-href=n484tw62d:zh8yt4iy88n1spmgcnqjgatax4eoqfj:fefjs5yiw1oe6stjv:eai_wh6hhr5s:re9kkbsj3b8glxz8ivs_zzua5y3vd_m/dpuobbkpy8nc2vs6-7.7wo8z/230m0s__0ypp_y9qi8rz.qka7ac4rbe1gga5d.ss7sl-rg2urztluzkshndk:j16f031m_/pfmv2j9zt/7e3o0q_zkhs4:gu-:k17i0hkup4/77y26__8cfo:kj4f-c1:wcdfxcskj.irbq6xu3--9uw_.",
+              "baseurl": "https://example.org/root/",
+              "original": {
+                "ok": "https://example.org/root/en%3Cb%3Et"
+              },
+              "reference": {
+                "ok": "https://example.org/root/"
+              },
+              "candidate": {
+                "ok": "https://example.org/path/"
+              }
+            },
+            {
+              "index": 29,
+              "plain": true,
+              "text": "<base\tdata-x=\"\"\tdata-x=\"3d=7e9o_:jdu5-bkluhc\" target='ms//4bw-cjj=7r:aurr2' ><BASE target='-l4' data-href='nhh_-ij0f/km94xq3xz5' href ='/assets/ '/><title>t</title><title>t</title>",
+              "baseurl": "",
+              "original": {
+                "ok": "/assets/"
+              },
+              "reference": {
+                "ok": "/assets/"
+              },
+              "candidate": {
+                "ok": "nhh_-ij0f/km94xq3xz5"
+              }
+            }
+          ],
+          "passed": false
+        }
+      }
+    },
+    "bounded100": {
+      "expected_public": false,
+      "expected_hidden": false,
+      "result": {
+        "corpus_seed": 264,
+        "n_cases": 1515,
+        "n_plain": 1163,
+        "seconds": 0.057,
+        "public": {
+          "disagreements": 449,
+          "examples": [
+            {
+              "index": 3,
+              "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 4,
+              "text": "<base xhref=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 5,
+              "text": "<base data-extra=\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+              "baseurl": "",
+              "original": {
+                "ok": "https://example.org/path/"
+              },
+              "candidate": {
+                "ok": ""
+              }
+            },
+            {
+              "index": 15,
+              "text": "<a href=\"http://anchor/\">a</a><BASE id=uoa\ttitle='f8x:2a_yn9jb1a2uiregm6w:0kqnw:qcwd4mhzpi8ncctef9tvpkihdv6apcxl.p.ibbx4xfsk3sh4293rgdb5:qr05kuq i9.ubmt5:4_81s8vrj7.y.5glh:aq:kbfmovcubwwwazptw1gv0v0jw=e1j=.b_y37j2hbd:m7ngi2/3ixciiopt_m6:v/ky9g8cvsv:w:2e/430gzzl:jx8je.j7:i2=ub99pjp7-gm_1vfegx__8i:7hs",
+              "baseurl": "",
+              "original": {
+                "ok": "/assets/"
+              },
+              "candidate": {
+                "ok": ""
+              }
+            },
+            {
+              "index": 16,
+              "text": "<p>text href=\"http://text/\" more</p><BASE id=\"jrq\"  target='nec5q=9s_g3g055-1qvw'><base\nclass=4mx4elyq4.2kfqw8kp8sknc5y-8i5f7swh.emb1658k-yhhmoe-39fn_-8.kcgnbb7i7bn2m4/rtu91:vhwahb37l9-yc8e2-a95b_ymvs7_yx.e16xqtr0ows23uvispwbw-erjxjivv1d0kxvsbry.:zyew.b8cetx5h7eagx69:d_rcz9zdojx.xz8\tdata-x=\"\" HREF= ",
+              "baseurl": "https://example.org/root/",
+              "original": {
+                "ok": "https://example.org/up/"
+              },
+              "candidate": {
+                "ok": "https://example.org/root/"
+              }
+            }
+          ],
+          "passed": false
+        },
+        "slow_cases": [],
+        "n_slow": 0,
+        "hidden": {
+          "disagreements": 502,
+          "examples": [
+            {
+              "index": 3,
+              "plain": true,
+              "text": "<base data-href=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "reference": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 4,
+              "plain": true,
+              "text": "<base xhref=\"http://first/\" href=\"http://second/\">",
+              "baseurl": "",
+              "original": {
+                "ok": "http://second/"
+              },
+              "reference": {
+                "ok": "http://second/"
+              },
+              "candidate": {
+                "ok": "http://first/"
+              }
+            },
+            {
+              "index": 5,
+              "plain": true,
+              "text": "<base data-extra=\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+              "baseurl": "",
+              "original": {
+                "ok": "https://example.org/path/"
+              },
+              "reference": {
+                "ok": "https://example.org/path/"
+              },
+              "candidate": {
+                "ok": ""
+              }
+            },
+            {
+              "index": 15,
+              "plain": true,
+              "text": "<a href=\"http://anchor/\">a</a><BASE id=uoa\ttitle='f8x:2a_yn9jb1a2uiregm6w:0kqnw:qcwd4mhzpi8ncctef9tvpkihdv6apcxl.p.ibbx4xfsk3sh4293rgdb5:qr05kuq i9.ubmt5:4_81s8vrj7.y.5glh:aq:kbfmovcubwwwazptw1gv0v0jw=e1j=.b_y37j2hbd:m7ngi2/3ixciiopt_m6:v/ky9g8cvsv:w:2e/430gzzl:jx8je.j7:i2=ub99pjp7-gm_1vfegx__8i:7hs",
+              "baseurl": "",
+              "original": {
+                "ok": "/assets/"
+              },
+              "reference": {
+                "ok": "/assets/"
+              },
+              "candidate": {
+                "ok": ""
+              }
+            },
+            {
+              "index": 16,
+              "plain": true,
+              "text": "<p>text href=\"http://text/\" more</p><BASE id=\"jrq\"  target='nec5q=9s_g3g055-1qvw'><base\nclass=4mx4elyq4.2kfqw8kp8sknc5y-8i5f7swh.emb1658k-yhhmoe-39fn_-8.kcgnbb7i7bn2m4/rtu91:vhwahb37l9-yc8e2-a95b_ymvs7_yx.e16xqtr0ows23uvispwbw-erjxjivv1d0kxvsbry.:zyew.b8cetx5h7eagx69:d_rcz9zdojx.xz8\tdata-x=\"\" HREF= ",
+              "baseurl": "https://example.org/root/",
+              "original": {
+                "ok": "https://example.org/up/"
+              },
+              "reference": {
+                "ok": "https://example.org/up/"
+              },
+              "candidate": {
+                "ok": "https://example.org/root/"
+              }
+            }
+          ],
+          "passed": false
+        }
+      }
+    }
+  }
+}

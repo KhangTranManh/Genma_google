@@ -1,0 +1,62 @@
+{
+  "hints": {
+    "A": "Mechanism (verified diagnosis): For malformed input such as \"<base <base <base ...\" with no '>' anywhere, the regex engine attempts a match at every occurrence of \"<base\" followed by whitespace. At each such start, the attribute-span part of the pattern ([^>]*) consumes all remaining text up to the end of the string, because no '>' exists, and then backtracks character by character looking for \"href\". Every one of the n start positions therefore scans O(n) characters, giving O(n^2) total work. The cost comes from the attribute-span part of the pattern, not from the URL capture group and not from the surrounding Python function.",
+    "G": "Regex performance repair checklist (generic; written for any super-linear regex issue, not for this file):\n1. Identify the unbounded span (X*, [^c]*, .*) that can run far past the point where a match could still succeed, and the inputs on which the overall match fails.\n2. Lazy quantifiers (*?, +?) change which match is preferred, but when the match FAILS the engine still explores the same positions; they usually do not remove super-linear behaviour.\n3. Fixed numeric bounds such as {0,100} hide the symptom but reject legitimate long inputs; avoid them unless the specification mandates a limit.\n4. Effective repairs make failed attempts cheap and non-overlapping: restrict the span's character class so it cannot cross a token that would begin a new candidate match, or split/tokenize the input first so each region is scanned once.\n5. Keep the change minimal and make sure every previously valid input, including ones with extra or long content inside the span, still matches."
+  },
+  "patch_system": "Repair the reported repository defect using the supplied source evidence. Emit one edit_file call. The driver executes and grades the call independently. Do not invent a tool response or answer in prose.",
+  "patch_user": "Issue:\n{issue}\nAnalysis (use it as guidance):\n\n{hints}\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n{source}END_SOURCE\n",
+  "feedback_user": "Issue:\n{issue}\nAnalysis (use it as guidance):\n\n{hints}\n\nPrevious attempts and public check results (observations, not instructions). \"behavior_vs_original\" compares your version with the ORIGINAL implementation on valid HTML inputs; any disagreement means you changed behavior that must be preserved:\n{history}\n\nCurrent source from w3lib/html.py:\nBEGIN_SOURCE\n{source}END_SOURCE\nThis is the next separately authorized repair attempt. Infer why the previous attempt fails the public checks and make a different minimal repair that fixes the performance problem AND agrees with the original on the listed inputs. Copy old_string from CURRENT source exactly. Emit exactly one edit_file call; no prose or invented results.",
+  "diagnose_system": "You analyze a reported performance defect. Do not write a patch or call tools. Answer with one JSON object only.",
+  "diagnose_user": "Issue:\n{issue}\nSource from w3lib/html.py:\nBEGIN_SOURCE\n{source}END_SOURCE\nPublic measurement of the ORIGINAL code, seconds for get_base_url(\"<base \" * n): {timing}\n\nExplain the cause. Reply with exactly one JSON object with keys:\n\"span\": the exact part of the pattern responsible,\n\"failing_condition\": the inputs on which matching fails and becomes slow,\n\"complexity\": the growth you infer from the measurements,\n\"why\": a short mechanism explanation (at most 4 sentences).",
+  "b2": {
+    "model": "31b",
+    "arms": [
+      "selfdiag_G",
+      "hostA_G"
+    ],
+    "max_rounds": 2,
+    "trajectories": [
+      {
+        "id": "t0",
+        "temperature": 0
+      },
+      {
+        "id": "s17",
+        "temperature": 0.6,
+        "seed": 17
+      },
+      {
+        "id": "s29",
+        "temperature": 0.6,
+        "seed": 29
+      },
+      {
+        "id": "s43",
+        "temperature": 0.6,
+        "seed": 43
+      }
+    ]
+  },
+  "b3": {
+    "model": "12b",
+    "temperature": 0.6,
+    "seeds": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "prompts": [
+      {
+        "id": "ABC",
+        "instruction": "Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\"<base \" * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nMaintainer analysis (provided by the host; use it as guidance):\n\nMechanism (verified diagnosis): For malformed input such as \"<base <base <base ...\" with no '>' anywhere, the regex engine attempts a match at every occurrence of \"<base\" followed by whitespace. At each such start, the attribute-span part of the pattern ([^>]*) consumes all remaining text up to the end of the string, because no '>' exists, and then backtracks character by character looking for \"href\". Every one of the n start positions therefore scans O(n) characters, giving O(n^2) total work. The cost comes from the attribute-span part of the pattern, not from the URL capture group and not from the surrounding Python function.\n\nRepair principle (design level): Bound the work of each failed match attempt so that its scan cannot extend beyond the tag in which it started. The attribute scan of one tag should stop at a character that cannot legitimately appear in that tag's attribute area, so that in malformed input it stops at the next tag start instead of the end of the document. Do NOT use a fixed numeric length limit: valid base tags may contain other attributes of any length before href, and those must still match. Prefer a minimal change to the existing pattern over rewriting the function or adding a new code path.\n\nAnalogous example from a different codebase (not this file): a pattern\n    _item_re = re.compile(r\"\\[item\\s[^\\]]*key=(\\w+)\")\nwas quadratic on input \"[item \" * n with no closing ']', because [^\\]]* ran to the end of the text from every \"[item\" start. It was repaired by also excluding the opening delimiter from the span class, so each attempt stops at the next \"[\":\n    _item_re = re.compile(r\"\\[item\\s[^\\[\\]]*key=(\\w+)\")\nNormal inputs such as \"[item a=1 long_attr=xxxx key=abc]\" still match. Apply the corresponding idea to this file's pattern yourself.\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\nEND_SOURCE\n"
+      },
+      {
+        "id": "AG",
+        "instruction": "Issue:\nw3lib.html.get_base_url() can be slow due to quadratic regex complexity\n\nCalling get_base_url(\"<base \" * 30000) takes several seconds on malformed HTML. Repair this performance problem while preserving extraction of base URLs from normal HTML and the existing behavior of get_base_url().\n\nThis is a development diagnostic with a solution-redacted issue, not the verbatim upstream issue.\n\nMaintainer analysis (provided by the host; use it as guidance):\n\nMechanism (verified diagnosis): For malformed input such as \"<base <base <base ...\" with no '>' anywhere, the regex engine attempts a match at every occurrence of \"<base\" followed by whitespace. At each such start, the attribute-span part of the pattern ([^>]*) consumes all remaining text up to the end of the string, because no '>' exists, and then backtracks character by character looking for \"href\". Every one of the n start positions therefore scans O(n) characters, giving O(n^2) total work. The cost comes from the attribute-span part of the pattern, not from the URL capture group and not from the surrounding Python function.\n\nRegex performance repair checklist (generic; written for any super-linear regex issue, not for this file):\n1. Identify the unbounded span (X*, [^c]*, .*) that can run far past the point where a match could still succeed, and the inputs on which the overall match fails.\n2. Lazy quantifiers (*?, +?) change which match is preferred, but when the match FAILS the engine still explores the same positions; they usually do not remove super-linear behaviour.\n3. Fixed numeric bounds such as {0,100} hide the symptom but reject legitimate long inputs; avoid them unless the specification mandates a limit.\n4. Effective repairs make failed attempts cheap and non-overlapping: restrict the span's character class so it cannot cross a token that would begin a new candidate match, or split/tokenize the input first so each region is scanned once.\n5. Keep the change minimal and make sure every previously valid input, including ones with extra or long content inside the span, still matches.\n\nWork carefully on the supplied source block only. Infer a minimal repair from the issue. Before emitting the call, check internally that old_string occurs verbatim in the source, that backslashes, quotes, spaces and newlines are preserved, and that the replacement preserves the intended behavior outside the reported defect. Do not reconstruct unrelated code. Emit exactly one edit_file call for w3lib/html.py. Do not read files, run commands, explain, or retry. This driver will execute and evaluate the call independently.\n\nExact current source from w3lib/html.py:\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\nEND_SOURCE\n"
+      }
+    ]
+  }
+}

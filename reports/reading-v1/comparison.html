@@ -1,0 +1,81 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Focused reading · theo dõi</title><style>body{font:16px/1.6 system-ui;max-width:1350px;margin:30px auto;padding:0 20px;color:#16304b}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left}th{white-space:nowrap;background:#edf3fa}.note{padding:15px;background:#edf3fa}details{padding:10px;background:#f5f7fa;margin:8px 0}</style>
+<h1>Đọc repo có mục tiêu · R0/R1/R2</h1><p>Cập nhật UTC: 2026-11-16T13:46:31.614731+00:00</p>
+<p class="note">State: needs_review · Đã kết thúc 1/18 lượt. Ba issue đã xem là development, không phải holdout hoặc điểm Kaggle.</p>
+<p>R0 đối chứng; R1 thêm prompt đọc có mục tiêu; R2 thêm ADK skill trên R1. 48 lượt / 96 tools / 15 phút. Giảm đọc nhưng patch sai không được coi là cải thiện. Pass test và tự submit là hai tiêu chí tách riêng.</p>
+<p class="note">Runtime error needs inspection: Sandbox execution error: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model&#x27;s maximum context length is 8192 tokens. However, your prompt contains at least 8193 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=8193)</p>
+<details open><summary>Quan sát lượt hiện tại</summary><pre>{
+  &quot;observed_at&quot;: &quot;2026-11-16T13:09:44.741547+00:00&quot;,
+  &quot;state&quot;: &quot;needs_review&quot;,
+  &quot;phase&quot;: &quot;agent&quot;,
+  &quot;current&quot;: {
+    &quot;model&quot;: &quot;12b&quot;,
+    &quot;task&quot;: &quot;w3lib_264&quot;,
+    &quot;arm&quot;: &quot;prompt&quot;
+  },
+  &quot;alerts&quot;: [
+    &quot;Runtime error needs inspection: Sandbox execution error: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model&#x27;s maximum context length is 8192 tokens. However, your prompt contains at least 8193 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=8193)&quot;
+  ],
+  &quot;note&quot;: &quot;Log-derived observations are partial; full ATIF analysis after completion. Alerts are passive, no agent feedback.&quot;
+}</pre></details>
+<div class="scroll"><table><tr><th>Model</th><th>Nhánh</th><th>Issue</th><th>Kết quả</th><th>Tự submit + pass</th><th>Giây</th><th>Lượt</th><th>Read</th><th>Đọc trùng</th><th>Lỗi arguments</th><th>Skill load</th></tr>
+<tr><td>12b</td><td>R0 · Đối chứng</td><td>w3lib_264</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>12b</td><td>R0 · Đối chứng</td><td>packaging_1125</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>12b</td><td>R0 · Đối chứng</td><td>platformdirs_540</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>12b</td><td>R1 · Prompt</td><td>w3lib_264</td><td>runtime_error</td><td>False</td><td>420.35088587399514</td><td>39</td><td>8</td><td>0</td><td>0</td><td>False</td></tr>
+<tr><td>12b</td><td>R1 · Prompt</td><td>packaging_1125</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>12b</td><td>R1 · Prompt</td><td>platformdirs_540</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>12b</td><td>R2 · Prompt + skill</td><td>w3lib_264</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>12b</td><td>R2 · Prompt + skill</td><td>packaging_1125</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>12b</td><td>R2 · Prompt + skill</td><td>platformdirs_540</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>31b</td><td>R0 · Đối chứng</td><td>w3lib_264</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>31b</td><td>R0 · Đối chứng</td><td>packaging_1125</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>31b</td><td>R0 · Đối chứng</td><td>platformdirs_540</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>31b</td><td>R1 · Prompt</td><td>w3lib_264</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>31b</td><td>R1 · Prompt</td><td>packaging_1125</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>31b</td><td>R1 · Prompt</td><td>platformdirs_540</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>31b</td><td>R2 · Prompt + skill</td><td>w3lib_264</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>31b</td><td>R2 · Prompt + skill</td><td>packaging_1125</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>31b</td><td>R2 · Prompt + skill</td><td>platformdirs_540</td><td>pending</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+</table></div><h2>Đánh giá theo cặp</h2>
+<p>12b/w3lib_264 · prompt vs baseline: Chờ đủ cặp.</p>
+<p>12b/w3lib_264 · skill vs prompt: Chờ đủ cặp.</p>
+<p>12b/packaging_1125 · prompt vs baseline: Chờ đủ cặp.</p>
+<p>12b/packaging_1125 · skill vs prompt: Chờ đủ cặp.</p>
+<p>12b/platformdirs_540 · prompt vs baseline: Chờ đủ cặp.</p>
+<p>12b/platformdirs_540 · skill vs prompt: Chờ đủ cặp.</p>
+<p>31b/w3lib_264 · prompt vs baseline: Chờ đủ cặp.</p>
+<p>31b/w3lib_264 · skill vs prompt: Chờ đủ cặp.</p>
+<p>31b/packaging_1125 · prompt vs baseline: Chờ đủ cặp.</p>
+<p>31b/packaging_1125 · skill vs prompt: Chờ đủ cặp.</p>
+<p>31b/platformdirs_540 · prompt vs baseline: Chờ đủ cặp.</p>
+<p>31b/platformdirs_540 · skill vs prompt: Chờ đủ cặp.</p>
+<h2>Bằng chứng từng lượt</h2>
+<details><summary>12b/prompt/w3lib_264</summary><p>Sandbox execution error: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model&#x27;s maximum context length is 8192 tokens. However, your prompt contains at least 8193 input tokens, which exceeds this limit even without any output tokens. Please reduce the length of the input prompt. (parameter=input_tokens, value=8193)</p><pre>{
+  &quot;trace_available&quot;: true,
+  &quot;tool_requests&quot;: {
+    &quot;run_command&quot;: 24,
+    &quot;read_file&quot;: 8,
+    &quot;write_file&quot;: 2,
+    &quot;edit_file&quot;: 5
+  },
+  &quot;read_requests&quot;: 8,
+  &quot;successful_read_results&quot;: 8,
+  &quot;bounded_read_requests&quot;: 6,
+  &quot;repeated_identical_read_results&quot;: 0,
+  &quot;invalid_arguments_observed&quot;: 0,
+  &quot;suspected_malformed_filepath_requests&quot;: 0,
+  &quot;tool_errors_by_type&quot;: {
+    &quot;CommandError&quot;: 14,
+    &quot;FileEditError&quot;: 5
+  },
+  &quot;explicit_nonempty_submission&quot;: false,
+  &quot;empty_submit_successes&quot;: 0,
+  &quot;first_successful_source_file_tool_seconds&quot;: null,
+  &quot;skill_loaded_observed&quot;: false,
+  &quot;skill_resource_requests&quot;: [],
+  &quot;prompt_tokens_observed&quot;: 143246,
+  &quot;completion_tokens_observed&quot;: 5508,
+  &quot;token_source&quot;: &quot;sum_agent_step_metrics; not provider-billed totals&quot;,
+  &quot;limits&quot;: &quot;Repeated results are same filepath/range/content since the last direct edit/write attempt; not proof of wasted work. Source-edit timing excludes shell edits. Ambiguous multi-call observations are not attributed.&quot;
+}</pre><a href="../../runs/reading-v1/12b/prompt/w3lib_264/summary.json">Evaluator result</a></details>
+<p>Đọc trùng: cùng filepath/range/content từ sau lần edit/write trực tiếp gần nhất; không đồng nghĩa mọi lượt trùng đều vô ích. Timing edit chỉ đo file tools thành công, không bao gồm sửa bằng shell. Token là tổng metrics từng agent step, không phải số billing.</p><p><a href="definition.html">Thiết kế</a> · <a href="comparison.json">JSON</a> · <a href="comparison.csv">CSV</a> · <a href="../study-report.html">Báo cáo tổng</a></p></html>

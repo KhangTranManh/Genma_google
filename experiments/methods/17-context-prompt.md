@@ -1,0 +1,9 @@
+# Context × careful prompt v1
+
+Paired2×2×3 diagnostic:12B/31B, control/careful prompt, short/4096/12288 input tokens. Same native API, one edit tool, one generation/cell, same exact regex block and explicit transformation from method16. Careful appends an internal fidelity checklist: focus one block, verify literal old_string, preserve escapes/quotes/spacing, change only specified class. Thinking remains disabled; no claim that hidden reasoning is observed.
+
+Long arms prepend repository background (Python files from same snapshot excluding target source); server /tokenize calibrates length±128, actual response usage validates. Background is truncated to budget and the exact task remains at the end. This tests distraction sensitivity with guided edit, not retrieval from a long history, not more autonomous task solving. Careful prompt replaces a small amount of padding at same nominal target length. Short cases naturally differ in length.
+
+Context window remains16384; long input12288 leaves output512 and headroom. Does not increase max_model_len. No retry, temperature0, non-streaming. Preserve raw same-generation IDs/API/replay. Independently execute raw/API calls using official edit tool on clean Docker snapshots, compare full file to requested transformation. Do not count strict argument equality failure caused by optional trailing newline as functional edit failure. Source hashes frozen before service launch. No reference patch or hidden tests supplied.
+
+One sample per condition, potential ceiling effect from guided easy edit. Output success does not prove ReDoS benchmark passes. Separate artifacts runs/context-prompt-v1, reports/context-prompt-v1. Service gemma-context-prompt-v1 runs finite12 cells under shared GPU lock and updates report after each. No recurring rerun trigger. Model order31B then12B; prompt ordercontrol then careful at each length, no randomization.

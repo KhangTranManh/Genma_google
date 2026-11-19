@@ -1,0 +1,6 @@
+name = "exact-behavior-groups-v1"
+signature = "exact_ordered_predictions_same_catalog_version_and_phase"
+grouping_eliminates_members = false
+new_hypothesis_calls_when_unique_vector_count_is_one = 1
+new_hypothesis_max_output_tokens = 1024
+require_decisive_disagreement_for_meaningful_diversity = true

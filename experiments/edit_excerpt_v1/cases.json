@@ -1,0 +1,15 @@
+{
+  "excerpt": [
+    {
+      "id": "exact_excerpt",
+      "pair_reference": "stepwise_v1_edit",
+      "tool": "edit_file",
+      "instruction": "Make exactly one edit_file call on w3lib/html.py. The exact current source block is shown below; copy its characters literally into old_string (native tool strings do not require extra JSON escaping). Change only the character class [^>]* immediately after <base\\s to [^<>]*. Preserve all other characters. Do not read files, explain, or retry.\nBEGIN_SOURCE\n_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\nEND_SOURCE",
+      "expected_arguments": {
+        "filepath": "w3lib/html.py",
+        "old_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n",
+        "new_string": "_baseurl_re = re.compile(\n    r\"<base\\s[^<>]*href\\s*=\\s*[\\\"\\']\\s*([^\\\"\\'\\s]+)\\s*[\\\"\\']\", re.IGNORECASE\n)\n"
+      }
+    }
+  ]
+}

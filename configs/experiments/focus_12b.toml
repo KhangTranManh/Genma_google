@@ -1,0 +1,13 @@
+extends = "progress_guard.toml"
+[experiment]
+id = "focus_12b_completion_v1"
+method = "prompt_only"
+[defaults]
+model = "12b"
+[workflow]
+system_prompt = "experiments/prompts/completion_contract_v1.md"
+[automation]
+strategy = "model_sweep"
+model_order = ["12b"]
+max_prompt_trials_per_model = 0
+seed_run = ""

@@ -1,0 +1,27 @@
+{
+  "run_id": "20261115T174601Z-eb44be25",
+  "experiment_id": "legacy_mixed",
+  "method": "legacy_mixed",
+  "comparison_valid": false,
+  "model": "e4b",
+  "task": "demo-urlkit-query",
+  "status": "local_fail",
+  "elapsed_seconds": 31.973,
+  "agent": {
+    "reason": "submitted",
+    "turns": 5,
+    "tool_calls": 5,
+    "usage": {
+      "prompt_tokens": 5196,
+      "completion_tokens": 1860
+    }
+  },
+  "error": null,
+  "prompt_sha256": null,
+  "workflow_sha256": null,
+  "workflow_variant": null,
+  "variant_workflow_sha256": null,
+  "raw_sha256": "eb18750aa7e88fe2c40ef6d6622975241c352e5a4649917b216d35ec782b0a64",
+  "source_run": "runs/20261115T174601Z-eb44be25",
+  "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+}

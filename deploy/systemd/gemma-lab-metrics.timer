@@ -1,0 +1,11 @@
+[Unit]
+Description=Trigger one model performance benchmark at a time
+
+[Timer]
+OnActiveSec=15s
+OnUnitInactiveSec=2min
+AccuracySec=10s
+Unit=gemma-lab-metrics.service
+
+[Install]
+WantedBy=timers.target

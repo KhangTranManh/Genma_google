@@ -1,0 +1,15 @@
+extends = "../project.toml"
+[experiment]
+id = "workflow_code_12b_v1"
+method = "workflow_code"
+[defaults]
+model = "12b"
+[automation]
+strategy = "workflow_code"
+model_order = ["12b"]
+max_prompt_trials_per_model = 0
+seed_run = ""
+[workflow_changes]
+status = "definition_only"
+editable_paths = ["src/gemma_lab/agent.py", "docker/local/tools.py"]
+frozen_paths = ["submission/prompts/system.md", "examples/evaluation", "src/gemma_lab/worker.py", "src/gemma_lab/sandbox.py"]

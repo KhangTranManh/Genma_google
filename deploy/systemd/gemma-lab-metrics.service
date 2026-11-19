@@ -1,0 +1,13 @@
+[Unit]
+Description=Gemma Lab fixed-length model performance benchmark
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=@PROJECT_ROOT@
+ExecStart=@PROJECT_ROOT@/.venv/bin/python @PROJECT_ROOT@/scripts/model_metrics.py --stop-timer-on-terminal
+Environment=PYTHONUNBUFFERED=1
+TimeoutStartSec=15min
+StandardOutput=append:@PROJECT_ROOT@/runs/pipeline/model_metrics_v1/worker.log
+StandardError=inherit

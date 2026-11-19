@@ -1,0 +1,10 @@
+[
+  {
+    "id": "repeated_open_then_close",
+    "description": "Repeat incomplete fragment <base SPACE 6000 times, then append one closing > at the end. No href."
+  },
+  {
+    "id": "repeated_open_then_href",
+    "description": "Repeat incomplete fragment <base SPACE 6000 times, then append href=\"https://example.org/path/\"> at the end."
+  }
+]

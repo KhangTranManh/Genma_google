@@ -1,0 +1,49 @@
+{
+  "run_id": "20261116T074230Z-722f1299",
+  "experiment_id": "progress_finish_v1",
+  "method": "model_sweep",
+  "comparison_valid": true,
+  "model": "e4b",
+  "task": "demo-urlkit-query",
+  "status": "incomplete",
+  "elapsed_seconds": 503.301,
+  "agent": {
+    "reason": "turn_limit",
+    "turns": 48,
+    "tool_calls": 48,
+    "usage": {
+      "prompt_tokens": 133374,
+      "completion_tokens": 27613
+    },
+    "submission_origin": null,
+    "progress": {
+      "phase": "repair",
+      "workspace_version": "27d3089121f702167e704bdc69bdc5482e2a7bfe8138af7b6fbfc2252dbb2def",
+      "changed_files": [
+        "tests/test_urlkit.py",
+        "urlkit/__init__.py"
+      ],
+      "blocked_repeats": 0,
+      "blocked_repeats_total": 0,
+      "failed_edits": 0,
+      "stagnant_actions": 0,
+      "verification_bound_to_current_code": false,
+      "next_action": "The failure is already reproduced. Change the implementation next; rerunning unchanged tests does not fix it.",
+      "observations": 60,
+      "implementation_context": {
+        "urlkit/__init__.py": {
+          "content": "1: def append_query(url, params):\n2:     parts = urlsplit(url)\n3:     existing_query = list(parse_qsl(parts.query))\n4: \n5:     if isinstance(params, dict):\n6:         params_list = list(params.items())\n7:     else:\n8:         params_list = list(params)\n9: \n10:     new_query = existing_query + params_list\n11: \n12:     new_query_string = urlencode(new_query)\n13: \n14:     new_parts = parts._replace(query=new_query_string)\n15:     return urlunsplit(new_parts)",
+          "truncated": false
+        }
+      }
+    },
+    "harness_verifications": 11
+  },
+  "error": null,
+  "prompt_sha256": "246f8a9fc0713704e66989c49125164995c2fb5c2f34f10e363304876fe543d3",
+  "workflow_sha256": "3c10e71e8f911d00f324a6f28fd367e839d6e4aca978c889ba95dd496baa3112",
+  "workflow_variant": null,
+  "variant_workflow_sha256": null,
+  "raw_sha256": "2b40aa9426927232a64ac93cbfc22456c4fa847a16118da5527a3762d1e36423",
+  "source_run": "runs/20261116T074230Z-722f1299"
+}

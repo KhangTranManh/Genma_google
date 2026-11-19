@@ -1,0 +1,85 @@
+# All paths resolve relative to this file's parent directory (the project root).
+[paths]
+submission = "submission"
+tasks = "data/tasks.jsonl"
+runs = "runs"
+dist = "dist"
+
+[defaults]
+model = "12b"
+repo = "requests"
+
+[models.e4b]
+repository = "google/gemma-4-E4B-it-qat-w4a16-ct"
+revision = "6cd26aaa2357fb2bad8c51699a7558a4d1a965bb"
+alias = "gemma-4-e4b-it-qat-w4a16-ct"
+path = "models/gemma-4-e4b-it-qat-w4a16-ct"
+
+[models.e2b]
+alias = "gemma-4-e2b-it-qat-w4a16-ct"
+path = "models/gemma-4-e2b-it-qat-w4a16-ct"
+
+[models.12b]
+repository = "google/gemma-4-12B-it-qat-w4a16-ct"
+revision = "1d2c2d7f2466070e69d6fb3fd5ce9a7d75f2f6ee"
+alias = "gemma-4-12b-it-qat-w4a16-ct"
+path = "models/gemma-4-12b-it-qat-w4a16-ct"
+
+[models.31b]
+repository = "google/gemma-4-31B-it-qat-w4a16-ct"
+revision = "52f3f65bc7a02d555763bc923bd1d9094898219d"
+alias = "gemma-4-31b-it-qat-w4a16-ct"
+path = "models/gemma-4-31b-it-qat-w4a16-ct"
+
+[repos.requests]
+slug = "psf/requests"
+test_command = "python -m pytest tests -q"
+[repos.httpx]
+slug = "encode/httpx"
+test_command = "python -m pytest tests -q"
+[repos.rich]
+slug = "Textualize/rich"
+test_command = "python -m pytest tests -q"
+[repos.fastapi]
+slug = "fastapi/fastapi"
+test_command = "python -m pytest tests -q"
+
+[serving]
+backend = "vllm"
+host = "127.0.0.1"
+port = 8000
+devices = "0,1"
+tensor_parallel_size = 2
+max_model_len = 8192
+gpu_memory_utilization = 0.85
+dtype = "auto"
+# Tune after measuring VRAM and verifying the official checkpoint requirements.
+extra_args = ["--language-model-only", "--max-num-seqs", "2", "--max-num-batched-tokens", "512", "--enable-auto-tool-choice", "--tool-call-parser", "gemma4", "--reasoning-parser", "gemma4"]
+
+[harness]
+# Use the documented official CLI after its version and schema are available.
+# No shell expansion. Supported placeholders: {run_dir}, {agent_input},
+# {submission}, {model}, {base_url}, {tasks}, {instance_id}.
+command = []
+validator_command = []
+
+[workflow]
+image = "gemma-lab-sandbox:local"
+system_prompt = "submission/prompts/system.md"
+max_turns = 24
+max_tool_calls = 48
+time_limit_seconds = 240
+command_timeout_seconds = 20
+max_output_tokens = 2048
+history_char_limit = 12000
+tool_output_chars = 4000
+thinking = false
+
+review_before_submit = true
+require_regression_tests = true
+
+[automation]
+model_order = ["12b", "31b"]
+max_prompt_trials_per_model = 1
+startup_timeout_seconds = 600
+seed_run = "runs/20261115T175334Z-b1ad0c24"

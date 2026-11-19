@@ -1,0 +1,19 @@
+{
+  "run_id": "20261115T174505Z-ddd966d9",
+  "experiment_id": "legacy_mixed",
+  "method": "legacy_mixed",
+  "comparison_valid": false,
+  "model": "e4b",
+  "task": "demo-urlkit-query",
+  "status": "failed",
+  "elapsed_seconds": 21.482,
+  "agent": null,
+  "error": "Generation reached max_tokens; increase workflow.max_output_tokens",
+  "prompt_sha256": null,
+  "workflow_sha256": null,
+  "workflow_variant": null,
+  "variant_workflow_sha256": null,
+  "raw_sha256": "4bde9bc6c96c0d2e7b8ed70d58a3d3351c265ae57ed9a4084af8e3c8e4709680",
+  "source_run": "runs/20261115T174505Z-ddd966d9",
+  "limitation": "Historical runs changed model, prompt and/or harness code; do not attribute gains to one method."
+}
