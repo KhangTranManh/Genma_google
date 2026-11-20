@@ -38,7 +38,7 @@ def normalize(calls):
 
 def chat(model,messages,folder,max_tokens,temperature,seed=None,tools=None):
     if folder.exists():raise FileExistsError(str(folder))
-    alias=load(ROOT/'configs/project.toml').raw['models'][model]['alias']
+    alias=SERVE['name'] or load(ROOT/'configs/project.toml').raw['models'][model]['alias']
     req={'model':alias,'messages':messages,'temperature':temperature,'max_tokens':max_tokens,'stream':False,'chat_template_kwargs':{'enable_thinking':False}}
     if tools:req.update(tools=tools,tool_choice='auto')
     if seed is not None:req['seed']=seed
@@ -154,6 +154,7 @@ def repro_verdict(rr):
 
 FLAGS={'evidence':False,'extra':False,'feedback':False}
 STRICT={'frames':False,'evidence2':False}
+SERVE={'name':None,'start':True}
 
 PROFILE_RUNNER=r"""
 import cProfile,pstats,signal,runpy,json,sys,traceback
@@ -497,7 +498,8 @@ def solve(model,tid,base,state,save):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--model',required=True,choices=['12b','31b']);p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--run',default='generic-v1');p.add_argument('--resume',action='store_true');p.add_argument('--evidence',action='store_true');p.add_argument('--extra-checks',action='store_true');p.add_argument('--feedback',action='store_true');p.add_argument('--strict-frames',action='store_true');p.add_argument('--v7',action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--model',required=True,choices=['12b','31b']);p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--run',default='generic-v1');p.add_argument('--resume',action='store_true');p.add_argument('--evidence',action='store_true');p.add_argument('--extra-checks',action='store_true');p.add_argument('--feedback',action='store_true');p.add_argument('--strict-frames',action='store_true');p.add_argument('--v7',action='store_true');p.add_argument('--served-name');p.add_argument('--no-start',action='store_true');a=p.parse_args()
+    SERVE['name']=a.served_name;SERVE['start']=not a.no_start
     STRICT['frames']=a.strict_frames or a.v7;STRICT['evidence2']=a.v7
     FLAGS['evidence']=a.evidence;FLAGS['extra']=a.extra_checks;FLAGS['feedback']=a.feedback
     base=ROOT/'runs'/a.run/a.model
@@ -515,7 +517,7 @@ def main():
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         dump(base/('frozen-inputs.json' if not a.resume else f'frozen-inputs.resume-{time.strftime("%Y%m%dT%H%M%S")}.json'),{str(q.relative_to(ROOT)):hashlib.sha256(q.read_bytes()).hexdigest() for q in [Path(__file__),HERE/'grade.py',ROOT/'scripts/harness/edit_guard.py',ROOT/'experiments/methods/31-generic-v1.md']})
         try:
-            start(a.model)
+            if SERVE['start']:start(a.model)
             for tid in a.tasks:
                 if tid in done:continue
                 state['current']=tid;save()

@@ -14,3 +14,4 @@ submission/adapters/
 experiments/results/**/raw.tar.gz
 
 .venv-official/
+.venv-train/
