@@ -1,0 +1,13 @@
+diff --git a/w3lib/html.py b/w3lib/html.py
+index 6fb7b37..a5a45a4 100644
+--- a/w3lib/html.py
++++ b/w3lib/html.py
+@@ -23,7 +23,7 @@ _ent_re = re.compile(
+ )
+ _tag_re = re.compile(r"<[a-zA-Z\/!].*?>", re.DOTALL)
+ _baseurl_re = re.compile(
+-    r"<base\s[^>]*href\s*=\s*[\"\']\s*([^\"\'\s]+)\s*[\"\']", re.IGNORECASE
++    r"<base\s[^<>]*href\s*=\s*[\"\']\s*([^\"\'\s]+)\s*[\"\']", re.IGNORECASE
+ )
+ _meta_refresh_re = re.compile(
+     r'<meta\s[^>]*http-equiv[^>]*refresh[^>]*content\s*=\s*(?P<quote>["\'])(?P<int>(\d*\.)?\d+)\s*;\s*url=\s*(?P<url>.*?)(?P=quote)',

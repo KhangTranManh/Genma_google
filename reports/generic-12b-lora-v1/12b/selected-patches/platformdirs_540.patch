@@ -1,0 +1,13 @@
+diff --git a/src/platformdirs/_xdg.py b/src/platformdirs/_xdg.py
+index d1df906..6782c19 100644
+--- a/src/platformdirs/_xdg.py
++++ b/src/platformdirs/_xdg.py
+@@ -59,6 +59,8 @@ class XDGMixin(PlatformDirsABC):
+     def user_state_dir(self) -> str:
+         """State directory tied to the user, from ``$XDG_STATE_HOME`` if set, else platform default."""
+         if path := os.environ.get("XDG_STATE_HOME", "").strip():
++            if not os.path.isabs(path):
++                return super().user_state_dir
+             return self._append_app_name_and_version(path)
+         return super().user_state_dir
+ 

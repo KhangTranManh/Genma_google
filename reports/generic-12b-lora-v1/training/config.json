@@ -1,0 +1,42 @@
+{
+  "train_examples": 454,
+  "eval_examples": 23,
+  "eval_tasks": [
+    "attrs_1606",
+    "click_3642",
+    "humanize_328",
+    "humanize_346",
+    "isort_06e5985942",
+    "litestar_4797",
+    "litestar_5017",
+    "more_itertools_1251",
+    "packaging_1346",
+    "packaging_1427",
+    "platformdirs_625",
+    "poetry_core_955",
+    "poetry_core_966",
+    "pydantic_settings_914",
+    "pydantic_settings_968",
+    "sqlite_utils_705",
+    "sqlite_utils_707",
+    "sqlite_utils_751",
+    "strawberry_4708",
+    "structlog_811",
+    "typer_1695",
+    "urllib3_5271",
+    "w3lib_286"
+  ],
+  "steps": 57,
+  "args": {
+    "data": "data/train_v1/train.jsonl",
+    "out": "runs/train/lora_v1",
+    "epochs": 1.0,
+    "max_steps": 0,
+    "lr": 0.0001,
+    "accum": 8,
+    "max_len": 8192,
+    "rank": 16,
+    "eval_frac": 0.05,
+    "seed": 0
+  }
+}

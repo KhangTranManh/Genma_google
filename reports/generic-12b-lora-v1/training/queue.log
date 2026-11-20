@@ -1,0 +1,8 @@
+2026-11-20T06:52:32Z queue started
+2026-11-20T07:03:02Z downloads finished: 499 snapshots
+2026-11-20T07:04:08Z dataset built: 479 examples 32 repos
+2026-11-20T10:09:23Z training exit=0 last: {"step": 57, "train_loss": 0.6838381960988045, "lr": 5e-06, "elapsed_min": 180.8, "eval_loss": 0.44946595216574875}
+2026-11-20T10:10:33Z vllm with adapter ready (pid 1355963)
+2026-11-20T10:54:24Z eval 12B+LoRA exit=0
+2026-11-20T11:47:18Z eval 12B base exit=0
+2026-11-20T11:47:18Z queue done

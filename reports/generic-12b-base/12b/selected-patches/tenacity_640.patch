@@ -1,0 +1,14 @@
+diff --git a/tenacity/retry.py b/tenacity/retry.py
+index df0cc4d..3c6135f 100644
+--- a/tenacity/retry.py
++++ b/tenacity/retry.py
+@@ -65,6 +65,9 @@ class _retry_never(retry_base):
+     """Retry strategy that never rejects any result."""
+ 
+     def __call__(self, retry_state: "RetryCallState") -> bool:
++        if retry_state.outcome.failed and retry_state.outcome.exception is TryAgain:
++            if self.reraise:
++                raise retry_state.outcome.exception
+         return False
+ 
+ 

@@ -1,0 +1,523 @@
+{
+  "status": "complete",
+  "model": "12b",
+  "tasks": [
+    "w3lib_264",
+    "markdown_1621",
+    "werkzeug_3147",
+    "tenacity_640",
+    "humanize_334",
+    "packaging_1155",
+    "click_3299",
+    "platformdirs_540"
+  ],
+  "results": [
+    {
+      "task": "w3lib_264",
+      "samples": [
+        {
+          "sample": "t0",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": null,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": true,
+          "hidden_resolved": true,
+          "selected": true
+        },
+        {
+          "sample": "s17",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": null,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": true,
+          "hidden_resolved": true
+        },
+        {
+          "sample": "s29",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": null,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": true,
+          "hidden_resolved": true
+        },
+        {
+          "sample": "s43",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": null,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": true,
+          "hidden_resolved": true
+        }
+      ],
+      "repro_before_localize": false,
+      "skipped_targets": [],
+      "evidence_used": false,
+      "localized": [
+        {
+          "file": "w3lib/html.py",
+          "symbol": "_baseurl_re",
+          "span": [
+            25,
+            27
+          ]
+        }
+      ],
+      "gold_files": [
+        "w3lib/html.py"
+      ],
+      "loc_hit_file": true,
+      "repro_valid": false,
+      "repro_tries": 6,
+      "extra_checks_kept": [
+        "fixed_nested_tags_behavior",
+        "preserve_case_insensitivity",
+        "preserve_handles_quotes",
+        "preserve_handles_whitespace",
+        "preserve_standard_base_tag"
+      ],
+      "extra_checks_total": 8,
+      "tests": [
+        "tests/test_html.py",
+        "tests/benchmarks/test_benchmark_html.py",
+        "tests/benchmarks/test_benchmark_encoding.py",
+        "tests/benchmarks/test_benchmark_http.py"
+      ],
+      "baseline_test_failures": 9,
+      "selected": "t0",
+      "selected_resolved": true,
+      "any_resolved": true,
+      "status": "done"
+    },
+    {
+      "task": "markdown_1621",
+      "samples": [],
+      "repro_before_localize": false,
+      "skipped_targets": [
+        {
+          "target": {
+            "file": "markdown/inlinepatterns.py",
+            "symbol": "InlinePattern",
+            "reason": "The issue is caused by the regex-based matching of inline links, which is known to exhibit quadratic time complexity when processing many repeated links."
+          },
+          "why": "symbol not found in any source file"
+        }
+      ],
+      "evidence_used": false,
+      "localized": [],
+      "gold_files": [
+        "markdown/treeprocessors.py"
+      ],
+      "loc_hit_file": false,
+      "status": "localize_failed"
+    },
+    {
+      "task": "werkzeug_3147",
+      "samples": [
+        {
+          "sample": "t0",
+          "guard": "invalid",
+          "generations": 1,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s17",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": false,
+          "new_test_failures": 1,
+          "extra_failed": 6,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s29",
+          "guard": "ok",
+          "generations": 2,
+          "repro_pass": false,
+          "new_test_failures": 1,
+          "extra_failed": 6,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s43",
+          "guard": "invalid",
+          "generations": 1,
+          "public_pass": false,
+          "hidden_resolved": false
+        }
+      ],
+      "repro_before_localize": true,
+      "skipped_targets": [],
+      "evidence_used": true,
+      "localized": [
+        {
+          "file": "src/werkzeug/routing/converters.py",
+          "symbol": "FloatConverter",
+          "span": [
+            198,
+            227
+          ]
+        }
+      ],
+      "gold_files": [
+        "src/werkzeug/routing/converters.py"
+      ],
+      "loc_hit_file": true,
+      "repro_valid": true,
+      "repro_tries": 1,
+      "extra_checks_kept": [
+        "fixed_scientific_notation_with_large_exponent",
+        "preserve_float_converter_regex_matches_decimal",
+        "preserve_float_converter_regex_rejects_non_numeric",
+        "preserve_float_converter_rejects_empty_string",
+        "preserve_float_converter_rejects_integer_without_dot",
+        "preserve_float_converter_rejects_whitespace"
+      ],
+      "extra_checks_total": 9,
+      "tests": [
+        "tests/test_routing.py"
+      ],
+      "baseline_test_failures": 0,
+      "selected": null,
+      "selected_resolved": null,
+      "any_resolved": false,
+      "status": "done"
+    },
+    {
+      "task": "tenacity_640",
+      "samples": [
+        {
+          "sample": "t0",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": false,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s17",
+          "guard": "ok",
+          "generations": 2,
+          "repro_pass": false,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s29",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": false,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s43",
+          "guard": "ok",
+          "generations": 2,
+          "repro_pass": false,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": false,
+          "hidden_resolved": false
+        }
+      ],
+      "repro_before_localize": false,
+      "skipped_targets": [],
+      "evidence_used": false,
+      "localized": [
+        {
+          "file": "tenacity/asyncio/__init__.py",
+          "symbol": "__aiter__",
+          "span": [
+            168,
+            171
+          ]
+        }
+      ],
+      "gold_files": [
+        "tenacity/__init__.py"
+      ],
+      "loc_hit_file": false,
+      "repro_valid": true,
+      "repro_tries": 4,
+      "extra_checks_kept": [
+        "preserve_reraise_false_behavior",
+        "preserve_reraise_true_behavior",
+        "preserve_try_again_is_not_retryable",
+        "preserve_try_again_stops_retry"
+      ],
+      "extra_checks_total": 7,
+      "tests": [
+        "tests/test_asyncio.py",
+        "tests/test_issue_478.py"
+      ],
+      "baseline_test_failures": 0,
+      "selected": null,
+      "selected_resolved": null,
+      "any_resolved": false,
+      "status": "done"
+    },
+    {
+      "task": "humanize_334",
+      "samples": [
+        {
+          "sample": "t0",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": true,
+          "hidden_resolved": false,
+          "selected": true
+        },
+        {
+          "sample": "s17",
+          "guard": "ok",
+          "generations": 2,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": true,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s29",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": true,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s43",
+          "guard": "ambiguous",
+          "generations": 2,
+          "public_pass": false,
+          "hidden_resolved": false
+        }
+      ],
+      "repro_before_localize": true,
+      "skipped_targets": [],
+      "evidence_used": true,
+      "localized": [
+        {
+          "file": "src/humanize/time.py",
+          "symbol": "naturaldelta",
+          "span": [
+            97,
+            248
+          ]
+        }
+      ],
+      "gold_files": [
+        "src/humanize/time.py"
+      ],
+      "loc_hit_file": true,
+      "repro_valid": true,
+      "repro_tries": 1,
+      "extra_checks_kept": [
+        "preserve_nan"
+      ],
+      "extra_checks_total": 7,
+      "tests": [
+        "tests/test_time.py"
+      ],
+      "baseline_test_failures": 0,
+      "selected": "t0",
+      "selected_resolved": false,
+      "any_resolved": false,
+      "status": "done"
+    },
+    {
+      "task": "packaging_1155",
+      "samples": [
+        {
+          "sample": "t0",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": false,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s17",
+          "guard": "ok",
+          "generations": 2,
+          "repro_pass": false,
+          "new_test_failures": 0,
+          "extra_failed": 1,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s29",
+          "guard": "ok",
+          "generations": 2,
+          "repro_pass": false,
+          "new_test_failures": 0,
+          "extra_failed": 1,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s43",
+          "guard": "ok",
+          "generations": 2,
+          "repro_pass": false,
+          "new_test_failures": 0,
+          "extra_failed": 1,
+          "public_pass": false,
+          "hidden_resolved": false
+        }
+      ],
+      "repro_before_localize": true,
+      "skipped_targets": [],
+      "evidence_used": true,
+      "localized": [
+        {
+          "file": "src/packaging/version.py",
+          "symbol": "Version.__init__",
+          "span": [
+            394,
+            436
+          ]
+        }
+      ],
+      "gold_files": [
+        "src/packaging/version.py"
+      ],
+      "loc_hit_file": true,
+      "repro_valid": true,
+      "repro_tries": 1,
+      "extra_checks_kept": [
+        "fixed_version_oversized_dev",
+        "preserve_specifier_invalid_format",
+        "preserve_specifier_valid_complex",
+        "preserve_specifier_valid_simple",
+        "preserve_version_invalid_format",
+        "preserve_version_valid_complex",
+        "preserve_version_valid_simple"
+      ],
+      "extra_checks_total": 11,
+      "tests": [
+        "tests/test_version.py",
+        "tests/property/strategies.py",
+        "tests/property/test_specifier_comparison.py",
+        "tests/property/test_specifier_implied.py"
+      ],
+      "baseline_test_failures": 0,
+      "selected": null,
+      "selected_resolved": null,
+      "any_resolved": false,
+      "status": "done"
+    },
+    {
+      "task": "click_3299",
+      "samples": [],
+      "repro_before_localize": false,
+      "skipped_targets": [],
+      "evidence_used": false,
+      "localized": [],
+      "gold_files": [
+        "src/click/core.py"
+      ],
+      "loc_hit_file": false,
+      "status": "localize_failed"
+    },
+    {
+      "task": "platformdirs_540",
+      "samples": [
+        {
+          "sample": "t0",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": true,
+          "hidden_resolved": false,
+          "selected": true
+        },
+        {
+          "sample": "s17",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": true,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s29",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": false,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": false,
+          "hidden_resolved": false
+        },
+        {
+          "sample": "s43",
+          "guard": "ok",
+          "generations": 1,
+          "repro_pass": true,
+          "new_test_failures": 0,
+          "extra_failed": 0,
+          "public_pass": true,
+          "hidden_resolved": false
+        }
+      ],
+      "repro_before_localize": true,
+      "skipped_targets": [],
+      "evidence_used": true,
+      "localized": [
+        {
+          "file": "src/platformdirs/_xdg.py",
+          "symbol": "user_state_dir",
+          "span": [
+            58,
+            63
+          ]
+        }
+      ],
+      "gold_files": [
+        "src/platformdirs/_xdg.py",
+        "src/platformdirs/unix.py"
+      ],
+      "loc_hit_file": true,
+      "repro_valid": true,
+      "repro_tries": 1,
+      "extra_checks_kept": [],
+      "extra_checks_total": 0,
+      "tests": [],
+      "baseline_test_failures": 0,
+      "selected": "t0",
+      "selected_resolved": false,
+      "any_resolved": false,
+      "status": "done"
+    }
+  ]
+}

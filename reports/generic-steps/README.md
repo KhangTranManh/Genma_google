@@ -11,3 +11,7 @@ Các batch dùng GPU chạy tuần tự qua `scripts/generic/queue_steps.sh` (t�
 Ràng buộc của bài nộp chính thức: chỉ YAML + prompt, không callback tự viết, không code Python điều phối; giới hạn 15 phút, 48 lượt, 96 tool call mỗi bài. Các cổng kiểm tra cứng và việc chọn mẫu của harness Python không mang sang được; chúng được chuyển thành chỉ dẫn trong prompt cho agent tự chạy lệnh.
 
 Đã loại ở bước 2 (preflight): `black_5476` — bản sửa gốc cũng không resolved trong môi trường này.
+
+## Pilot QLoRA 12B
+
+[Huấn luyện và đánh giá LoRA](step4-lora.md) đã hoàn tất. 12B + LoRA và 12B gốc cùng giải đúng 1/8 bài dev.
