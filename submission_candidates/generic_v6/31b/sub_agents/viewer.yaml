@@ -1,0 +1,10 @@
+agent_class: LlmAgent
+name: viewer
+model: gemma-4-31b-it-qat-w4a16-ct
+instruction: !include ../prompts/viewer.md
+generate_content_config: !include ../configs/sampling.yaml
+output_key: code_view
+disallow_transfer_to_parent: true
+disallow_transfer_to_peers: true
+tools:
+  - run_command

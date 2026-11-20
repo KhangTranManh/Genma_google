@@ -1,0 +1,10 @@
+agent_class: LlmAgent
+name: editor
+model: gemma-4-31b-it-qat-w4a16-ct
+instruction: !include ../prompts/editor.md
+generate_content_config: !include ../configs/sampling.yaml
+output_key: edit_summary
+disallow_transfer_to_parent: true
+disallow_transfer_to_peers: true
+tools:
+  - edit_file
