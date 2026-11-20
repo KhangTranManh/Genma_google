@@ -1,0 +1,7 @@
+agent_class: SequentialAgent
+name: evidence_repair_lean
+description: Investigate (repro + runtime evidence), repair with verification, submit. Budget-aware (15 min).
+sub_agents:
+  - config_path: sub_agents/investigate.yaml
+  - config_path: sub_agents/repair_loop.yaml
+  - config_path: sub_agents/submit.yaml

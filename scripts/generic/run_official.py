@@ -44,6 +44,6 @@ def main():
         try:rec=asyncio.run(one(tasks[tid],sub,a.model,out))
         except Exception as e:rec={'instance_id':tid,'resolved':False,'error':repr(e)[:500]}
         dump(out/'summary.json',rec);summary.append(rec);print(tid,rec.get('resolved'),rec.get('error'),flush=True)
-        dump(base/'summary.json',{'resolved':sum(1 for r in summary if r.get('resolved')),'n':len(summary),'results':[{k:r.get(k) for k in ['instance_id','resolved','error','seconds','test_exit_code']} for r in summary]})
+        dump(base/'summary.json',{'resolved':sum(1 for r in summary if r.get('resolved')),'n':len(summary),'results':[{'task':r.get('task_id') or r.get('instance_id'),'resolved':r.get('resolved'),'error':r.get('error') or r.get('error_message'),'seconds':r.get('seconds'),'llm_calls':r.get('total_llm_calls'),'tool_calls':r.get('tool_calls')} for r in summary]})
 
 if __name__=='__main__':main()

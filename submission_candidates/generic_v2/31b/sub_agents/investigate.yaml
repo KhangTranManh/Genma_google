@@ -1,0 +1,12 @@
+agent_class: LlmAgent
+name: investigate
+model: gemma-4-31b-it-qat-w4a16-ct
+instruction: !include ../prompts/investigate.md
+generate_content_config: !include ../configs/sampling.yaml
+output_key: findings
+disallow_transfer_to_parent: true
+disallow_transfer_to_peers: true
+tools:
+  - read_file
+  - write_file
+  - run_command
