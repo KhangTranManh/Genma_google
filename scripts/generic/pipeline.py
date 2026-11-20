@@ -145,10 +145,15 @@ def repro_verdict(rr):
     last=[l for l in rr['output_tail'].strip().splitlines() if l.strip()][-1:] or ['']
     for e in ENV_ERRORS:
         if last[0].startswith(e) or f'{e}:' in last[0]:return False,f'it failed with {last[0][:200]!r}, an error of the script itself (e.g. a module that is not installed); use only the package under test and the standard library'
+    if STRICT['frames']:
+        frames=re.findall(r'File "([^"]+)", line \d+',rr['output_tail'])
+        if frames and not last[0].startswith('AssertionError') and '/_harness/' in frames[-1]:
+            return False,f'it failed with {last[0][:200]!r} raised by the script itself (e.g. calling the API with wrong arguments), not by the defect inside the package; check the real signatures with the source and fail with an AssertionError that states the defect'
     return True,''
 
 
 FLAGS={'evidence':False,'extra':False,'feedback':False}
+STRICT={'frames':False,'evidence2':False}
 
 PROFILE_RUNNER=r"""
 import cProfile,pstats,signal,runpy,json,sys,traceback
@@ -163,7 +168,9 @@ rows=[]
 for (fn,ln,name),(cc,nc,tt,ct,callers) in pstats.Stats(pr).stats.items():
     if fn.startswith('/workspace/') and '/_harness/' not in fn and '/tests/' not in fn and '/site-packages/' not in fn:
         rows.append({'file':fn[len('/workspace/'):],'line':ln,'func':name,'ncalls':nc,'tottime':round(tt,4),'cumtime':round(ct,4)})
-out={'by_tottime':sorted(rows,key=lambda r:-r['tottime'])[:12],'by_cumtime':sorted(rows,key=lambda r:-r['cumtime'])[:12],'error_tail':err}
+code=[r for r in rows if not r['func'].startswith('<')]
+out={'by_tottime':sorted(rows,key=lambda r:-r['tottime'])[:12],'by_cumtime':sorted(rows,key=lambda r:-r['cumtime'])[:12],'error_tail':err,
+     'code_by_tottime':sorted(code,key=lambda r:-r['tottime'])[:12],'executed':sorted(code,key=lambda r:-r['cumtime'])[:30]}
 print('PROFILE_JSON='+json.dumps(out))
 """
 
@@ -178,7 +185,9 @@ signal.signal(signal.SIGALRM,stop)
 for name in sorted(n for n in dir(m) if n.startswith(('preserve_','fixed_')) and callable(getattr(m,n))):
     signal.alarm(15)
     try:getattr(m,name)();res[name]={'ok':True}
-    except BaseException as e:res[name]={'ok':False,'err':(type(e).__name__+': '+str(e))[:300]}
+    except BaseException as e:
+        tb=traceback.extract_tb(e.__traceback__);inner=tb[-1].filename if tb else ''
+        res[name]={'ok':False,'err':(type(e).__name__+': '+str(e))[:300],'assertion':isinstance(e,AssertionError),'raised_in_check':inner.endswith('extra_checks.py')}
     finally:signal.alarm(0)
 print('CHECKS_JSON='+json.dumps(res))
 """
@@ -199,6 +208,10 @@ def evidence_text(ev):
     if not ev:return None
     L=['Runtime evidence from running a validated reproduction script on the CURRENT code (repository functions only):']
     if ev.get('repo_frames'):L.append('Repository frames in the failure traceback (innermost last):\n'+'\n'.join(f"  {x['file']}:{x['line']} in {x['func']}" for x in ev['repo_frames']))
+    if STRICT['evidence2']:
+        if ev.get('code_by_tottime'):L.append('Functions with the most own time (module import code excluded; file:line function ncalls tottime cumtime):\n'+'\n'.join(f"  {x['file']}:{x['line']} {x['func']} {x['ncalls']} {x['tottime']} {x['cumtime']}" for x in ev['code_by_tottime'][:10]))
+        if ev.get('executed'):L.append('Repository functions executed by the reproduction (most cumulative time first; for a wrong-result defect the code to change is usually among these):\n'+'\n'.join(f"  {x['file']}:{x['line']} {x['func']} (calls {x['ncalls']})" for x in ev['executed'][:30]))
+        return '\n'.join(L)+'\nUse this evidence together with the issue to choose the code that must change.' if len(L)>1 else None
     if ev.get('by_tottime'):L.append('Functions with the most own time (file:line function ncalls tottime cumtime):\n'+'\n'.join(f"  {x['file']}:{x['line']} {x['func']} {x['ncalls']} {x['tottime']} {x['cumtime']}" for x in ev['by_tottime'][:10]))
     if ev.get('by_cumtime'):L.append('Functions with the most cumulative time:\n'+'\n'.join(f"  {x['file']}:{x['line']} {x['func']} {x['ncalls']} {x['tottime']} {x['cumtime']}" for x in ev['by_cumtime'][:8]))
     return '\n'.join(L)+'\nUse this evidence together with the issue to choose the code that must change.' if len(L)>1 else None
@@ -230,7 +243,8 @@ def make_checks(model,folder,issue,ex,repro,box):
         msg=extra_prompt(issue,ex,repro)+('' if k==0 or base is None else f'\n\nYour previous module could not be used: {json.dumps(base)[:600]}. Write a corrected module.')
         r=chat(model,[{'role':'system','content':EXTRA_SYS},{'role':'user','content':msg}],folder/f'extra{k}',2048,0)
         script=parse_code(r['content']);box.reset();base=run_checks(box,script);dump(folder/f'extra{k}/baseline.json',base)
-        kept=[n for n,v in base.items() if n!='__load__' and ((n.startswith('preserve_') and v['ok']) or (n.startswith('fixed_') and not v['ok'] and not any(e in v.get('err','') for e in ENV_ERRORS+('TimeoutError',))))]
+        kept=[n for n,v in base.items() if n!='__load__' and ((n.startswith('preserve_') and v['ok']) or (n.startswith('fixed_') and not v['ok'] and not any(e in v.get('err','') for e in ENV_ERRORS+('TimeoutError',))
+               and not (STRICT['frames'] and not v.get('assertion') and v.get('raised_in_check'))))]
         if kept:break
     return (script if kept else None),kept,base
 
@@ -321,7 +335,8 @@ def repro_prompt(issue,excerpts):
             'Write a standalone Python script that reproduces the defect through the package\'s public API, run from the repository root with the package installed. '
             'It must exit with status 0 when the defect is FIXED and fail (raise AssertionError or exit non-zero) while the defect is present. '
             'For performance defects, time the operation with time.perf_counter() on an input large enough that the current code clearly exceeds a threshold you choose (keep total runtime under 30 seconds) and assert the time is below it. '
-            'Print a short line describing what was observed. No network, no files outside the working directory.')
+            'Print a short line describing what was observed. No network, no files outside the working directory.'
+            +(' Do not wrap calls in try/except and do not call sys.exit: let the AssertionError (or the exception the defect itself raises inside the package) propagate uncaught, so its origin is visible in the traceback. Check the real signatures in the source before calling an API.' if STRICT['frames'] else ''))
 
 
 def patch_prompt(issue,blocks,repro,repro_result):
@@ -482,7 +497,8 @@ def solve(model,tid,base,state,save):
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--model',required=True,choices=['12b','31b']);p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--run',default='generic-v1');p.add_argument('--resume',action='store_true');p.add_argument('--evidence',action='store_true');p.add_argument('--extra-checks',action='store_true');p.add_argument('--feedback',action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--model',required=True,choices=['12b','31b']);p.add_argument('--tasks',nargs='+',required=True);p.add_argument('--run',default='generic-v1');p.add_argument('--resume',action='store_true');p.add_argument('--evidence',action='store_true');p.add_argument('--extra-checks',action='store_true');p.add_argument('--feedback',action='store_true');p.add_argument('--strict-frames',action='store_true');p.add_argument('--v7',action='store_true');a=p.parse_args()
+    STRICT['frames']=a.strict_frames or a.v7;STRICT['evidence2']=a.v7
     FLAGS['evidence']=a.evidence;FLAGS['extra']=a.extra_checks;FLAGS['feedback']=a.feedback
     base=ROOT/'runs'/a.run/a.model
     if (base/'state.json').exists() and not a.resume:raise FileExistsError(str(base))
