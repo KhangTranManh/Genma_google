@@ -1,0 +1,13 @@
+diff --git a/src/werkzeug/routing/converters.py b/src/werkzeug/routing/converters.py
+index 6016a97..01f45cc 100644
+--- a/src/werkzeug/routing/converters.py
++++ b/src/werkzeug/routing/converters.py
+@@ -214,7 +214,7 @@ class FloatConverter(NumberConverter):
+         The ``signed`` parameter.
+     """
+ 
+-    regex = r"\d+\.\d+"
++    regex = r"\d+(?:\.\d+)?(?:[eE][-+]?\d+)?"
+     num_convert = float
+ 
+     def __init__(

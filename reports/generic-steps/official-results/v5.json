@@ -1,0 +1,95 @@
+{
+  "submission": "submission_candidates/generic_v5/31b",
+  "resolved": 2,
+  "n": 8,
+  "tasks": [
+    {
+      "task_id": "click_3299",
+      "resolved": true,
+      "status": "SUCCESS",
+      "error_message": null,
+      "total_llm_calls": 20,
+      "tool_calls": 12,
+      "duration_seconds": 488.16524362697965,
+      "test_exit_code": 0,
+      "repo": "pallets/click"
+    },
+    {
+      "task_id": "humanize_334",
+      "resolved": false,
+      "status": "SUCCESS",
+      "error_message": null,
+      "total_llm_calls": 31,
+      "tool_calls": 24,
+      "duration_seconds": 295.3403496919782,
+      "test_exit_code": 1,
+      "repo": "python-humanize/humanize"
+    },
+    {
+      "task_id": "markdown_1621",
+      "resolved": false,
+      "status": "SUCCESS",
+      "error_message": "Agent exceeded turns budget (48 turns)",
+      "total_llm_calls": 48,
+      "tool_calls": 45,
+      "duration_seconds": 526.2804924380034,
+      "test_exit_code": -1,
+      "repo": "Python-Markdown/markdown"
+    },
+    {
+      "task_id": "packaging_1155",
+      "resolved": false,
+      "status": "SUCCESS",
+      "error_message": null,
+      "total_llm_calls": 12,
+      "tool_calls": 4,
+      "duration_seconds": 208.79170262702974,
+      "test_exit_code": 1,
+      "repo": "pypa/packaging"
+    },
+    {
+      "task_id": "platformdirs_540",
+      "resolved": false,
+      "status": "SUCCESS",
+      "error_message": null,
+      "total_llm_calls": 34,
+      "tool_calls": 26,
+      "duration_seconds": 346.3605191440438,
+      "test_exit_code": 1,
+      "repo": "tox-dev/platformdirs"
+    },
+    {
+      "task_id": "tenacity_640",
+      "resolved": false,
+      "status": "SUCCESS",
+      "error_message": "Agent exceeded turns budget (48 turns)",
+      "total_llm_calls": 48,
+      "tool_calls": 45,
+      "duration_seconds": 502.6311316790525,
+      "test_exit_code": -1,
+      "repo": "jd/tenacity"
+    },
+    {
+      "task_id": "w3lib_264",
+      "resolved": true,
+      "status": "SUCCESS",
+      "error_message": null,
+      "total_llm_calls": 19,
+      "tool_calls": 11,
+      "duration_seconds": 194.88962228200398,
+      "test_exit_code": 0,
+      "repo": "scrapy/w3lib"
+    },
+    {
+      "task_id": "werkzeug_3147",
+      "resolved": false,
+      "status": "SUCCESS",
+      "error_message": "Agent exceeded turns budget (48 turns)",
+      "total_llm_calls": 48,
+      "tool_calls": 30,
+      "duration_seconds": 562.3423165240092,
+      "test_exit_code": 1,
+      "repo": "pallets/werkzeug"
+    }
+  ]
+}

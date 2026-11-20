@@ -1,0 +1,38 @@
+diff --git a/`.harness/repro.py` b/`.harness/repro.py`
+new file mode 100644
+index 0000000..8ff65ba
+--- /dev/null
++++ b/`.harness/repro.py`
+@@ -0,0 +1,32 @@
++import time
++import re
++from w3lib.html import get_base_url
++
++def test_redos():
++    # The problematic regex is _baseurl_re = re.compile(
++    #     r"<base\s[^>]*href\s*=\s*[\"']\s*([^\"'\s]+)\s*[\"']", re.IGNORECASE
++    # )
++    
++    # To trigger ReDoS, we need a string that matches the start but fails later.
++    # <base\s matches "<base "
++    # [^>]* matches any number of non-'>' characters.
++    # Then it looks for "href".
++    
++    # If we have "<base " followed by 50,000 'a's, [^>]* will consume all of them.
++    # Then it will try to find "href". It fails.
++    # Then it will backtrack: [^>]* will consume 49,999 'a's, then try to find "href". Fails.
++    # And so on.
++    
++    payload = "<base " + "a" * 50000 + " " 
++    
++    start = time.perf_counter()
++    get_base_url(payload)
++    end = time.perf_counter()
++    
++    duration = end - start
++    print(f"Duration: {duration:.4f}s")
++    
++    assert duration < 0.1, f"ReDoS detected: took {duration:.4f}s"
++
++if __name__ == "__main__":
++    test_redos()

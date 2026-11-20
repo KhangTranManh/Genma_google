@@ -1,0 +1,29 @@
+{
+  "submission": "submission_candidates/generic_v1/31b",
+  "resolved": 0,
+  "n": 2,
+  "tasks": [
+    {
+      "task_id": "markdown_1621",
+      "resolved": false,
+      "status": "SUCCESS",
+      "error_message": "Agent exceeded turns budget (48 turns)",
+      "total_llm_calls": 48,
+      "tool_calls": 46,
+      "duration_seconds": 1125.7379298349842,
+      "test_exit_code": 124,
+      "repo": "Python-Markdown/markdown"
+    },
+    {
+      "task_id": "w3lib_264",
+      "resolved": false,
+      "status": "SUCCESS",
+      "error_message": "Agent exceeded session timeout (15 min)",
+      "total_llm_calls": 25,
+      "tool_calls": 22,
+      "duration_seconds": 927.9822472549859,
+      "test_exit_code": 1,
+      "repo": "scrapy/w3lib"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+diff --git a/src/platformdirs/_xdg.py b/src/platformdirs/_xdg.py
+index d1df906..d439e03 100644
+--- a/src/platformdirs/_xdg.py
++++ b/src/platformdirs/_xdg.py
+@@ -14,7 +14,8 @@ class XDGMixin(PlatformDirsABC):
+     def user_data_dir(self) -> str:
+         """Data directory tied to the user, from ``$XDG_DATA_HOME`` if set, else platform default."""
+         if path := os.environ.get("XDG_DATA_HOME", "").strip():
+-            return self._append_app_name_and_version(path)
++            if os.path.isabs(path):
++                return self._append_app_name_and_version(path)
+         return super().user_data_dir
+ 
+     @property
+@@ -33,7 +34,8 @@ class XDGMixin(PlatformDirsABC):
+     def user_config_dir(self) -> str:
+         """Config directory tied to the user, from ``$XDG_CONFIG_HOME`` if set, else platform default."""
+         if path := os.environ.get("XDG_CONFIG_HOME", "").strip():
+-            return self._append_app_name_and_version(path)
++            if os.path.isabs(path):
++                return self._append_app_name_and_version(path)
+         return super().user_config_dir
+ 
+     @property
+@@ -52,14 +54,16 @@ class XDGMixin(PlatformDirsABC):
+     def user_cache_dir(self) -> str:
+         """Cache directory tied to the user, from ``$XDG_CACHE_HOME`` if set, else platform default."""
+         if path := os.environ.get("XDG_CACHE_HOME", "").strip():
+-            return self._append_app_name_and_version(path)
++            if os.path.isabs(path):
++                return self._append_app_name_and_version(path)
+         return super().user_cache_dir
+ 
+     @property
+     def user_state_dir(self) -> str:
+         """State directory tied to the user, from ``$XDG_STATE_HOME`` if set, else platform default."""
+         if path := os.environ.get("XDG_STATE_HOME", "").strip():
+-            return self._append_app_name_and_version(path)
++            if os.path.isabs(path):
++                return self._append_app_name_and_version(path)
+         return super().user_state_dir
+ 
+     @property
+@@ -168,7 +172,7 @@ class XDGMixin(PlatformDirsABC):
+ 
+ def _xdg_dir_list(env_var: str) -> list[str]:
+     """Stripped non-blank entries of ``env_var``, so a value of only separators and whitespace falls back like unset."""
+-    return [stripped for path in os.environ.get(env_var, "").split(os.pathsep) if (stripped := path.strip())]
++    return [stripped for path in os.environ.get(env_var, "").split(os.pathsep) if (stripped := path.strip()) and os.path.isabs(stripped)]
+ 
+ 
+ __all__ = [

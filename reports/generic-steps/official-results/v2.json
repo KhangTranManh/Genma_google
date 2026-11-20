@@ -1,0 +1,18 @@
+{
+  "submission": "submission_candidates/generic_v2/31b",
+  "resolved": 0,
+  "n": 1,
+  "tasks": [
+    {
+      "task_id": "w3lib_264",
+      "resolved": false,
+      "status": "SUCCESS",
+      "error_message": "Agent exceeded session timeout (15 min)",
+      "total_llm_calls": 41,
+      "tool_calls": 40,
+      "duration_seconds": 927.4968618269777,
+      "test_exit_code": 1,
+      "repo": "scrapy/w3lib"
+    }
+  ]
+}

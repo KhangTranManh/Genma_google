@@ -1,0 +1,18 @@
+{
+  "submission": "submission_candidates/generic_v4/31b",
+  "resolved": 0,
+  "n": 1,
+  "tasks": [
+    {
+      "task_id": "w3lib_264",
+      "resolved": false,
+      "status": "SUCCESS",
+      "error_message": "Agent exceeded turns budget (48 turns)",
+      "total_llm_calls": 48,
+      "tool_calls": 45,
+      "duration_seconds": 519.8577042869874,
+      "test_exit_code": -1,
+      "repo": "scrapy/w3lib"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+diff --git a/.harness/repro.py b/.harness/repro.py
+new file mode 100644
+index 0000000..1276f9e
+--- /dev/null
++++ b/.harness/repro.py
+@@ -0,0 +1,47 @@
++import time
++from markdown import Markdown
++
++def measure_time(n):
++    md = Markdown()
++    text = '[link](x)' * n
++    start = time.perf_counter()
++    md.convert(text)
++    end = time.perf_counter()
++    return end - start
++
++def test_quadratic_rendering():
++    # Based on the issue:
++    # *512 = 0.02s
++    # *2048 = 0.25s
++    # *8192 = 3.75s
++    # 4x input (2048 -> 8192) results in ~15x time (0.25 -> 3.75)
++    
++    n1 = 512
++    n2 = 2048
++    
++    t1 = measure_time(n1)
++    t2 = measure_time(n2)
++    
++    print(f"n={n1}: {t1:.4f}s")
++    print(f"n={n2}: {t2:.4f}s")
++    
++    # If it's linear, t2 should be roughly 4 * t1.
++    # If it's quadratic, t2 should be roughly 16 * t1.
++    # The issue says 4x input -> 15x time.
++    # We'll set a threshold. If t2/t1 > 10, it's likely super-linear.
++    
++    ratio = t2 / t1 if t1 > 0 else 0
++    print(f"Ratio: {ratio:.2f}x")
++    
++    # We want the test to FAIL (raise AssertionError) if the defect is present.
++    # The defect is super-linear rendering.
++    # So we assert that the ratio is reasonably close to linear (e.g., < 8x).
++    assert ratio < 8, f"Rendering is super-linear: 4x input increased time by {ratio:.2f}x"
++
++if __name__ == "__main__":
++    try:
++        test_quadratic_rendering()
++        print("Rendering is linear (or close enough).")
++    except AssertionError as e:
++        print(f"Defect reproduced: {e}")
++        raise e

@@ -1,0 +1,108 @@
+diff --git a/fix_handle_inline.py b/fix_handle_inline.py
+new file mode 100644
+index 0000000..183bdec
+--- /dev/null
++++ b/fix_handle_inline.py
+@@ -0,0 +1,58 @@
++import sys
++
++with open('markdown/treeprocessors.py', 'r') as f:
++    lines = f.readlines()
++
++# Find the start of __handleInline
++start_line = -1
++for i, line in enumerate(lines):
++    if 'def __handleInline(self, data: str, patternIndex: int = 0) -> str:' in line:
++        start_line = i
++        break
++
++# Replace the logic inside __handleInline
++# The current broken logic starts around line 132
++# We want to replace from 'if not isinstance(data, util.AtomicString):' down to 'return "".join(result)'
++
++new_logic = [
++    '        if not isinstance(data, util.AtomicString):\n',
++    '            result = []\n',
++    '            count = len(self.inlinePatterns)\n',
++    '            startIndex = 0\n',
++    '            while patternIndex < count:\n',
++    '                chunk, matched, nextStartIndex = self.__applyPattern(\n',
++    '                    self.inlinePatterns[patternIndex], data, patternIndex, startIndex\n',
++    '                )\n',
++    '                if matched:\n',
++    '                    result.append(chunk)\n',
++    '                    data = data[nextStartIndex:]\n',
++    '                    startIndex = 0\n',
++    '                else:\n',
++    '                    if startIndex > 0:\n',
++    '                        result.append(data[:startIndex])\n',
++    '                        data = data[startIndex:]\n',
++    '                        startIndex = 0\n',
++    '                    patternIndex += 1\n',
++    '            result.append(data)\n',
++    '            return "".join(result)\n',
++    '        return data\n'
++]
++
++# Find where the old logic ends
++end_line = -1
++for i in range(start_line, len(lines)):
++    if 'return "".join(result)' in lines[i]:
++        end_line = i
++        break
++
++lines[start_line + 12 : end_line + 1] = new_logic # This is a rough estimate, let's be more precise
++
++# Actually, let's just replace the whole block from line 132 to 146
++# Based on the grep output:
++# 132:        if not isinstance(data, util.AtomicString):
++# 133:            result = []
++# 134:        while patternIndex < count:
++# ...
++# 146:        return "".join(result)
++
++# Let's just rewrite the file with a safer approach.
+diff --git a/markdown/treeprocessors.py b/markdown/treeprocessors.py
+index 9a27446..f3368f9 100644
+--- a/markdown/treeprocessors.py
++++ b/markdown/treeprocessors.py
+@@ -130,14 +130,25 @@ class InlineProcessor(Treeprocessor):
+ 
+         """
+         if not isinstance(data, util.AtomicString):
+-            startIndex = 0
++            result = []
+             count = len(self.inlinePatterns)
++            startIndex = 0
+             while patternIndex < count:
+-                data, matched, startIndex = self.__applyPattern(
++                chunk, matched, nextStartIndex = self.__applyPattern(
+                     self.inlinePatterns[patternIndex], data, patternIndex, startIndex
+                 )
+-                if not matched:
++                if matched:
++                    result.append(chunk)
++                    data = data[nextStartIndex:]
++                    startIndex = 0
++                else:
++                    if startIndex > 0:
++                        result.append(data[:startIndex])
++                        data = data[startIndex:]
++                        startIndex = 0
+                     patternIndex += 1
++            result.append(data)
++            return "".join(result)
+         return data
+ 
+     def __processElementText(self, node: etree.Element, subnode: etree.Element, isText: bool = True) -> None:
+@@ -323,8 +334,8 @@ class InlineProcessor(Treeprocessor):
+         placeholder = self.__stashNode(node, pattern.type())
+ 
+         if new_style:
+-            return "{}{}{}".format(data[:start],
+-                                   placeholder, data[end:]), True, 0
++            return "{}{}".format(data[:start],
++                                 placeholder), True, end
+         else:  # pragma: no cover
+             return "{}{}{}{}".format(leftData,
+                                      match.group(1),
