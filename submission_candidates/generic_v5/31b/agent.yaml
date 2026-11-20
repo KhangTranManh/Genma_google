@@ -1,0 +1,8 @@
+agent_class: SequentialAgent
+name: narrow_steps_repair_v5
+description: Narrow single-purpose agents so each step ends on its own within the 15-minute budget.
+sub_agents:
+  - config_path: sub_agents/write_repro.yaml
+  - config_path: sub_agents/run_evidence.yaml
+  - config_path: sub_agents/repair_loop.yaml
+  - config_path: sub_agents/submit.yaml

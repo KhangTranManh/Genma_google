@@ -1,0 +1,11 @@
+agent_class: LlmAgent
+name: write_repro
+model: gemma-4-31b-it-qat-w4a16-ct
+instruction: !include ../prompts/write_repro.md
+generate_content_config: !include ../configs/sampling.yaml
+output_key: repro_note
+disallow_transfer_to_parent: true
+disallow_transfer_to_peers: true
+tools:
+  - run_command
+  - write_file
